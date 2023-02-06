@@ -4,6 +4,7 @@
     "es2021": true,
     "node": true
   },
+  "plugins": ["prettier", "react", "@typescript-eslint"],
   "extends": ["plugin:prettier/recommended", "plugin:react/recommended", "airbnb", "prettier"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -13,7 +14,6 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["prettier", "react", "@typescript-eslint"],
   "rules": {
     "no-debugger": "off",
     "no-console": 0,
@@ -27,7 +27,7 @@
         "endOfLine": "auto",
         "tabWidth": 2,
         "singleQuote": true,
-        "printWidth": 90
+        "printWidth": 80
       }
     ]
   }

@@ -3,6 +3,7 @@ import React from 'react';
 import { hydrateRoot } from 'react-dom/client';
 
 console.log('hahahah');
+const root = document.getElementById('root') as HTMLDivElement;
 
 const elem = (
   <div>
@@ -10,4 +11,4 @@ const elem = (
   </div>
 );
 
-hydrateRoot(document.getElementById('root'), elem);
+hydrateRoot(root, elem);
