@@ -1,14 +1,33 @@
-// eslint-disable-next-line no-use-before-define
+import './index';
+
 import React from 'react';
-import { hydrateRoot } from 'react-dom/client';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import FirebaseContext from './context/firebase';
+import { firebase, FieldValue } from './lib/firebase';
 
-console.log('hahahah');
-const root = document.getElementById('root') as HTMLDivElement;
-
-const elem = (
-  <div>
-    <h1>RS Clone</h1>
-  </div>
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLDivElement
 );
 
-hydrateRoot(root, elem);
+root.render(
+  <FirebaseContext.Provider value={{ firebase, FieldValue }}>
+    <App />
+  </FirebaseContext.Provider>
+);
+
+// client side render app: react
+// database (Firebase)
+// react-loading-skeleton
+// tailwind
+
+// Folder structure
+// src
+// components,
+// constants,
+// helpers,
+// hooks,
+// pages,
+// lib (firebase),
+// services (firebase fn),
+// styles (tailwind's folder (app/tailwind))
