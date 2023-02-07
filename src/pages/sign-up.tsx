@@ -1,9 +1,19 @@
 import { FirebaseApp } from '@firebase/app-types';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from 'firebase/auth';
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import {
+  createNewUser,
+  doesUsernameExist,
+  getError,
+} from '../services/firebase';
 import FirebaseContext from '../context/firebase';
 import * as ROUTES from '../constants/routes';
+import { MyError } from '../types/types';
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -18,11 +28,48 @@ export default function SignUp() {
   const [error, setError] = useState('');
   const isInvalid = password === '' || emailAddress === '';
 
-  const handleSignUp = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-    try {
-    } catch {}
+    const usernameExists = await doesUsernameExist(username);
+    if (!usernameExists) {
+      try {
+        const auth = getAuth(firebase);
+        const createUserResult = await createUserWithEmailAndPassword(
+          auth,
+          emailAddress,
+          password
+        );
+
+        updateProfile(createUserResult.user, {
+          displayName: username,
+        });
+
+        const newUser = {
+          userId: createUserResult.user.uid,
+          username: username.toLowerCase(),
+          fullName,
+          emailAddress: emailAddress.toLocaleLowerCase(),
+          following: [],
+          followers: [],
+          dateCreated: Date.now(),
+        };
+
+        createNewUser(newUser);
+
+        navigate(ROUTES.DASHBOARD);
+      } catch (error) {
+        const err = error as MyError;
+        const message = getError(err);
+
+        setFullName('');
+        setEmailAddress('');
+        setPassword('');
+        setError(message);
+      }
+    } else {
+      setError('That username is already taken, please try another!');
+    }
   };
 
   useEffect(() => {
@@ -76,7 +123,7 @@ export default function SignUp() {
       <div>
         <p>
           Have an account?{` `}
-          <Link to="/login">Log In</Link>
+          <Link to={ROUTES.LOGIN}>Log In</Link>
         </p>
       </div>
     </div>
