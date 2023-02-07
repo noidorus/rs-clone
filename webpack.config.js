@@ -1,9 +1,8 @@
-/* eslint-disable global-require */
-/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const { merge } = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const baseConfig = {
   entry: path.resolve(__dirname, './src/index.tsx'),
@@ -20,39 +19,33 @@ const baseConfig = {
         exclude: /node_modules/,
       },
       {
-        test: /\.(png|svg|jpg|jpeg|gif|ogg|mp3|wav)/,
+        test: /\.(png|svg|jpg|jpeg|)$/,
         type: 'asset/resource',
-        generator: {
-          filename: 'assets/images/[hash][ext][query]',
-        },
-      },
-      {
-        test: /\.(woff|woff2|eot|ttf|otf|svg)/,
-        type: 'asset/resource',
-        generator: {
-          filename: 'assets/fonts/[hash][ext][query]',
-        },
       },
     ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js', '.jsx'],
+    extensions: ['.tsx', '.ts', '.js', '.jsx', 'jpg'],
   },
   output: {
     filename: 'index.js',
     path: path.resolve(__dirname, './dist'),
   },
-  devServer: {
-    open: true,
-    host: 'localhost',
-    historyApiFallback: true,
-  },
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './public/index.html'),
+      favicon: path.resolve(__dirname, './public/favicon.ico'),
       filename: 'index.html',
     }),
     new CleanWebpackPlugin(),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, './public/images'),
+          to: path.resolve(__dirname, 'dist/images'),
+        },
+      ],
+    }),
   ],
 };
 

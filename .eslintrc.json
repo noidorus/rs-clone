@@ -5,7 +5,14 @@
     "node": true
   },
   "plugins": ["prettier", "react", "@typescript-eslint"],
-  "extends": ["plugin:prettier/recommended", "plugin:react/recommended", "airbnb", "prettier"],
+  "extends": [
+    "plugin:prettier/recommended",
+    "plugin:react/recommended",
+    "airbnb-typescript",
+    "prettier",
+    "airbnb",
+    "plugin:jsx-a11y/recommended"
+  ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
@@ -19,7 +26,10 @@
     "no-console": 0,
     "class-methods-use-this": "off",
     "@typescript-eslint/no-explicit-any": "error",
-    "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
+    "react/jsx-filename-extension": [
+      2,
+      { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
+    ],
     "react/react-in-jsx-scope": "off",
     "prettier/prettier": [
       "error",

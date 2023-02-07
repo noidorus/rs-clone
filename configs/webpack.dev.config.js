@@ -5,6 +5,12 @@ module.exports = {
   mode: 'development',
   devtool: 'inline-source-map',
   devServer: {
-    static: path.resolve(__dirname, './dist'),
+    open: true,
+    host: 'localhost',
+    historyApiFallback: true,
+    static: {
+      directory: path.resolve(__dirname, '../public'),
+      // publicPath: 'public',
+    },
   },
 };
