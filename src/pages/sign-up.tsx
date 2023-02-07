@@ -6,11 +6,7 @@ import {
 } from 'firebase/auth';
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import {
-  createNewUser,
-  doesUsernameExist,
-  getError,
-} from '../services/firebase';
+import { setUserData, doesUsernameExist, getError } from '../services/firebase';
 import FirebaseContext from '../context/firebase';
 import * as ROUTES from '../constants/routes';
 import { MyError } from '../types/types';
@@ -55,7 +51,7 @@ export default function SignUp() {
           dateCreated: Date.now(),
         };
 
-        createNewUser(newUser);
+        setUserData(newUser);
 
         navigate(ROUTES.DASHBOARD);
       } catch (error) {

@@ -26,7 +26,7 @@ export default function Login() {
     } catch {
       setEmailAddress('');
       setPassword('');
-      setError('Failde to create account...')
+      setError('Invalid email address or password!');
     }
   };
 

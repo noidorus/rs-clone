@@ -21,7 +21,7 @@ export async function doesUsernameExist(username: string) {
   return querySnapshot.docs.length > 0;
 }
 
-export async function createNewUser(user: IUser) {
+export async function setUserData(user: IUser) {
   const userColl = createCollection('users', db);
   const userRef = doc(userColl);
   setDoc(userRef, user);
