@@ -1,5 +1,5 @@
-import Firebase from 'firebase/compat/app';
-import 'firebase/compat/firestore';
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
 import 'firebase/auth';
 
 const config = {
@@ -11,8 +11,6 @@ const config = {
   appId: '1:306740386545:web:280fd76936cc742b2ba750',
 };
 
-const firebase = Firebase.initializeApp(config);
-const { FieldValue } = Firebase.firestore;
-
-
-export { firebase, FieldValue };
+const firebase = initializeApp(config);
+const db = getFirestore(firebase)
+export { firebase, db };

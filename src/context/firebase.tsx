@@ -1,11 +1,10 @@
+import { Firestore } from 'firebase/firestore';
 import { createContext } from 'react';
-import Firebase from 'firebase/compat/app';
-import { FirebaseApp } from '@firebase/app-types';
-import { FieldValue } from '../lib/firebase';
+import Firebase from 'firebase/app';
 
 interface IFirebase {
-  firebase: FirebaseApp;
-  FieldValue: typeof FieldValue;
+  firebase: Firebase.FirebaseApp;
+  db: Firestore;
 }
 
 const FirebaseContext = createContext<IFirebase | null>(null);
