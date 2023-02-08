@@ -74,7 +74,7 @@ export default function SignUp() {
 
   return (
     <div>
-      <img src="./images/iphone.jpg" alt="Iphone with Instagram" />
+      <img src="./images/iphone.jpg" alt="Iphone with Instagram" width="380" />
       <div>
         <h1>
           <img src="./images/logo.png" alt="Instagram logo" />
