@@ -13,7 +13,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-loading-skeleton": "^3.1.0",
-    "react-router-dom": "^6.8.1"
+    "react-router-dom": "^6.8.1",
+    "normalize.css": "^8.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.20.7",
@@ -55,5 +56,9 @@
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.11.1",
     "webpack-merge": "^5.8.0"
-  }
+  },
+  "browserslist": [
+    "last 2 Chrome versions",
+    "last 2 Firefox versions"
+  ]
 }
