@@ -10,6 +10,7 @@
     "@firebase/app-types": "^0.9.0",
     "date-fns": "^2.29.3",
     "firebase": "^9.17.1",
+    "normalize.css": "^8.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-loading-skeleton": "^3.1.0",
@@ -55,5 +56,9 @@
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.11.1",
     "webpack-merge": "^5.8.0"
-  }
+  },
+  "browserslist": [
+    "last 2 Chrome versions",
+    "last 2 Firefox versions"
+  ]
 }

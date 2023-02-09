@@ -10,6 +10,7 @@ import { setUserData, doesUsernameExist, getError } from '../services/firebase';
 import FirebaseContext from '../context/firebase';
 import * as ROUTES from '../constants/routes';
 import { MyError } from '../types/types';
+import './sign-up.scss';
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -73,17 +74,19 @@ export default function SignUp() {
   }, []);
 
   return (
-    <div>
-      <img src="./images/iphone.jpg" alt="Iphone with Instagram" />
-      <div>
-        <h1>
-          <img src="./images/logo.png" alt="Instagram logo" />
-        </h1>
+    <main className="signup-page">
+      <div className="signup-page__inner">
+        <header className="signup-page__header signup-header">
+          <h1 className="signup-header__title visually-hidden">Instagram</h1>
+          <img className='signup-header__logo' src="./images/logo.png" alt="Instagram logo" width="175" height="51" />
+          <h2 className='signup-header__text'>Sign up to see photos and videos from your friends.</h2>
+        </header>
 
         {error && <p>{error}</p>}
 
-        <form onSubmit={handleSignUp} method="POST">
+        <form className='signup-page__form signup-form' onSubmit={handleSignUp} method="POST">
           <input
+            className='signup-form__field field'
             type="text"
             aria-label="Enter your username"
             placeholder="Username"
@@ -91,6 +94,7 @@ export default function SignUp() {
             value={username}
           />
           <input
+            className='signup-form__field field'
             type="text"
             aria-label="Enter your full name"
             placeholder="Full Name"
@@ -98,6 +102,7 @@ export default function SignUp() {
             value={fullName}
           />
           <input
+            className='signup-form__field field'
             type="text"
             aria-label="Enter your email address"
             placeholder="Email address"
@@ -105,23 +110,26 @@ export default function SignUp() {
             value={emailAddress}
           />
           <input
+            className='signup-form__field field'
             type="password"
             aria-label="Enter your password"
             placeholder="Password"
             onChange={({ target }) => setPassword(target.value)}
             value={password}
           />
-          <button disabled={isInvalid} type="submit">
+          <p className='signup-form__text'>By signing up, you agree to our Terms.</p>
+          <button className='signup-form__action button button--primary' disabled={isInvalid} type="submit">
             Sign Up
           </button>
         </form>
       </div>
-      <div>
+      <div className='signup-page__login'>
         <p>
           Have an account?{` `}
-          <Link to={ROUTES.LOGIN}>Log In</Link>
+          <Link className='signup-page__link' to={ROUTES.LOGIN}>Log In</Link>
         </p>
       </div>
-    </div>
+      <footer className="signup-page__footer">© 2023 Instagram from RSSchool</footer>
+    </main>
   );
 }
