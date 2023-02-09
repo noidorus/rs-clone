@@ -6,8 +6,8 @@ import {
 } from 'firebase/auth';
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { setUserData, doesUsernameExist, getError } from '../services/firebase';
-import FirebaseContext from '../context/firebase';
+import { setUserData, doesUsernameExist, getError } from '../firebase/services';
+import FirebaseContext from '../context/firebaseContext';
 import * as ROUTES from '../constants/routes';
 import { MyError } from '../types/types';
 import './sign-up.scss';

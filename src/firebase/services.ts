@@ -10,7 +10,7 @@ import {
   doc,
   setDoc,
 } from 'firebase/firestore';
-import { db } from '../lib/firebase';
+import { db } from './lib';
 
 export async function doesUsernameExist(username: string) {
   const userColection = collection(db, 'users');
