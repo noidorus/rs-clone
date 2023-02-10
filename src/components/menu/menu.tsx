@@ -10,7 +10,6 @@ import './menu.scss';
 import { FirebaseApp } from '@firebase/app-types';
 
 export default function Menu() {
-  const user = useContext(UserContext);
   const firebase = useContext(FirebaseContext)?.firebase as FirebaseApp;
 
   return (

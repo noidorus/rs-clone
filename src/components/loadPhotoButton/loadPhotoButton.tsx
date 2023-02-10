@@ -1,30 +1,43 @@
 import React, { useState, useContext } from 'react';
-import { getStorage, ref, uploadBytes } from 'firebase/storage';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import FirebaseContext from '../../context/firebase-context';
+import UserContext from '../../context/user-context';
 import { uuidv4 } from '@firebase/util';
+import { setPhotoData } from '../../firebase/services';
+import { User } from 'firebase/auth';
 
 export default function LoadPhotoButton() {
   const firebase = useContext(FirebaseContext)?.firebase;
   const storage = getStorage(firebase);
+  const user = useContext(UserContext) as User;
 
   const [showModal, setShowModal] = useState(true);
   const [imgUpload, setImgUpload] = useState<File | null>(null);
+  const [caption, setCaption] = useState('');
   const [imgError, setImgError] = useState('');
 
   // submit Image to FirebaseStorage
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (imgUpload) {
-      const uploadPath = `images/${uuidv4()}`; // geting the image path
-      const storageRef = ref(storage, uploadPath); // getting the storageRef
-      uploadBytes(storageRef, imgUpload)
-        .then((snapshot) => console.log(snapshot, 'Photo Uploaded!'))
-        .catch((err) => console.log(err.message));
-    } else {
+    if (!imgUpload) {
       setImgError('Please select file!');
       return;
     }
+    const imageId = uuidv4();
+    const uploadPath = `/images/${imageId}`; // geting the image path
+    const storageRef = ref(storage, uploadPath); // getting the storageRef
+
+    uploadBytes(storageRef, imgUpload)
+      .then(() => {
+        getDownloadURL(storageRef).then((url) => {
+          setPhotoData(imageId, url, user.uid, caption);
+          setShowModal(false);
+          setImgUpload(null);
+          setCaption('');
+        });
+      })
+      .catch((err) => console.log(err.message));
   };
 
   const handleUpload = (filesList: FileList | null) => {
@@ -80,9 +93,14 @@ export default function LoadPhotoButton() {
             onSubmit={handleSubmit}
           >
             <h3>Create Publication!</h3>
+            {imgError && <p>{imgError}</p>}
             <input type="file" onChange={(e) => handleUpload(e.target.files)} />
 
-            {imgError && <p>{imgError}</p>}
+            <textarea
+              placeholder="Your caption:"
+              rows={3}
+              onChange={(e) => setCaption(e.target.value.trim())}
+            />
 
             <button type="submit">Upload Photo!</button>
             <button onClick={() => setShowModal(false)}>Close modal</button>

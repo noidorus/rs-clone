@@ -49,7 +49,18 @@ export function getError(error: MyError) {
   }
 }
 
+export function setPhotoData(photoId: string, path: string, userId: string, caption: string) {
+  const imageData = {
+    caption: caption,
+    comments: [],
+    dateCreated: Date.now(),
+    imageSrc: path,
+    likes: [],
+    photoId: photoId,
+    userId: userId,
+  };
 
-export function setPhotoData() {
-  
+  const photoColl = createCollection('photos', db);
+  const photoRef = doc(photoColl);
+  setDoc(photoRef, imageData);
 }
