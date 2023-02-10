@@ -10,7 +10,7 @@ import {
   doc,
   setDoc,
 } from 'firebase/firestore';
-import { db } from '../lib/firebase';
+import { db } from './lib';
 
 export async function doesUsernameExist(username: string) {
   const userColection = collection(db, 'users');
@@ -47,4 +47,20 @@ export function getError(error: MyError) {
     default:
       return error.message;
   }
+}
+
+export function setPhotoData(photoId: string, path: string, userId: string, caption: string) {
+  const imageData = {
+    caption: caption,
+    comments: [],
+    dateCreated: Date.now(),
+    imageSrc: path,
+    likes: [],
+    photoId: photoId,
+    userId: userId,
+  };
+
+  const photoColl = createCollection('photos', db);
+  const photoRef = doc(photoColl);
+  setDoc(photoRef, imageData);
 }

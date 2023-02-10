@@ -1,8 +1,12 @@
 import { FirebaseApp } from '@firebase/app-types';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+} from 'firebase/auth';
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import FirebaseContext from '../context/firebase';
+import FirebaseContext from '../context/firebase-context';
 import * as ROUTES from '../constants/routes';
 
 export default function Login() {
@@ -22,6 +26,7 @@ export default function Login() {
       const auth = getAuth(firebase);
 
       await signInWithEmailAndPassword(auth, emailAddress, password);
+
       navigate(ROUTES.DASHBOARD);
     } catch {
       setEmailAddress('');
