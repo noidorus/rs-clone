@@ -12,3 +12,19 @@ export interface MyError {
   code: string;
   message: string;
 }
+
+export interface IComment {
+  comment: string;
+  displayName: string;
+  commentDate: number;
+}
+
+export interface IPhoto {
+  caption: string;
+  comments: IComment[];
+  dateCreated: number;
+  imageSrc: string;
+  likes: string[];
+  photoId: string;
+  userId: string;
+}

@@ -48,3 +48,8 @@ export function getError(error: MyError) {
       return error.message;
   }
 }
+
+
+export function setPhotoData() {
+  
+}
