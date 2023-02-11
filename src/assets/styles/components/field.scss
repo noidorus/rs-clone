@@ -1,9 +1,9 @@
 .field {
   font-family: inherit;
   font-size: 16px;
-  padding-top: 9px;
+  padding-top: 7px;
   padding-right: 0;
-  padding-bottom: 7px;
+  padding-bottom: 9px;
   padding-left: 8px;
   border: 1px solid rgb(var(--secondary-bg_700));
   border-radius: 3px;
@@ -15,8 +15,8 @@
   transition: border-color .2s;
 
   &::placeholder {
-    font-size: 13px;
-    font-weight: 300;
+    font-size: 12px;
+    font-weight: 400;
     color: rgb(var(--text-color_300));
   }
 
