@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import FirebaseContext from './context/firebase';
-import {firebase, db } from './lib/firebase';
+import FirebaseContext from './context/firebase-context';
+import {firebase, db } from './firebase/lib';
 import './main.scss';
 
 const root = ReactDOM.createRoot(
