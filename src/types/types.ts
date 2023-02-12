@@ -8,6 +8,10 @@ export interface IUser {
   dateCreated: number;
 }
 
+export interface IUserProfile extends IUser {
+  docId: string;
+}
+
 export interface MyError {
   code: string;
   message: string;

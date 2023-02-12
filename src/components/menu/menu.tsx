@@ -11,6 +11,7 @@ import { FirebaseApp } from '@firebase/app-types';
 
 export default function Menu() {
   const firebase = useContext(FirebaseContext)?.firebase as FirebaseApp;
+  const user = useContext(UserContext);
 
   return (
     <nav>
@@ -19,14 +20,16 @@ export default function Menu() {
           <Link to={ROUTES.DASHBOARD}>Home</Link>
         </li>
         <li>Search</li>
-        {/* <li><Link to={ROUTES.PROFILE}>Profile</Link></li> */}
+        <li>
+          <Link to={user ? `/p/${user.displayName}` : ''}>Profile</Link>
+        </li>
+        <li>
+          <LoadPhotoButton />
+        </li>
         <li>
           <button type="button" onClick={() => signOut(getAuth(firebase))}>
             Sign Out
           </button>
-        </li>
-        <li>
-          <LoadPhotoButton />
         </li>
       </ul>
     </nav>

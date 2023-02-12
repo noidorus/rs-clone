@@ -4,35 +4,41 @@ import {
   query,
   where,
   getDocs,
-  Firestore,
-  CollectionReference,
-  DocumentData,
   doc,
   setDoc,
 } from 'firebase/firestore';
 import { db } from './lib';
 
 export async function doesUsernameExist(username: string) {
-  const userColection = collection(db, 'users');
-
-  const userQuery = query(userColection, where('username', '==', username));
-  const querySnapshot = await getDocs(userQuery);
-
+  const querySnapshot = await getQuerySnapshot(username, 'users');
   return querySnapshot.docs.length > 0;
 }
 
-export async function setUserData(user: IUser) {
-  const userColl = createCollection('users', db);
-  const userRef = doc(userColl);
-  setDoc(userRef, user);
+export async function getQuerySnapshot(username: string, collName: string) {
+  const userColection = collection(db, collName);
+  const userQuery = query(userColection, where('username', '==', username));
+
+  return await getDocs(userQuery);
 }
 
-export const createCollection = <T = DocumentData>(
-  collectionName: string,
-  db: Firestore
-) => {
-  return collection(db, collectionName) as CollectionReference<T>;
-};
+export async function getUserByUsername(username: string) {
+  const querySnapshot = await getQuerySnapshot(username, 'users');
+
+  return querySnapshot.docs.map((item) => {
+    const itemData = item.data() as IUser;
+    return {
+      ...itemData,
+      docId: item.id,
+    };
+  });
+}
+
+export async function setUserData(user: IUser) {
+  const userColl = collection(db, 'users');
+  const userRef = doc(userColl);
+
+  setDoc(userRef, user);
+}
 
 export function getError(error: MyError) {
   switch (error.code) {
@@ -49,7 +55,15 @@ export function getError(error: MyError) {
   }
 }
 
-export function setPhotoData(photoId: string, path: string, userId: string, caption: string) {
+export function setPhotoData(
+  photoId: string,
+  path: string,
+  userId: string,
+  caption: string
+) {
+  const photoColl = collection(db, 'photos');
+  const photoRef = doc(photoColl);
+
   const imageData = {
     caption: caption,
     comments: [],
@@ -60,7 +74,5 @@ export function setPhotoData(photoId: string, path: string, userId: string, capt
     userId: userId,
   };
 
-  const photoColl = createCollection('photos', db);
-  const photoRef = doc(photoColl);
   setDoc(photoRef, imageData);
 }
