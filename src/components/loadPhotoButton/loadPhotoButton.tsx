@@ -11,7 +11,7 @@ export default function LoadPhotoButton() {
   const storage = getStorage(firebase);
   const user = useContext(UserContext) as User;
 
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(true);  // потом поменять на false
   const [imgUpload, setImgUpload] = useState<File | null>(null);
   const [caption, setCaption] = useState('');
   const [imgError, setImgError] = useState('');

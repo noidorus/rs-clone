@@ -11,7 +11,6 @@ export default function Dashboard() {
   useEffect(() => {
     if (user === null) {
       navigate(ROUTES.LOGIN);
-      // return redirect(ROUTES.LOGIN)
     }
   });
   
