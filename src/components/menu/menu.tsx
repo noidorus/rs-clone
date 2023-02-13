@@ -8,10 +8,16 @@ import * as ROUTES from '../../constants/routes';
 
 import './menu.scss';
 import { FirebaseApp } from '@firebase/app-types';
+import SearchBlock from '../searhBlock/searchBlock';
 
 export default function Menu() {
   const firebase = useContext(FirebaseContext)?.firebase as FirebaseApp;
+  const[searchBlock, setSearchBlock] = useState(false)
   const user = useContext(UserContext);
+
+    function openSearchBlock() {
+      setSearchBlock(!searchBlock);
+  }
 
   return (
     <nav className='main-nav'>
@@ -25,7 +31,8 @@ export default function Menu() {
           </Link>
         </li>
         <li className='main-nav__item'>
-          <a className='main-nav__link main-nav__link--search' href='#'>
+          <a className='main-nav__link main-nav__link--search' href='#'
+            onClick={openSearchBlock}>
             Search
           </a>
         </li>
@@ -68,6 +75,9 @@ export default function Menu() {
             Sign Out
           </button>
         </li>
+        <div>
+          {searchBlock ? <SearchBlock/> : <></>}
+        </div>
       </ul>
     </nav>
   );

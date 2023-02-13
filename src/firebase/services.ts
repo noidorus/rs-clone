@@ -15,6 +15,13 @@ export async function doesUsernameExist(username: string) {
   return querySnapshot.docs.length > 0;
 }
 
+export async function setDataUsers() {
+  const usersColection = collection(db, 'users');
+  const usersData = await getDocs(usersColection);
+  const users =  usersData.docs.map(user => user.data())
+  return users;
+}
+
 export async function getQuerySnapshot(username: string, collName: string) {
   const userColection = collection(db, collName);
   const userQuery = query(
