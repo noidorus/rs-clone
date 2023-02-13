@@ -6,6 +6,7 @@ import {
   getDocs,
   doc,
   setDoc,
+  updateDoc,
 } from 'firebase/firestore';
 import { db } from './lib';
 
@@ -80,4 +81,22 @@ export function setPhotoData(
   };
 
   setDoc(photoRef, imageData);
+}
+
+export async function updateUserAvatar(url: string, userName: string | null) {
+  if (userName) {
+    const userColl = collection(db, 'users');
+    const user = await getUserByUsername(userName);
+    const docRef = doc(userColl, user.docId);
+
+    const avatarPath = {
+      avatarSrc: url,
+    };
+
+    await updateDoc(docRef, avatarPath)
+      .then()
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 }

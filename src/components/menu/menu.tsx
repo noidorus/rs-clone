@@ -22,6 +22,7 @@ export default function Menu() {
         <li>Search</li>
         <li>
           {user ? (
+            // <Link to={`/p/szyrwel`}>Profile</Link>
             <Link to={`/p/${user.displayName}`}>Profile</Link>
           ) : null}
         </li>
