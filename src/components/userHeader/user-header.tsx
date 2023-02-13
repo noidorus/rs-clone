@@ -2,7 +2,6 @@ import React from 'react';
 import { IUserProfile } from '../../types/types';
 
 import ProfileAvatar from '../profileAvatar/profile-avatar';
-// import Skeleton from 'react-loading-skeleton';
 
 interface Props {
   user: IUserProfile;
@@ -15,7 +14,7 @@ export default function UserHeader({
   followersCount,
   followingsCount,
 }: Props) {
-  const { username, following } = user;
+  const { username } = user;
 
   return (
     <div
@@ -23,7 +22,7 @@ export default function UserHeader({
         display: 'flex',
       }}
     >
-      <ProfileAvatar avatar={user.avatarSrc} />
+      <ProfileAvatar avatar={user.avatarData ? user.avatarData.avatarSrc : ''} />
 
       <div>
         <h4>{username}</h4>

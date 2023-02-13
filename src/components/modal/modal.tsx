@@ -1,16 +1,21 @@
 import React, { useState, SetStateAction, Dispatch, useContext } from 'react';
 import { loadImageToStorage } from '../../firebase/storage';
-import { updateUserAvatar } from '../../firebase/services';
-import UserContext from '../../context/user-context';
-import { User } from 'firebase/auth';
+
+type CallBackType = (url: string, imageId: string) => void;
 
 interface Props {
   setShowModal: Dispatch<SetStateAction<boolean>>;
+  callback: CallBackType;
+  type: 'avatar' | 'photos';
+  setCaption?: Dispatch<SetStateAction<string>>;
 }
 
-export default function UploadImageModal({ setShowModal }: Props) {
-  const user = useContext(UserContext) as User;
-
+export default function UploadImageModal({
+  callback,
+  type,
+  setShowModal,
+  setCaption,
+}: Props) {
   const [imgUpload, setImgUpload] = useState<File | null>(null);
   const [imgError, setImgError] = useState('');
 
@@ -40,9 +45,7 @@ export default function UploadImageModal({ setShowModal }: Props) {
       return;
     }
 
-    loadImageToStorage(imgUpload, (url: string, imageId: string) => {
-      updateUserAvatar(url, user.displayName);
-    });
+    loadImageToStorage(imgUpload, callback);
   };
 
   return (
@@ -64,10 +67,22 @@ export default function UploadImageModal({ setShowModal }: Props) {
         }}
         onSubmit={handleSubmit}
       >
-        <h3>Update Avatar!</h3>
-        <input type="file" onChange={(e) => handleUpload(e.target.files)} />
-        <button type="submit">Update Avatar</button>
+        {imgError && <p>{imgError}</p>}
 
+        <h3>{type === 'avatar' ? 'Update Avatar!' : 'Upload Image!'}</h3>
+        <input type="file" onChange={(e) => handleUpload(e.target.files)} />
+
+        {setCaption ? (
+          <textarea
+            placeholder="Your caption:"
+            rows={3}
+            onChange={(e) => setCaption(e.target.value.trim())}
+          />
+        ) : null}
+
+        <button type="submit">
+          {type === 'avatar' ? 'Update Avatar!' : 'Upload Image!'}
+        </button>
         <button
           type="button"
           onClick={(e) => {

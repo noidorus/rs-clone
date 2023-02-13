@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Skeleton from 'react-loading-skeleton';
+import UserContext from '../../context/user-context';
 import UploadImageModal from '../modal/modal';
+import { updateUserAvatar } from '../../firebase/services';
 
 export default function ProfileAvatar({ avatar }: { avatar: string }) {
   const [showModal, setShowModal] = useState(false);
+  const user = useContext(UserContext);
+
+  const callback = (url: string, imageId: string) => {
+    updateUserAvatar(url, imageId, user?.displayName);
+  };
 
   return (
     <>
@@ -31,7 +38,9 @@ export default function ProfileAvatar({ avatar }: { avatar: string }) {
         {/* <Skeleton circle height={150} width={150} count={1} /> */}
       </div>
 
-      {showModal ? <UploadImageModal setShowModal={setShowModal} /> : null}
+      {showModal ? (
+        <UploadImageModal setShowModal={setShowModal} callback={callback} type={'avatar'} />
+      ) : null}
     </>
   );
 }

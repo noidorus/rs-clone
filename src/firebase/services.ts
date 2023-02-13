@@ -83,14 +83,21 @@ export function setPhotoData(
   setDoc(photoRef, imageData);
 }
 
-export async function updateUserAvatar(url: string, userName: string | null) {
+export async function updateUserAvatar(
+  url: string,
+  imageId: string,
+  userName: string | null | undefined
+) {
   if (userName) {
     const userColl = collection(db, 'users');
     const user = await getUserByUsername(userName);
     const docRef = doc(userColl, user.docId);
 
     const avatarPath = {
-      avatarSrc: url,
+      avatarData: {
+        avatarSrc: url,
+        imageId: imageId,
+      },
     };
 
     await updateDoc(docRef, avatarPath)

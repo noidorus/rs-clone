@@ -2,6 +2,7 @@ import { uuidv4 } from '@firebase/util';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { firebase } from './lib';
 
+// type CallBackType = (url: string, imageId: string) => void;
 type CallBackType = (url: string, imageId: string) => void;
 
 export function loadImageToStorage(image: File, callback: CallBackType) {
