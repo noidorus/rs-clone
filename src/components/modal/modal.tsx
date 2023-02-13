@@ -1,6 +1,8 @@
 import React, { useState, SetStateAction, Dispatch, useContext } from 'react';
 import { loadImageToStorage } from '../../firebase/storage';
 
+import './modal.scss';
+
 type CallBackType = (url: string, imageId: string) => void;
 
 interface Props {
@@ -49,50 +51,49 @@ export default function UploadImageModal({
   };
 
   return (
-    <div>
-      <form
-        style={{
-          // Временные стили
-          border: '1px solid black',
-          position: 'absolute',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexDirection: 'column',
-          top: '50%',
-          right: '50%',
-          width: '400px',
-          height: '400px',
-          transform: 'translate(50%, -50%)',
-        }}
-        onSubmit={handleSubmit}
-      >
-        {imgError && <p>{imgError}</p>}
-
-        <h3>{type === 'avatar' ? 'Update Avatar!' : 'Upload Image!'}</h3>
-        <input type="file" onChange={(e) => handleUpload(e.target.files)} />
-
-        {setCaption ? (
-          <textarea
-            placeholder="Your caption:"
-            rows={3}
-            onChange={(e) => setCaption(e.target.value.trim())}
-          />
-        ) : null}
-
-        <button type="submit">
-          {type === 'avatar' ? 'Update Avatar!' : 'Upload Image!'}
-        </button>
-        <button
-          type="button"
-          onClick={(e) => {
-            setShowModal(false);
-            setImgUpload(null);
+    <div className='modal'>
+      <div className='modal__inner'>
+        <form
+          style={{
+            // Временные стили
+            border: '1px solid black',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'column',
+            width: '400px',
+            height: '400px',
+            background: '#fff'
           }}
+          onSubmit={handleSubmit}
         >
-          Close modal
-        </button>
-      </form>
+          {imgError && <p>{imgError}</p>}
+
+          <h3>{type === 'avatar' ? 'Update Avatar!' : 'Upload Image!'}</h3>
+          <input type="file" onChange={(e) => handleUpload(e.target.files)} />
+
+          {setCaption ? (
+            <textarea
+              placeholder="Your caption:"
+              rows={3}
+              onChange={(e) => setCaption(e.target.value.trim())}
+            />
+          ) : null}
+
+          <button type="submit">
+            {type === 'avatar' ? 'Update Avatar!' : 'Upload Image!'}
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              setShowModal(false);
+              setImgUpload(null);
+            }}
+          >
+            Close modal
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

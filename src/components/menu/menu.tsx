@@ -15,15 +15,49 @@ export default function Menu() {
 
   return (
     <nav className='main-nav'>
+      <Link className='main-nav__logo' to={ROUTES.DASHBOARD}>
+        <img className='main-nav__image' src='./images/logo.png' alt='Instagram logo' width='103' height='29' />
+      </Link>
       <ul className='main-nav__inner'>
-        <li>
-          <Link to={ROUTES.DASHBOARD}>Home</Link>
+        <li className='main-nav__item'>
+          <Link className='main-nav__link main-nav__link--active main-nav__link--home' to={ROUTES.DASHBOARD}>
+            Home
+          </Link>
         </li>
-        <li>Search</li>
+        <li className='main-nav__item'>
+          <a className='main-nav__link main-nav__link--search' href='#'>
+            Search
+          </a>
+        </li>
+        <li className='main-nav__item'>
+          <a className='main-nav__link main-nav__link--explore' href='#'>
+            Explore
+          </a>
+        </li>
+        <li className='main-nav__item'>
+          <a className='main-nav__link main-nav__link--reels' href='#'>
+            Reels
+          </a>
+        </li>
+        <li className='main-nav__item'>
+          <a className='main-nav__link main-nav__link--messages' href='#'>
+            Messages
+          </a>
+        </li>
+        <li className='main-nav__item'>
+          <a className='main-nav__link main-nav__link--notifications' href='#'>
+            Notifications
+          </a>
+        </li>
+        <li className='main-nav__item'>
+          <a className='main-nav__link main-nav__link--create' href='#'>
+            Create
+          </a>
+        </li>
         <li>
           {user ? (
             // <Link to={`/p/szyrwel`}>Profile</Link>
-            <Link to={`/p/${user.displayName}`}>Profile</Link>
+            <Link className='main-nav__link main-nav__link--profile' to={`/p/${user.displayName}`}>Profile</Link>
           ) : null}
         </li>
         <li>

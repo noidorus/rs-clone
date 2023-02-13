@@ -1,5 +1,6 @@
 .main-nav {
   position: fixed;
+  left: 0;
   width: 245px;
   height: 100vh;
   padding-top: 8px;
@@ -15,4 +16,153 @@
   padding-left: 0;
   margin-top: 0;
   margin-bottom: 0;
+}
+
+.main-nav__logo {
+  display: flex;
+  align-items: center;
+  padding-top: 28px;
+  padding-right: 12px;
+  padding-bottom: 16px;
+  padding-left: 12px;
+  margin-bottom: 20px;
+}
+
+.main-nav__item {
+  height: 56px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.main-nav__link {
+  display: block;
+  position: relative;
+  font-size: 16px;
+  line-height: 24px;
+  width: 100%;
+  padding-top: 12px;
+  padding-right: 12px;
+  padding-bottom: 12px;
+  padding-left: 52px;
+  border-radius: 24px;
+  transition: background-color .3s;
+  text-decoration: none;
+  overflow: hidden;
+  color: rgb(var(--text-color_500));
+
+  &:hover {
+    background-color: rgb(var(--secondary-bg_400));
+
+    &::before {
+      transform: translateY(-50%) scale(105%);
+    }
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    width: 24px;
+    height: 24px;
+    transform: translateY(-50%);
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: transform .2s cubic-bezier(0.17, 0.17, 0, 1);
+  }
+}
+
+.main-nav__link--active {
+  font-weight: 700;
+}
+
+.main-nav__link--home {
+  &::before {
+    background-image: url('../../../public/images/icons/home.svg');
+  }
+
+  &.main-nav__link--active {
+    &::before {
+      background-image: url('../../../public/images/icons/home-fill.svg');
+    }
+  }
+}
+
+.main-nav__link--search {
+  &::before {
+    background-image: url('../../../public/images/icons/search.svg');
+  }
+
+  &.main-nav__link--active {
+    &::before {
+      background-image: url('../../../public/images/icons/search-fill.svg');
+    }
+  }
+}
+
+.main-nav__link--explore {
+  &::before {
+    background-image: url('../../../public/images/icons/explore.svg');
+  }
+
+  &.main-nav__link--active {
+    &::before {
+      background-image: url('../../../public/images/icons/explore-fill.svg');
+    }
+  }
+}
+
+.main-nav__link--reels {
+  &::before {
+    background-image: url('../../../public/images/icons/reels.svg');
+  }
+
+  &.main-nav__link--active {
+    &::before {
+      background-image: url('../../../public/images/icons/reels-fill.svg');
+    }
+  }
+}
+
+.main-nav__link--messages {
+  &::before {
+    background-image: url('../../../public/images/icons/messages.svg');
+  }
+
+  &.main-nav__link--active {
+    &::before {
+      background-image: url('../../../public/images/icons/messages-fill.svg');
+    }
+  }
+}
+
+.main-nav__link--notifications {
+  &::before {
+    background-image: url('../../../public/images/icons/notifications.svg');
+  }
+
+  &.main-nav__link--active {
+    &::before {
+      background-image: url('../../../public/images/icons/notifications-fill.svg');
+    }
+  }
+}
+
+.main-nav__link--create {
+  &::before {
+    background-image: url('../../../public/images/icons/create.svg');
+  }
+
+  &.main-nav__link--active {
+    &::before {
+      background-image: url('../../../public/images/icons/create-fill.svg');
+    }
+  }
+}
+
+.main-nav__link--profile {
+  &::before {
+    background-image: url('../../../public/images/icons/profile.jpg');
+    background-size: contain;
+  }
 }
