@@ -16,7 +16,7 @@ export default function Menu() {
   const user = useContext(UserContext);
 
     function openSearchBlock() {
-    setSearchBlock(!searchBlock)
+      setSearchBlock(!searchBlock);
   }
 
   return (
