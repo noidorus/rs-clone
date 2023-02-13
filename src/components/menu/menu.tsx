@@ -8,10 +8,16 @@ import * as ROUTES from '../../constants/routes';
 
 import './menu.scss';
 import { FirebaseApp } from '@firebase/app-types';
+import SearchBlock from '../searhBlock/searchBlock';
 
 export default function Menu() {
   const firebase = useContext(FirebaseContext)?.firebase as FirebaseApp;
+  const[searchBlock, setSearchBlock] = useState(false)
   const user = useContext(UserContext);
+
+    function openSearchBlock() {
+    setSearchBlock(!searchBlock)
+  }
 
   return (
     <nav>
@@ -19,7 +25,10 @@ export default function Menu() {
         <li>
           <Link to={ROUTES.DASHBOARD}>Home</Link>
         </li>
-        <li>Search</li>
+        <li>          
+          <button type="button" onClick={openSearchBlock}>
+            Search
+          </button></li>
         <li>
           {user ? (
             // <Link to={`/p/szyrwel`}>Profile</Link>
@@ -34,6 +43,9 @@ export default function Menu() {
             Sign Out
           </button>
         </li>
+        <div>
+          {searchBlock ? <SearchBlock/> : <></>}
+        </div>
       </ul>
     </nav>
   );
