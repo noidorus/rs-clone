@@ -7,6 +7,8 @@ import { IUserProfile } from '../types/types';
 
 import Menu from '../components/menu/menu';
 import UserProfile from '../components/userProfile/user-profile';
+import './profile.scss';
+
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -29,9 +31,9 @@ export default function Profile() {
   }, [username, navigate]);
 
   return (
-    <div>
+    <main className='main-page'>
       <Menu />
       <UserProfile user={user} />
-    </div>
+    </main>
   );
 }
