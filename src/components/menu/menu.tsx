@@ -14,8 +14,8 @@ export default function Menu() {
   const user = useContext(UserContext);
 
   return (
-    <nav>
-      <ul>
+    <nav className='main-nav'>
+      <ul className='main-nav__inner'>
         <li>
           <Link to={ROUTES.DASHBOARD}>Home</Link>
         </li>
