@@ -6,6 +6,10 @@ export interface IUser {
   following: string[];
   followers: string[];
   dateCreated: number;
+  avatarData: {
+    avatarSrc: string;
+    imageId: string;
+  };
 }
 
 export interface IUserProfile extends IUser {

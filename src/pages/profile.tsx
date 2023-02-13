@@ -13,26 +13,22 @@ import './profile.scss';
 export default function Profile() {
   const navigate = useNavigate();
   const { username } = useParams(); // Get username from link /p/:username
-  const authUser = useContext(UserContext);
-
+  // const authUser = useContext(UserContext);
   const [user, setUser] = useState<IUserProfile | null>(null);
 
-  useEffect(() => {
-    if (authUser === null) {
-      navigate(ROUTES.LOGIN);
-    }
 
-    async function checkUserExist() {
-      const [user] = await getUserByUsername(username as string);
-      if (user?.userId) {
-        setUser(user);
+  useEffect(() => {
+    async function checkUserExists() {
+      const currUser = await getUserByUsername(username as string);
+      if (currUser?.userId) {
+        setUser(currUser);
       } else {
-        navigate(ROUTES.NOT_FOUND);
+        navigate(ROUTES.NOT_FOUND);  
       }
     }
 
-    checkUserExist();
-  });
+    checkUserExists();
+  }, [username, navigate]);
 
   return (
     <main className='main-page'>
