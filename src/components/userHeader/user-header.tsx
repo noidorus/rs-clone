@@ -22,7 +22,11 @@ export default function UserHeader({
         display: 'flex',
       }}
     >
-      <ProfileAvatar avatar={user.avatarData ? user.avatarData.avatarSrc : ''} />
+      <ProfileAvatar
+        avatarData={
+          user.avatarData ? user.avatarData : { avatarSrc: '', imagePath: '' }
+        }
+      />
 
       <div>
         <h4>{username}</h4>

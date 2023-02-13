@@ -8,7 +8,7 @@ export interface IUser {
   dateCreated: number;
   avatarData: {
     avatarSrc: string;
-    imageId: string;
+    imagePath: string;
   };
 }
 

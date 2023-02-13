@@ -3,13 +3,24 @@ import Skeleton from 'react-loading-skeleton';
 import UserContext from '../../context/user-context';
 import UploadImageModal from '../modal/modal';
 import { updateUserAvatar } from '../../firebase/services';
+import { deletePhotoFromStorage } from '../../firebase/storage';
 
-export default function ProfileAvatar({ avatar }: { avatar: string }) {
+interface Props {
+  avatarData: {
+    avatarSrc: string;
+    imagePath: string;
+  };
+}
+
+export default function ProfileAvatar({ avatarData }: Props) {
   const [showModal, setShowModal] = useState(false);
   const user = useContext(UserContext);
+  const oldAvatarPath = avatarData.imagePath;
 
-  const callback = (url: string, imageId: string) => {
-    updateUserAvatar(url, imageId, user?.displayName);
+  const callback = (url: string, imagePath: string) => {
+    deletePhotoFromStorage(oldAvatarPath)
+    updateUserAvatar(url, imagePath, user?.displayName);
+    setShowModal(false);
   };
 
   return (
@@ -32,14 +43,18 @@ export default function ProfileAvatar({ avatar }: { avatar: string }) {
             height: '150px',
             borderRadius: '50%',
           }}
-          src={avatar}
+          src={avatarData.avatarSrc}
           alt="avatar"
         />
         {/* <Skeleton circle height={150} width={150} count={1} /> */}
       </div>
 
       {showModal ? (
-        <UploadImageModal setShowModal={setShowModal} callback={callback} type={'avatar'} />
+        <UploadImageModal
+          setShowModal={setShowModal}
+          callback={callback}
+          type={'avatar'}
+        />
       ) : null}
     </>
   );
