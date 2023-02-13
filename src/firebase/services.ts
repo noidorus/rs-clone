@@ -16,7 +16,10 @@ export async function doesUsernameExist(username: string) {
 
 export async function getQuerySnapshot(username: string, collName: string) {
   const userColection = collection(db, collName);
-  const userQuery = query(userColection, where('username', '==', username));
+  const userQuery = query(
+    userColection,
+    where('username', '==', username.toLowerCase())
+  );
 
   return await getDocs(userQuery);
 }
@@ -24,13 +27,15 @@ export async function getQuerySnapshot(username: string, collName: string) {
 export async function getUserByUsername(username: string) {
   const querySnapshot = await getQuerySnapshot(username, 'users');
 
-  return querySnapshot.docs.map((item) => {
+  const res = querySnapshot.docs.map((item) => {
     const itemData = item.data() as IUser;
     return {
       ...itemData,
       docId: item.id,
     };
   });
+
+  return res[0];
 }
 
 export async function setUserData(user: IUser) {

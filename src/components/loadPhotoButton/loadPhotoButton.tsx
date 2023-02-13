@@ -11,7 +11,7 @@ export default function LoadPhotoButton() {
   const storage = getStorage(firebase);
   const user = useContext(UserContext) as User;
 
-  const [showModal, setShowModal] = useState(true);  // потом поменять на false
+  const [showModal, setShowModal] = useState(false); // потом поменять на false
   const [imgUpload, setImgUpload] = useState<File | null>(null);
   const [caption, setCaption] = useState('');
   const [imgError, setImgError] = useState('');
@@ -103,7 +103,14 @@ export default function LoadPhotoButton() {
             />
 
             <button type="submit">Upload Photo!</button>
-            <button onClick={() => setShowModal(false)}>Close modal</button>
+            <button
+              onClick={() => {
+                setShowModal(false);
+                setImgUpload(null);
+              }}
+            >
+              Close modal
+            </button>
           </form>
         </div>
       ) : null}

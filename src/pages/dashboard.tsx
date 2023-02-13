@@ -9,7 +9,7 @@ export default function Dashboard() {
   const user = useContext(UserContext);
 
   useEffect(() => {
-    if (user === null) {
+    if (user === null) {  
       navigate(ROUTES.LOGIN);
     }
   });

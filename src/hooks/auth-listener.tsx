@@ -6,7 +6,6 @@ export default function authListener() {
   const storageData = localStorage.getItem('auth-user') || `{}`;
   const [user, setUser] = useState<User | null>(JSON.parse(storageData));
   const { firebase } = useContext(FirebaseContext) as IFirebase;
-  
 
   useEffect(() => {
     const auth = getAuth(firebase);
@@ -22,6 +21,6 @@ export default function authListener() {
 
     return () => listener();
   }, [firebase]);
-  
+
   return { user };
 }
