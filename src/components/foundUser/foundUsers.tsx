@@ -1,7 +1,9 @@
 import React from "react";
 import {IUser} from '../../types/types'
 
-function FoundUser(props: Partial<IUser>) {
+function FoundUser({user}: {user: IUser}) {
+  const {username, fullName, avatarData} = user;
+  const src = avatarData?.avatarSrc || './images/icons/profile.jpg';
   return (
     <li style={{
             display: 'flex',
@@ -11,9 +13,9 @@ function FoundUser(props: Partial<IUser>) {
             margin: '10px 0',
           }}
           >
-      <img src='https://rolling-scopes-school.github.io/szyrwel-JSFE2022Q3/online-zoo/assets/images/testimonials/user_icon.png' />
-      <span>{props.username}</span>
-      <span>({props.fullName})</span>
+      <img src={src} width='53' height='53'/>
+      <span>{username}</span>
+      <span>({fullName})</span>
     </li>
   )
 }
