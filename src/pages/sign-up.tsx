@@ -52,7 +52,7 @@ export default function SignUp() {
           dateCreated: Date.now(),
           avatarData: {
             avatarSrc: '',
-            imageId: '',
+            imagePath: '',
           },
         };
 

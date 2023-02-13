@@ -76,7 +76,7 @@ export function setPhotoData(
     dateCreated: Date.now(),
     imageSrc: path,
     likes: [],
-    photoId: photoId,
+    imagePath: photoId,
     userId: userId,
   };
 
@@ -85,7 +85,7 @@ export function setPhotoData(
 
 export async function updateUserAvatar(
   url: string,
-  imageId: string,
+  imagePath: string,
   userName: string | null | undefined
 ) {
   if (userName) {
@@ -96,7 +96,7 @@ export async function updateUserAvatar(
     const avatarPath = {
       avatarData: {
         avatarSrc: url,
-        imageId: imageId,
+        imagePath: imagePath,
       },
     };
 
