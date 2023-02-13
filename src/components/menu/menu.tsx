@@ -1,5 +1,5 @@
-import React, { useContext, Context } from 'react';
-import { Link, redirect } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { getAuth, signOut } from 'firebase/auth';
 import FirebaseContext from '../../context/firebase-context';
 import UserContext from '../../context/user-context';
@@ -21,7 +21,10 @@ export default function Menu() {
         </li>
         <li>Search</li>
         <li>
-          <Link to={user ? `/p/${user.displayName}` : ''}>Profile</Link>
+          {user ? (
+            // <Link to={`/p/szyrwel`}>Profile</Link>
+            <Link to={`/p/${user.displayName}`}>Profile</Link>
+          ) : null}
         </li>
         <li>
           <LoadPhotoButton />
