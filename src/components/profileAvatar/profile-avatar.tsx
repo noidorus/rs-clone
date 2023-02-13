@@ -8,8 +8,9 @@ export default function ProfileAvatar({ avatar }: { avatar: string }) {
   const [showModal, setShowModal] = useState(false);
   const user = useContext(UserContext);
 
-  const callback = (url: string, imageId: string) => {
-    updateUserAvatar(url, imageId, user?.displayName);
+  const callback = (url: string, imagePath: string) => {
+    updateUserAvatar(url, imagePath, user?.displayName);
+    setShowModal(false);
   };
 
   return (
@@ -39,7 +40,11 @@ export default function ProfileAvatar({ avatar }: { avatar: string }) {
       </div>
 
       {showModal ? (
-        <UploadImageModal setShowModal={setShowModal} callback={callback} type={'avatar'} />
+        <UploadImageModal
+          setShowModal={setShowModal}
+          callback={callback}
+          type={'avatar'}
+        />
       ) : null}
     </>
   );

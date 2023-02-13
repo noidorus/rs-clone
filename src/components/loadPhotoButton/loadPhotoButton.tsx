@@ -11,8 +11,8 @@ export default function LoadPhotoButton() {
   const [caption, setCaption] = useState('');
 
   // send Data to FireStore afte sending to Storage
-  const callback = (url: string, imageId: string) => {
-    setPhotoData(imageId, url, user.uid, caption);
+  const callback = (url: string, imagePath: string) => {
+    setPhotoData(imagePath, url, user.uid, caption);
     setShowModal(false);
     setCaption('');
   };
