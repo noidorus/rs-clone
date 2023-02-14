@@ -12,7 +12,7 @@ export default function UserProfile({ user }: { user: IUserProfile | null }) {
     followingsCount: 0,
     followersCount: 0,
   };
-  
+
   const [{ profile, followersCount, followingsCount }, dispatch] = useReducer(
     reducer,
     initialState
@@ -29,6 +29,7 @@ export default function UserProfile({ user }: { user: IUserProfile | null }) {
         });
       }
     }
+
     getProfileInfoAndPhotos();
   }, [user?.username]);
 

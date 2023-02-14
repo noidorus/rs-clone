@@ -10,15 +10,16 @@ interface Props {
     avatarSrc: string;
     imagePath: string;
   };
+  isLoggedUser: boolean;
 }
 
-export default function ProfileAvatar({ avatarData }: Props) {
+export default function ProfileAvatar({ avatarData, isLoggedUser }: Props) {
   const [showModal, setShowModal] = useState(false);
   const user = useContext(UserContext);
   const oldAvatarPath = avatarData.imagePath;
 
   const callback = (url: string, imagePath: string) => {
-    deletePhotoFromStorage(oldAvatarPath)
+    deletePhotoFromStorage(oldAvatarPath);
     updateUserAvatar(url, imagePath, user?.displayName);
     setShowModal(false);
   };
@@ -35,7 +36,7 @@ export default function ProfileAvatar({ avatarData }: Props) {
           border: '1px solid black',
           borderRadius: '50%',
         }}
-        onClick={() => setShowModal(true)}
+        onClick={isLoggedUser ? () => setShowModal(true) : undefined}
       >
         <img
           style={{

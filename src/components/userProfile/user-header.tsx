@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { IUserProfile } from '../../types/types';
-
+import UserContext from '../../context/user-context';
 import ProfileAvatar from '../profileAvatar/profile-avatar';
 
 interface Props {
@@ -14,7 +14,16 @@ export default function UserHeader({
   followersCount,
   followingsCount,
 }: Props) {
-  const { username } = user;
+  const loggedUser = useContext(UserContext);
+  const { username, avatarData } = user;
+  const [isLoggedUser, setIsLoggedUser] = useState(false);
+  
+  useEffect(() => {
+    if (loggedUser) {
+      const isLogged = loggedUser.displayName == username;
+      setIsLoggedUser(isLogged);
+    }
+  }, [user]);
 
   return (
     <div
@@ -23,9 +32,8 @@ export default function UserHeader({
       }}
     >
       <ProfileAvatar
-        avatarData={
-          user.avatarData ? user.avatarData : { avatarSrc: '', imagePath: '' }
-        }
+        isLoggedUser={isLoggedUser}
+        avatarData={avatarData ? avatarData : { avatarSrc: '', imagePath: '' }}
       />
 
       <div>

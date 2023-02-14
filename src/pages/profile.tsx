@@ -9,12 +9,11 @@ import Menu from '../components/menu/menu';
 import UserProfile from '../components/userProfile';
 import './profile.scss';
 
-
 export default function Profile() {
   const navigate = useNavigate();
   const { username } = useParams(); // Get username from link /p/:username
-  const [user, setUser] = useState<IUserProfile | null>(null);
 
+  const [user, setUser] = useState<IUserProfile | null>(null);
 
   useEffect(() => {
     async function checkUserExists() {
@@ -22,15 +21,14 @@ export default function Profile() {
       if (currUser?.userId) {
         setUser(currUser);
       } else {
-        navigate(ROUTES.NOT_FOUND);  
+        navigate(ROUTES.NOT_FOUND);
       }
     }
-
     checkUserExists();
   }, [username, navigate]);
 
   return (
-    <main className='main-page'>
+    <main className="main-page">
       <Menu />
       <UserProfile user={user} />
     </main>
