@@ -15,18 +15,22 @@ function filteredUsers(users: IUser[], value: string) {
 function SearchBlock() {
   const [value, setValue] = useState('');
   const [users, setUsers] = useState<IUser[]>([]);
+  const [usersVisble, setUsersVisible] = useState<IUser[]>([]);
   const [status, setStatus] = useState<'loading' | 'error' | 'success'>('success');
 
   useEffect(() => {
     setStatus('loading')
     setDataUsers().then((data) => {
-      const usersArr = filteredUsers(data as IUser[], value);
-      setStatus('success');
-      setUsers(usersArr);
+      setStatus('success')
+      setUsers(data as IUser[]);
     })
     .catch((err) => {
       setStatus('error')})
-  }, [value]);
+  }, []);
+
+  useEffect(() => {
+    setUsersVisible(filteredUsers(users, value))
+  }, [value])
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
     const inputText = event.target.value;
@@ -46,12 +50,12 @@ function SearchBlock() {
         />
       </div>
       <div>
-        {status === 'success' && (<ul>{users.map((user, index) => 
+        {status === 'success' && (<ul>{usersVisble.map((user, index) => 
           {return (
               <FoundUser 
                 key={user.userId}
-                username={user.username}
-                fullName ={user.fullName}/>
+                user={user}
+              />
             )
           })}
         </ul>)}

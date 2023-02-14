@@ -12,6 +12,7 @@ import SearchBlock from '../searhBlock/searchBlock';
 
 export default function Menu() {
   const firebase = useContext(FirebaseContext)?.firebase as FirebaseApp;
+
   const[searchBlock, setSearchBlock] = useState(false)
   const user = useContext(UserContext);
 
@@ -76,7 +77,7 @@ export default function Menu() {
           </button>
         </li>
         <div>
-          {searchBlock ? <SearchBlock/> : <></>}
+          {searchBlock && <SearchBlock/>}
         </div>
       </ul>
     </nav>

@@ -6,7 +6,7 @@ export interface IUser {
   following: string[];
   followers: string[];
   dateCreated: number;
-  avatarData: {
+  avatarData?: {
     avatarSrc: string;
     imagePath: string;
   };
@@ -35,4 +35,10 @@ export interface IPhoto {
   likes: string[];
   photoId: string;
   userId: string;
+}
+
+export type SearchPropsType = {
+  value: string,
+  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  clearInput: () => void
 }
