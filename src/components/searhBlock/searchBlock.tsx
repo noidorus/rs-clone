@@ -4,6 +4,8 @@ import { IUser } from "../../types/types";
 import FoundUser from "../foundUser/foundUsers";
 import { Search } from "../search/search";
 
+import './searchBlock.scss';
+
 function filteredUsers(users: IUser[], value: string) {
   const filteredUsers = value 
     ? users.filter((user) => user.username.toUpperCase().includes(value.toUpperCase())
@@ -40,16 +42,17 @@ function SearchBlock() {
     setValue('')
   }
   return (
-    <div>
-      <div>
+    <div className="search">
+      <header className="search__header">
+        <h2 className="title">Search</h2>
         <Search 
           value={value}
           handleChange={handleChange}
           clearInput = {clearInput}
 
         />
-      </div>
-      <div>
+      </header>
+      <div className="search__inner">
         {status === 'success' && (<ul>{usersVisble.map((user, index) => 
           {return (
               <FoundUser 

@@ -21,50 +21,52 @@ export default function Menu() {
   }
 
   return (
-    <nav className='main-nav'>
+    <nav className={searchBlock ? 'main-nav main-nav--compact' : 'main-nav'} >
       <Link className='main-nav__logo' to={ROUTES.DASHBOARD}>
         <img className='main-nav__image' src='./images/logo.png' alt='Instagram logo' width='103' height='29' />
       </Link>
       <ul className='main-nav__inner'>
         <li className='main-nav__item'>
           <Link className='main-nav__link main-nav__link--active main-nav__link--home' to={ROUTES.DASHBOARD}>
-            Home
+            <span className='main-nav__text'>Home</span>
           </Link>
         </li>
         <li className='main-nav__item'>
-          <a className='main-nav__link main-nav__link--search' href='#'
+          <a className='main-nav__link main-nav__link--search'
             onClick={openSearchBlock}>
-            Search
+            <span className='main-nav__text'>Search</span>
           </a>
         </li>
         <li className='main-nav__item'>
           <a className='main-nav__link main-nav__link--explore' href='#'>
-            Explore
+            <span className='main-nav__text'>Explore</span>
           </a>
         </li>
         <li className='main-nav__item'>
           <a className='main-nav__link main-nav__link--reels' href='#'>
-            Reels
+            <span className='main-nav__text'>Reels</span>
           </a>
         </li>
         <li className='main-nav__item'>
           <a className='main-nav__link main-nav__link--messages' href='#'>
-            Messages
+            <span className='main-nav__text'>Messages</span>
           </a>
         </li>
         <li className='main-nav__item'>
           <a className='main-nav__link main-nav__link--notifications' href='#'>
-            Notifications
+            <span className='main-nav__text'>Notifications</span>
           </a>
         </li>
         <li className='main-nav__item'>
           <a className='main-nav__link main-nav__link--create' href='#'>
-            Create
+            <span className='main-nav__text'>Create</span>
           </a>
         </li>
         <li>
           {user ? (
-            <Link className='main-nav__link main-nav__link--profile' to={`/${user.displayName}`}>Profile</Link>
+            <Link className='main-nav__link main-nav__link--profile' to={`/${user.displayName}`}>
+              <span className='main-nav__text'>Profile</span>
+            </Link>
           ) : null}
         </li>
         <li>
@@ -75,10 +77,8 @@ export default function Menu() {
             Sign Out
           </button>
         </li>
-        <div>
-          {searchBlock && <SearchBlock/>}
-        </div>
       </ul>
+      {searchBlock && <SearchBlock/>}
     </nav>
   );
 }

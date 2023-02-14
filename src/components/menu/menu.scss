@@ -8,7 +8,33 @@
   padding-bottom: 20px;
   padding-left: 12px;
   border-right: solid 1px rgb(var(--secondary-bg_700));
+  transition: width .5s;
   z-index: 1;
+}
+
+.main-nav--compact {
+  width: 72px;
+  
+  .main-nav__text,
+  .main-nav__image {
+    display: none;
+  }
+
+  .main-nav__link {
+    width: 100%;
+    height: 100%;
+    padding-left: 12px;
+  }
+  
+  .main-nav__logo {
+    display: block;
+    width: 47px;
+    height: 73px;
+    padding: 0;
+    background-image: url('../../../public/images/icons/camera.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+  }
 }
 
 .main-nav__inner {
@@ -49,6 +75,7 @@
   text-decoration: none;
   overflow: hidden;
   color: rgb(var(--text-color_500));
+  cursor: pointer;
 
   &:hover {
     background-color: rgb(var(--secondary-bg_400));
@@ -56,6 +83,10 @@
     &::before {
       transform: translateY(-50%) scale(105%);
     }
+  }
+
+  &:active {
+    opacity: .5;
   }
   
   &::before {
