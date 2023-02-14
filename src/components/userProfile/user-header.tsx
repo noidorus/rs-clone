@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { IUserProfile } from '../../types/types';
 import UserContext from '../../context/user-context';
 import ProfileAvatar from '../profileAvatar/profile-avatar';
+import { isFollowingUserProfile } from '../../firebase/services';
 
 interface Props {
   user: IUserProfile;
@@ -15,15 +16,28 @@ export default function UserHeader({
   followingsCount,
 }: Props) {
   const loggedUser = useContext(UserContext);
-  const { username, avatarData } = user;
-  const [isLoggedUser, setIsLoggedUser] = useState(false);
-  
+
+  const { username, avatarData, userId } = user;
+  const [isFollowingProfile, setIsFollowingProfile] = useState(false);
+
+  const isLoggedUserProfile = loggedUser
+    ? loggedUser.displayName == username
+    : false;
+
   useEffect(() => {
-    if (loggedUser) {
-      const isLogged = loggedUser.displayName == username;
-      setIsLoggedUser(isLogged);
+    async function checkIsFollowingProfile() {
+      if (!isLoggedUserProfile && loggedUser?.displayName && userId) {
+        const isFollowing = await isFollowingUserProfile(
+          loggedUser.displayName,
+          userId
+        );
+        setIsFollowingProfile(isFollowing);
+      }
     }
-  }, [user]);
+    checkIsFollowingProfile();
+  }, [loggedUser?.displayName, userId]);
+
+  console.log(isFollowingProfile);
 
   return (
     <div
@@ -32,13 +46,17 @@ export default function UserHeader({
       }}
     >
       <ProfileAvatar
-        isLoggedUser={isLoggedUser}
+        isLoggedUserProfile={isLoggedUserProfile}
         avatarData={avatarData ? avatarData : { avatarSrc: '', imagePath: '' }}
       />
 
       <div>
         <h4>{username}</h4>
-        {}
+        {isLoggedUserProfile ? (
+          <button>Edit profile</button>
+        ) : (
+          <button>{isFollowingProfile ? 'Unfollow' : 'Follow'}</button>
+        )}
         <div
           style={{
             display: 'flex',

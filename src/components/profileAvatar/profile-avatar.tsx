@@ -10,10 +10,13 @@ interface Props {
     avatarSrc: string;
     imagePath: string;
   };
-  isLoggedUser: boolean;
+  isLoggedUserProfile: boolean;
 }
 
-export default function ProfileAvatar({ avatarData, isLoggedUser }: Props) {
+export default function ProfileAvatar({
+  avatarData,
+  isLoggedUserProfile,
+}: Props) {
   const [showModal, setShowModal] = useState(false);
   const user = useContext(UserContext);
   const oldAvatarPath = avatarData.imagePath;
@@ -36,7 +39,7 @@ export default function ProfileAvatar({ avatarData, isLoggedUser }: Props) {
           border: '1px solid black',
           borderRadius: '50%',
         }}
-        onClick={isLoggedUser ? () => setShowModal(true) : undefined}
+        onClick={isLoggedUserProfile ? () => setShowModal(true) : undefined}
       >
         <img
           style={{
