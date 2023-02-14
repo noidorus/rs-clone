@@ -64,8 +64,7 @@ export default function Menu() {
         </li>
         <li>
           {user ? (
-            // <Link to={`/p/szyrwel`}>Profile</Link>
-            <Link className='main-nav__link main-nav__link--profile' to={`/p/${user.displayName}`}>Profile</Link>
+            <Link className='main-nav__link main-nav__link--profile' to={`/${user.displayName}`}>Profile</Link>
           ) : null}
         </li>
         <li>
