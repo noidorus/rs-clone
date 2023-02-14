@@ -1,7 +1,6 @@
 import React, { useEffect, useReducer } from 'react';
-import UserHeader from '../userHeader/user-header';
+import UserHeader from './user-header';
 import { IUserProfile } from '../../types/types';
-import { getUserByUsername } from '../../firebase/services';
 
 export default function UserProfile({ user }: { user: IUserProfile | null }) {
   const reducer = (
@@ -13,7 +12,7 @@ export default function UserProfile({ user }: { user: IUserProfile | null }) {
     followingsCount: 0,
     followersCount: 0,
   };
-
+  
   const [{ profile, followersCount, followingsCount }, dispatch] = useReducer(
     reducer,
     initialState

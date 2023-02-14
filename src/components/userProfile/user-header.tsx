@@ -30,6 +30,7 @@ export default function UserHeader({
 
       <div>
         <h4>{username}</h4>
+        {}
         <div
           style={{
             display: 'flex',
