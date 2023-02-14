@@ -8,7 +8,33 @@
   padding-bottom: 20px;
   padding-left: 12px;
   border-right: solid 1px rgb(var(--secondary-bg_700));
+  transition: width 0.5s;
   z-index: 1;
+}
+
+.main-nav--compact {
+  width: 72px;
+
+  .main-nav__text,
+  .main-nav__image {
+    display: none;
+  }
+
+  .main-nav__link {
+    width: 100%;
+    height: 100%;
+    padding-left: 12px;
+  }
+
+  .main-nav__logo {
+    display: block;
+    width: 47px;
+    height: 73px;
+    padding: 0;
+    background-image: url('../../../public/images/icons/camera.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+  }
 }
 
 .main-nav__inner {
@@ -45,10 +71,12 @@
   padding-bottom: 12px;
   padding-left: 52px;
   border-radius: 24px;
-  transition: background-color .3s;
+  transition: background-color 0.3s;
   text-decoration: none;
   overflow: hidden;
   color: rgb(var(--text-color_500));
+
+  cursor: pointer;
 
   &:hover {
     background-color: rgb(var(--secondary-bg_400));
@@ -57,7 +85,11 @@
       transform: translateY(-50%) scale(105%);
     }
   }
-  
+
+  &:active {
+    opacity: 0.5;
+  }
+
   &::before {
     content: '';
     position: absolute;
@@ -68,7 +100,7 @@
     transform: translateY(-50%);
     background-position: center;
     background-repeat: no-repeat;
-    transition: transform .2s cubic-bezier(0.17, 0.17, 0, 1);
+    transition: transform 0.2s cubic-bezier(0.17, 0.17, 0, 1);
   }
 }
 

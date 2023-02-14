@@ -11,6 +11,7 @@ export function Search(props: SearchPropsType) {
       display: 'inline-block'
     }}>
       <input 
+        className='field'
         type='text'
         placeholder='Search'
         value={props.value}

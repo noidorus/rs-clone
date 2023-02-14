@@ -19,9 +19,12 @@ export default function LoadPhotoButton() {
 
   return (
     <>
-      <button type="button" onClick={() => setShowModal(true)}>
-        Load Photo
-      </button>
+      <a
+        className="main-nav__link main-nav__link--create"
+        onClick={() => setShowModal(true)}
+      >
+        Create
+      </a>
       {showModal ? (
         <UploadImageModal
           setCaption={setCaption}

@@ -15,10 +15,34 @@ export async function doesUsernameExist(username: string) {
   return querySnapshot.docs.length > 0;
 }
 
+export async function isFollowingUserProfile(
+  loggedUserName: string | null | undefined,
+  profileUserId: string
+) {
+  const usersColl = collection(db, 'users');
+  const userQuery = query(usersColl, where('username', '==', loggedUserName));
+
+  const newQuery = query(
+    userQuery,
+    where('following', 'array-contains', profileUserId)
+  );
+
+  const res = await getDocs(newQuery);
+
+  return res.docs.length > 0;
+  // return res.docs.map((item) => {
+  //   const itemData = item.data() as IUser;
+  //   return {
+  //     ...itemData,
+  //     docId: item.id,
+  //   };
+  // });
+}
+
 export async function setDataUsers() {
   const usersColection = collection(db, 'users');
   const usersData = await getDocs(usersColection);
-  const users =  usersData.docs.map(user => user.data())
+  const users = usersData.docs.map((user) => user.data());
   return users;
 }
 
