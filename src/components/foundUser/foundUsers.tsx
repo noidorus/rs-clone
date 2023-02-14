@@ -4,6 +4,7 @@ import {IUser} from '../../types/types'
 function FoundUser({user}: {user: IUser}) {
   const {username, fullName, avatarData} = user;
   const src = avatarData?.avatarSrc || './images/icons/profile.jpg';
+
   return (
     <li style={{
             display: 'flex',

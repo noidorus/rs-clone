@@ -36,6 +36,7 @@ function SearchBlock() {
     const inputText = event.target.value;
     setValue(inputText);
   }
+
   function clearInput() {
     setValue('')
   }
@@ -46,11 +47,11 @@ function SearchBlock() {
           value={value}
           handleChange={handleChange}
           clearInput = {clearInput}
-
         />
       </div>
       <div>
-        {status === 'success' && (<ul>{usersVisble.map((user, index) => 
+        {status === 'success' && (
+        <ul>{usersVisble.map((user, index) => 
           {return (
               <FoundUser 
                 key={user.userId}
@@ -58,7 +59,8 @@ function SearchBlock() {
               />
             )
           })}
-        </ul>)}
+          </ul>)
+        }
         {status === 'loading' && (<div>loading</div>) }
         {status === 'error' && (<div>WTF?</div>) }
         </div>

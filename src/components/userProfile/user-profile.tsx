@@ -1,6 +1,6 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import UserHeader from '../userHeader/user-header';
-import { IUserProfile } from '../../types/types';
+import { IUser, IUserProfile } from '../../types/types';
 import { getUserByUsername } from '../../firebase/services';
 
 export default function UserProfile({ user }: { user: IUserProfile | null }) {
@@ -12,12 +12,16 @@ export default function UserProfile({ user }: { user: IUserProfile | null }) {
     profile: {} as IUserProfile,
     followingsCount: 0,
     followersCount: 0,
+    followers: [] as string[],
+    following: [] as string[]
   };
-
-  const [{ profile, followersCount, followingsCount }, dispatch] = useReducer(
+  const [{ profile, followersCount, followingsCount, followers, following }, dispatch] = useReducer(
     reducer,
     initialState
   );
+  // const{following, followers} = user as IUser;
+  console.log(following, followers);
+  
 
   useEffect(() => {
     async function getProfileInfoAndPhotos() {
@@ -27,6 +31,8 @@ export default function UserProfile({ user }: { user: IUserProfile | null }) {
           profile: user,
           followersCount: user.followers.length,
           followingsCount: user.following.length,
+          followers: user.followers,
+          following: user.following
         });
       }
     }
@@ -42,6 +48,7 @@ export default function UserProfile({ user }: { user: IUserProfile | null }) {
           followingsCount={followingsCount}
         />
       }
+      
     </div>
   );
 }
