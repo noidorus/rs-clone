@@ -1,0 +1,23 @@
+.search {
+  position: fixed;
+  height: 100vh;
+  top: 0;
+  left: 73px;
+  width: 397px;
+  box-shadow:  4px 0 24px rgba(var(--secondary-bg_900),.15);
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 16px;
+  border-right: 1px solid rgb(var(--secondary-bg_700));
+  background-color: var(--bg-color_100);
+}
+
+.search__header {
+  padding-top: 16px;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-bottom: 12px;
+}
+
+.search__inner {
+  border-top: 1px solid rgb(var(--secondary-bg_700));
+}

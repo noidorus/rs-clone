@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { setDataUsers } from '../../firebase/services';
-import { IUser } from '../../types/types';
-import FoundUser from '../foundUser/foundUsers';
-import { Search } from '../search/search';
+import React, { useEffect, useState } from "react";
+import { setDataUsers } from "../../firebase/services";
+import { IUser } from "../../types/types";
+import FoundUser from "../foundUser/foundUsers";
+import { Search } from "../search/search";
+
+import './searchBlock.scss';
 
 function filteredUsers(users: IUser[], value: string) {
   const filteredUsers = value
@@ -47,25 +49,28 @@ function SearchBlock() {
     setValue('');
   }
   return (
-    <div>
-      <div>
-        <Search
+    <div className="search">
+      <header className="search__header">
+        <h2 className="title">Search</h2>
+        <Search 
           value={value}
           handleChange={handleChange}
           clearInput={clearInput}
         />
-      </div>
-      <div>
-        {status === 'success' && (
-          <ul>
-            {usersVisble.map((user, index) => {
-              return <FoundUser key={user.userId} user={user} />;
-            })}
-          </ul>
-        )}
-        {status === 'loading' && <div>loading</div>}
-        {status === 'error' && <div>WTF?</div>}
-      </div>
+      </header>
+      <div className="search__inner">
+        {status === 'success' && (<ul>{usersVisble.map((user, index) => 
+          {return (
+              <FoundUser 
+                key={user.userId}
+                user={user}
+              />
+            )
+          })}
+        </ul>)}
+        {status === 'loading' && (<div>loading</div>) }
+        {status === 'error' && (<div>WTF?</div>) }
+        </div>
     </div>
   );
 }

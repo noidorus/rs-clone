@@ -21,7 +21,7 @@ export default function Menu() {
   }
 
   return (
-    <nav className="main-nav">
+    <nav className={searchBlock ? 'main-nav main-nav--compact' : "main-nav"} >
       <Link className="main-nav__logo" to={ROUTES.DASHBOARD}>
         <img
           className="main-nav__image"
@@ -88,8 +88,8 @@ export default function Menu() {
             Sign Out
           </button>
         </li>
-        <div>{searchBlock && <SearchBlock />}</div>
       </ul>
+      {searchBlock && <SearchBlock/>}
     </nav>
   );
 }
