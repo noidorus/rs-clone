@@ -7,11 +7,12 @@ import {
   doc,
   setDoc,
   updateDoc,
+  getDoc,
 } from 'firebase/firestore';
-import { db } from './lib';
+import { db, firebase } from './lib';
 
 export async function doesUsernameExist(username: string) {
-  const querySnapshot = await getQuerySnapshot(username, 'users');
+  const querySnapshot = await getQuerySnapshot('users', 'username', username);
   return querySnapshot.docs.length > 0;
 }
 
@@ -30,13 +31,73 @@ export async function isFollowingUserProfile(
   const res = await getDocs(newQuery);
 
   return res.docs.length > 0;
-  // return res.docs.map((item) => {
-  //   const itemData = item.data() as IUser;
-  //   return {
-  //     ...itemData,
-  //     docId: item.id,
-  //   };
-  // });
+}
+
+async function updateLoggedUserFollowing(
+  isFollowingProfile: boolean,
+  loggedDocId: string,
+  userId: string
+) {
+  const userColl = collection(db, 'users');
+  const docRef = doc(userColl, loggedDocId);
+  const querySnapshot = await getDoc(docRef);
+  const { following } = querySnapshot.data() as IUser;
+
+  if (!isFollowingProfile) {
+    updateDoc(docRef, { following: [...following, userId] }).catch((err) =>
+      console.log(err)
+    );
+  } else {
+    const newArr = following.filter((val) => val != userId);
+    updateDoc(docRef, { following: newArr }).catch((err) => console.log(err));
+  }
+}
+
+export async function toggleFollow(
+  isFollowingProfile: boolean,
+  userId: string,
+  docId: string,
+  loggedUserId: string | undefined,
+  loggedDocId: string | undefined
+) {
+  if (loggedUserId && loggedDocId) {
+    await updateLoggedUserFollowing(isFollowingProfile, loggedDocId, userId);
+    await updateFollowedUserFollowers(isFollowingProfile, docId, loggedUserId);
+  }
+}
+
+export async function updateFollowedUserFollowers(
+  isFollowingProfile: boolean,
+  docId: string,
+  loggedUserId: string
+) {
+  const userColl = collection(db, 'users');
+  const docRef = doc(userColl, docId);
+  const querySnapshot = await getDoc(docRef);
+  const { followers } = querySnapshot.data() as IUser;
+
+  if (!isFollowingProfile) {
+    updateDoc(docRef, { followers: [...followers, loggedUserId] }).catch((err) =>
+      console.log(err)
+    );
+  } else {
+    const newArr = followers.filter((val) => val != loggedUserId);
+    updateDoc(docRef, { followers: newArr }).catch((err) => console.log(err));
+  }
+}
+
+export async function getUserByUserId(userId: string) {
+  const querySnapshot = await getQuerySnapshot('users', 'userId', userId);
+
+  const [res] = querySnapshot.docs.map((item) => {
+    const itemData = item.data() as IUser;
+    return {
+      ...itemData,
+      docId: item.id,
+    };
+  });
+
+  return res;
 }
 
 export async function setDataUsers() {
@@ -53,18 +114,19 @@ export async function setDataPhotos() {
   return photos;
 }
 
-export async function getQuerySnapshot(username: string, collName: string) {
+export async function getQuerySnapshot(
+  collName: string,
+  fieldPath: string,
+  value: string
+) {
   const userColection = collection(db, collName);
-  const userQuery = query(
-    userColection,
-    where('username', '==', username.toLowerCase())
-  );
+  const userQuery = query(userColection, where(fieldPath, '==', value));
 
   return await getDocs(userQuery);
 }
 
 export async function getUserByUsername(username: string) {
-  const querySnapshot = await getQuerySnapshot(username, 'users');
+  const querySnapshot = await getQuerySnapshot('users', 'username', username);
 
   const res = querySnapshot.docs.map((item) => {
     const itemData = item.data() as IUser;
@@ -131,14 +193,12 @@ export async function updateUserAvatar(
     const user = await getUserByUsername(userName);
     const docRef = doc(userColl, user.docId);
 
-    const avatarPath = {
-      avatarData: {
-        avatarSrc: url,
-        imagePath: imagePath,
-      },
+    const avatarData = {
+      avatarSrc: url,
+      imagePath: imagePath,
     };
 
-    await updateDoc(docRef, avatarPath)
+    await updateDoc(docRef, { avatarData })
       .then()
       .catch((error) => {
         console.log(error);
