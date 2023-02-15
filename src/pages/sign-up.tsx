@@ -39,7 +39,7 @@ export default function SignUp() {
         );
 
         updateProfile(createUserResult.user, {
-          displayName: username,
+          displayName: username.toLowerCase(),
         });
 
         const newUser = {
@@ -55,7 +55,6 @@ export default function SignUp() {
             imagePath: '',
           },
         };
-
         setUserData(newUser);
 
         navigate(ROUTES.DASHBOARD);
