@@ -17,7 +17,9 @@ export default function Profile() {
 
   useEffect(() => {
     async function checkUserExists() {
-      const currUser = await getUserByUsername(username as string);
+      const currUser = await getUserByUsername(
+        username?.toLowerCase() as string
+      );
       if (currUser?.userId) {
         setUser(currUser);
       } else {
