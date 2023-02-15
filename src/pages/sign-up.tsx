@@ -55,7 +55,6 @@ export default function SignUp() {
             imagePath: '',
           },
         };
-
         setUserData(newUser);
 
         navigate(ROUTES.DASHBOARD);
