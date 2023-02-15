@@ -31,6 +31,8 @@ export default function UserHeader({
           loggedUser.displayName,
           userId
         );
+        console.log(loggedUser.displayName, username);
+        
         setIsFollowingProfile(isFollowing);
       }
     }

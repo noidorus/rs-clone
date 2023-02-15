@@ -89,7 +89,9 @@ export default function Menu() {
           </button>
         </li>
       </ul>
-      {searchBlock && <SearchBlock/>}
+      {searchBlock && <SearchBlock
+      openSearchBlock={openSearchBlock}
+      />}
     </nav>
   );
 }

@@ -17,7 +17,7 @@ function filteredUsers(users: IUser[], value: string) {
   return filteredUsers;
 }
 
-function SearchBlock() {
+function SearchBlock(props: { openSearchBlock: React.MouseEventHandler<HTMLLIElement> | undefined; }) {
   const [value, setValue] = useState('');
   const [users, setUsers] = useState<IUser[]>([]);
   const [usersVisble, setUsersVisible] = useState<IUser[]>([]);
@@ -62,7 +62,8 @@ function SearchBlock() {
       <div className="search__inner">
         {status === 'success' && (<ul>{usersVisble.map((user, index) => 
           {return (
-            <li key={index}>
+            <li key={index}
+            onClick={props.openSearchBlock}>
             <PreviewUser 
                 key={user.userId}
                 user={user}
