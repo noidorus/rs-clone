@@ -4,6 +4,11 @@ import { IUserProfile, IPhoto } from '../../types/types';
 import { setDataPhotos } from '../../firebase/services';
 import Post from '../post/post';
 
+interface IState {
+  profile: IUserProfile;
+  followersCount: number;
+}
+
 function getPhotosByUser(photos: IPhoto[], id: string) {
   return photos
     .filter((photo) => photo.userId === id)
@@ -11,21 +16,11 @@ function getPhotosByUser(photos: IPhoto[], id: string) {
 }
 
 export default function UserProfile({ user }: { user: IUserProfile | null }) {
-  const reducer = (
-    state: typeof initialState,
-    newState: typeof initialState
-  ) => ({ ...state, ...newState });
-  const initialState = {
-    profile: {} as IUserProfile,
-    followingsCount: 0,
-    followersCount: 0,
-  };
-  const [{ profile, followersCount, followingsCount }, dispatch] = useReducer(
-    reducer,
-    initialState
-  );
   const [photos, setPhoto] = useState<IPhoto[]>([]);
   const [photosVisible, setPhotoVisible] = useState<IPhoto[]>([]);
+
+  const [profile, setProfile] = useState<IUserProfile | null>(null);
+  const [followersCount, setFollowersCount] = useState(0);
 
   useEffect(() => {
     setDataPhotos()
@@ -48,12 +43,8 @@ export default function UserProfile({ user }: { user: IUserProfile | null }) {
   useEffect(() => {
     async function getProfileInfoAndPhotos() {
       if (user) {
-        // const photos = await getUserByUsername(user?.username);
-        dispatch({
-          profile: user,
-          followersCount: user.followers.length,
-          followingsCount: user.following.length,
-        });
+        setProfile(user);
+        setFollowersCount(user.followers.length);
       }
     }
 
@@ -62,13 +53,14 @@ export default function UserProfile({ user }: { user: IUserProfile | null }) {
 
   return (
     <div>
-      {
+      {profile ? (
         <UserHeader
           user={profile}
           followersCount={followersCount}
-          followingsCount={followingsCount}
+          setFollowersCount={setFollowersCount}
         />
-      }
+      ) : null}
+
       <div
         style={{
           display: 'flex',
@@ -76,14 +68,15 @@ export default function UserProfile({ user }: { user: IUserProfile | null }) {
           gap: '20px',
         }}
       >
-        {photosVisible.map((photo, index) => {
-          // console.log(photo.photoId);
-          return (
-            <div key={index}>
-              <Post photo={photo} user={profile} />
-            </div>
-          );
-        })}
+        {profile
+          ? photosVisible.map((photo, index) => {
+              return (
+                <div key={index}>
+                  <Post photo={photo} user={profile} />
+                </div>
+              );
+            })
+          : null}
       </div>
     </div>
   );

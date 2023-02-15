@@ -21,7 +21,7 @@ export default function Menu() {
   }
 
   return (
-    <nav className={searchBlock ? 'main-nav main-nav--compact' : "main-nav"} >
+    <nav className={searchBlock ? 'main-nav main-nav--compact' : 'main-nav'}>
       <Link className="main-nav__logo" to={ROUTES.DASHBOARD}>
         <img
           className="main-nav__image"
@@ -49,22 +49,22 @@ export default function Menu() {
         </li>
         <li className="main-nav__item">
           <a className="main-nav__link main-nav__link--explore" href="#">
-            Explore
+          <span className='main-nav__text'>Explore</span>
           </a>
         </li>
         <li className="main-nav__item">
           <a className="main-nav__link main-nav__link--reels" href="#">
-            Reels
+          <span className='main-nav__text'>Reels</span>
           </a>
         </li>
         <li className="main-nav__item">
           <a className="main-nav__link main-nav__link--messages" href="#">
-            Messages
+            <span className='main-nav__text'>Messages</span>
           </a>
         </li>
         <li className="main-nav__item">
           <a className="main-nav__link main-nav__link--notifications" href="#">
-            Notifications
+            <span className='main-nav__text'>Notifications</span>
           </a>
         </li>
         <li className="main-nav__item">
@@ -77,7 +77,7 @@ export default function Menu() {
               className="main-nav__link main-nav__link--profile"
               to={`/${user.displayName}`}
             >
-              Profile
+              <span className='main-nav__text'>Profile</span>
             </Link>
           ) : null}
         </li>
@@ -87,7 +87,7 @@ export default function Menu() {
           </button>
         </li>
       </ul>
-      {searchBlock && <SearchBlock/>}
+      {searchBlock && <SearchBlock />}
     </nav>
   );
 }
