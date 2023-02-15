@@ -19,7 +19,7 @@ function Post({ photo, user }: { photo: IPhoto, user: IUserProfile }) {
   }
 
   const date = getRelativeTimeString(photo.dateCreated, 'en');
-  
+
   return (
     <div style={{
       maxWidth: '33%',

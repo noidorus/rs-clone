@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-// import UserContext from '../context/user-context';
+import UserContext from '../context/user-context';
 import { getUserByUsername } from '../firebase/services';
 import * as ROUTES from '../constants/routes';
 import { IUserProfile } from '../types/types';
@@ -12,8 +12,14 @@ import './profile.scss';
 export default function Profile() {
   const navigate = useNavigate();
   const { username } = useParams(); // Get username from link /p/:username
-
+  const loggedUser = useContext(UserContext);
   const [user, setUser] = useState<IUserProfile | null>(null);
+
+  useEffect(() => {
+    if (loggedUser === null) {
+      navigate(ROUTES.LOGIN);
+    }
+  }, [loggedUser]);
 
   useEffect(() => {
     async function checkUserExists() {

@@ -1,28 +1,46 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { Dispatch, useContext, useEffect, useState } from 'react';
 import { IUserProfile } from '../../types/types';
 import UserContext from '../../context/user-context';
 import ProfileAvatar from '../profileAvatar/profile-avatar';
-import { isFollowingUserProfile } from '../../firebase/services';
+
+import { getLoggedUserData } from '../../hooks/getLoggedUserData';
+import { isFollowingUserProfile, toggleFollow } from '../../firebase/services';
 
 interface Props {
   user: IUserProfile;
   followersCount: number;
-  followingsCount: number;
+  setFollowersCount: Dispatch<React.SetStateAction<number>>;
 }
 
 export default function UserHeader({
   user,
   followersCount,
-  followingsCount,
+  setFollowersCount,
 }: Props) {
   const loggedUser = useContext(UserContext);
+  const loggedUserData = getLoggedUserData(loggedUser?.uid);
 
-  const { username, avatarData, userId } = user;
+  const { username, avatarData, userId, docId, following } = user;
   const [isFollowingProfile, setIsFollowingProfile] = useState(false);
 
   const isLoggedUserProfile = loggedUser
     ? loggedUser.displayName == username
     : false;
+
+  const handleToggleFollow = () => {
+    setIsFollowingProfile(!isFollowingProfile);
+
+    setFollowersCount(
+      isFollowingProfile ? followersCount - 1 : followersCount + 1
+    );
+    toggleFollow(
+      isFollowingProfile,
+      userId,
+      docId,
+      loggedUserData?.userId,
+      loggedUserData?.docId
+    );
+  };
 
   useEffect(() => {
     async function checkIsFollowingProfile() {
@@ -55,7 +73,9 @@ export default function UserHeader({
         {isLoggedUserProfile ? (
           <button>Edit profile</button>
         ) : (
-          <button>{isFollowingProfile ? 'Unfollow' : 'Follow'}</button>
+          <button onClick={handleToggleFollow}>
+            {isFollowingProfile ? 'Unfollow' : 'Follow'}
+          </button>
         )}
         <div
           style={{
@@ -65,7 +85,7 @@ export default function UserHeader({
         >
           <p>{0} - Publication</p>
           <p>{followersCount} - Followers</p>
-          <p>{followingsCount} - Followings</p>
+          <p>{following.length} - Followings</p>
         </div>
       </div>
     </div>

@@ -21,7 +21,7 @@ export default function Menu() {
   }
 
   return (
-    <nav className={searchBlock ? 'main-nav main-nav--compact' : "main-nav"} >
+    <nav className={searchBlock ? 'main-nav main-nav--compact' : 'main-nav'}>
       <Link className="main-nav__logo" to={ROUTES.DASHBOARD}>
         <img
           className="main-nav__image"
@@ -41,13 +41,12 @@ export default function Menu() {
           </Link>
         </li>
         <li className="main-nav__item">
-          <a
+          <div
             className="main-nav__link main-nav__link--search"
-            href="#"
             onClick={openSearchBlock}
           >
             Search
-          </a>
+          </div>
         </li>
         <li className="main-nav__item">
           <a className="main-nav__link main-nav__link--explore" href="#">
