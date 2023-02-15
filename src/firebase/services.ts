@@ -46,6 +46,13 @@ export async function setDataUsers() {
   return users;
 }
 
+export async function setDataPhotos() {
+  const photosColection = collection(db, 'photos');
+  const photosData = await getDocs(photosColection);
+  const photos = photosData.docs.map((photo) => photo.data());
+  return photos;
+}
+
 export async function getQuerySnapshot(username: string, collName: string) {
   const userColection = collection(db, collName);
   const userQuery = query(

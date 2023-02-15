@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { setDataUsers } from "../../firebase/services";
 import { IUser } from "../../types/types";
-import FoundUser from "../foundUser/foundUsers";
+import PreviewUser from "../foundUser/foundUsers";
 import { Search } from "../search/search";
 
 import './searchBlock.scss';
@@ -62,10 +62,12 @@ function SearchBlock() {
       <div className="search__inner">
         {status === 'success' && (<ul>{usersVisble.map((user, index) => 
           {return (
-              <FoundUser 
+            <li key={index}>
+            <PreviewUser 
                 key={user.userId}
                 user={user}
               />
+            </li>
             )
           })}
           </ul>)
