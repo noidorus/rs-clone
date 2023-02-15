@@ -30,7 +30,6 @@ export function Search(props: SearchPropsType) {
             fontSize: '7px'
           }}
           onClick={props.clearInput}
-
           >x</div>
     </div>
   )

@@ -37,8 +37,6 @@ export default function UserHeader({
     checkIsFollowingProfile();
   }, [loggedUser?.displayName, userId]);
 
-  console.log(isFollowingProfile);
-
   return (
     <div
       style={{
