@@ -23,16 +23,6 @@ export default function UserProfile({ user }: { user: IUserProfile | null }) {
   const [followersCount, setFollowersCount] = useState(0);
 
   useEffect(() => {
-    setDataPhotos()
-      .then((data) => {
-        setPhoto(data as IPhoto[]);
-      })
-      .catch((err) => {
-        setPhoto([]);
-      });
-  }, [user]);
-
-  useEffect(() => {
     if (user) {
       setPhotoVisible(getPhotosByUser(photos, user.userId));
     } else {
@@ -45,6 +35,13 @@ export default function UserProfile({ user }: { user: IUserProfile | null }) {
       if (user) {
         setProfile(user);
         setFollowersCount(user.followers.length);
+        setDataPhotos()
+          .then((data) => {
+            setPhoto(data as IPhoto[]);
+          })
+          .catch((err) => {
+            setPhoto([]);
+          });
       }
     }
 
