@@ -37,7 +37,7 @@ export default function Menu() {
             <span className='main-nav__text'>Home</span>
           </Link>
         </li>
-        <li className='main-nav__item'>
+        <li className='main-nav__item main-nav__item--search'>
           <a className={
             searchBlock ? 
               'main-nav__link main-nav__link--search main-nav__link--active' 
@@ -71,7 +71,7 @@ export default function Menu() {
           {/* подправить стили внутри */}
           <LoadPhotoButton />
         </li>
-        <li>
+        <li className="main-nav__item">
           {user ? (
             <Link
               className="main-nav__link main-nav__link--profile"
@@ -81,10 +81,10 @@ export default function Menu() {
             </Link>
           ) : null}
         </li>
-        <li>
-          <button type="button" onClick={() => signOut(getAuth(firebase))}>
-            Sign Out
-          </button>
+        <li className="main-nav__item main-nav__item--logout">
+          <a className="main-nav__link main-nav__link--signout" type="button" onClick={() => signOut(getAuth(firebase))}>
+          <span className='main-nav__text'>Sign Out</span>
+          </a>
         </li>
       </ul>
       {searchBlock && <SearchBlock />}
