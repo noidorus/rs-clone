@@ -27,12 +27,16 @@ export default function Menu() {
       </Link>
       <ul className='main-nav__inner'>
         <li className='main-nav__item'>
-          <Link className='main-nav__link main-nav__link--active main-nav__link--home' to={ROUTES.DASHBOARD}>
+          <Link className='main-nav__link main-nav__link--home' to={ROUTES.DASHBOARD}>
             <span className='main-nav__text'>Home</span>
           </Link>
         </li>
         <li className='main-nav__item'>
-          <a className='main-nav__link main-nav__link--search'
+          <a className={
+            searchBlock ? 
+              'main-nav__link main-nav__link--search main-nav__link--active' 
+              : 'main-nav__link main-nav__link--search'
+            }
             onClick={openSearchBlock}>
             <span className='main-nav__text'>Search</span>
           </a>
