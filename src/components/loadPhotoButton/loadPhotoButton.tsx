@@ -20,10 +20,15 @@ export default function LoadPhotoButton() {
   return (
     <>
       <a
-        className="main-nav__link main-nav__link--create"
+        className={
+          showModal ? 
+            'main-nav__link main-nav__link--create main-nav__link--active' 
+            : 'main-nav__link main-nav__link--create'
+          }
+        
         onClick={() => setShowModal(true)}
       >
-        Create
+        <span className='main-nav__text'>Create</span>
       </a>
       {showModal ? (
         <UploadImageModal
