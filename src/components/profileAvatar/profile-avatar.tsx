@@ -9,7 +9,7 @@ interface Props {
   avatarData: {
     avatarSrc: string;
     imagePath: string;
-  };
+  } | null;
   isLoggedUserProfile: boolean;
 }
 
@@ -19,10 +19,12 @@ export default function ProfileAvatar({
 }: Props) {
   const [showModal, setShowModal] = useState(false);
   const user = useContext(UserContext);
-  const oldAvatarPath = avatarData.imagePath;
+  const oldAvatarPath = avatarData?.imagePath;
 
   const callback = (url: string, imagePath: string) => {
-    deletePhotoFromStorage(oldAvatarPath);
+    if (oldAvatarPath) {
+      deletePhotoFromStorage(oldAvatarPath);
+    }
     updateUserAvatar(url, imagePath, user?.displayName);
     setShowModal(false);
   };
@@ -47,7 +49,7 @@ export default function ProfileAvatar({
             height: '150px',
             borderRadius: '50%',
           }}
-          src={avatarData.avatarSrc}
+          src={avatarData ? avatarData.avatarSrc : './images/icons/profile.jpg'}
           alt="avatar"
         />
         {/* <Skeleton circle height={150} width={150} count={1} /> */}

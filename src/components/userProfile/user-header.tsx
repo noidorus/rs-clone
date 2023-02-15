@@ -45,7 +45,7 @@ export default function UserHeader({
     >
       <ProfileAvatar
         isLoggedUserProfile={isLoggedUserProfile}
-        avatarData={avatarData ? avatarData : { avatarSrc: '', imagePath: '' }}
+        avatarData={avatarData ? avatarData : null}
       />
 
       <div>
