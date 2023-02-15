@@ -4,36 +4,20 @@ import './search.scss';
 
 export function Search(props: SearchPropsType) {
   return (
-    <div
-      style={{
-        position: 'relative',
-        display: 'inline-block',
-      }}
-    >
+    <div className='search-block'>
       <input
-        className="field"
+        className="search-block__field field field--search"
         type="text"
         placeholder="Search"
         value={props.value}
         onChange={props.handleChange}
       />
-      <div
-        style={{
-          width: '10px',
-          height: '10px',
-          backgroundColor: 'grey',
-          position: 'absolute',
-          top: '5px',
-          right: '5px',
-          borderRadius: '50%',
-          color: 'white',
-          textAlign: 'center',
-          fontSize: '7px',
-        }}
+      <button
+        className='search-block__clean'
         onClick={props.clearInput}
       >
         x
-      </div>
+      </button>
     </div>
   );
 }

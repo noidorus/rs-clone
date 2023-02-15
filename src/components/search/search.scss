@@ -1,0 +1,21 @@
+.search-block {
+  position: relative;
+  width: 100%;
+}
+
+.search-block__field {
+  width: 100%;
+}
+
+.search-block__clean {
+  position: absolute;
+  line-height: 16px;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  border: solid 1px rgb(var(--secondary-bg_700));
+  color: #fff;
+  background-color: rgb(var(--secondary-bg_700));
+  cursor: pointer;
+}
