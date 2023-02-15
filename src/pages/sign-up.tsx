@@ -39,7 +39,7 @@ export default function SignUp() {
         );
 
         updateProfile(createUserResult.user, {
-          displayName: username,
+          displayName: username.toLowerCase(),
         });
 
         const newUser = {
