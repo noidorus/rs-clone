@@ -4,10 +4,10 @@ import { IUserProfile, IPhoto } from '../../types/types';
 import { setDataPhotos } from '../../firebase/services';
 import Post from '../post/post';
 
-
 function getPhotosByUser(photos: IPhoto[], id: string) {
-  return photos.filter(photo => photo.userId === id)
-               .sort((a, b) => b.dateCreated - a.dateCreated);
+  return photos
+    .filter((photo) => photo.userId === id)
+    .sort((a, b) => b.dateCreated - a.dateCreated);
 }
 
 export default function UserProfile({ user }: { user: IUserProfile | null }) {
@@ -33,17 +33,17 @@ export default function UserProfile({ user }: { user: IUserProfile | null }) {
         setPhoto(data as IPhoto[]);
       })
       .catch((err) => {
-        setPhoto([])
-      })
-  }, [])
+        setPhoto([]);
+      });
+  }, [user]);
 
-  useEffect(()=> {
-    if(user) {
-      setPhotoVisible((getPhotosByUser(photos, user.userId)))
+  useEffect(() => {
+    if (user) {
+      setPhotoVisible(getPhotosByUser(photos, user.userId));
     } else {
-      setPhotoVisible([])
+      setPhotoVisible([]);
     }
-  }, [photos])
+  }, [photos]);
 
   useEffect(() => {
     async function getProfileInfoAndPhotos() {
@@ -69,24 +69,22 @@ export default function UserProfile({ user }: { user: IUserProfile | null }) {
           followingsCount={followingsCount}
         />
       }
-      <div style={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        gap: '20px'
-      }}>
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '20px',
+        }}
+      >
         {photosVisible.map((photo, index) => {
+          // console.log(photo.photoId);
           return (
-            <div key={photo.photoId}>
-              <Post
-                photo={photo}
-                user={profile}
-              />
+            <div key={index}>
+              <Post photo={photo} user={profile} />
             </div>
-          )
-        })
-      }
+          );
+        })}
       </div>
-      
     </div>
   );
 }
