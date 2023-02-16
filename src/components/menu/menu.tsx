@@ -10,9 +10,8 @@ import './menu.scss';
 import { FirebaseApp } from '@firebase/app-types';
 import SearchBlock from '../searhBlock/searchBlock';
 
-export default function Menu() {
+export default function Menu({ isMainPage }: { isMainPage: boolean }) {
   const firebase = useContext(FirebaseContext)?.firebase as FirebaseApp;
-
   const [searchBlock, setSearchBlock] = useState(false);
   const user = useContext(UserContext);
 
@@ -31,40 +30,49 @@ export default function Menu() {
           height="29"
         />
       </Link>
-      <ul className='main-nav__inner'>
-        <li className='main-nav__item'>
-          <Link className='main-nav__link main-nav__link--home' to={ROUTES.DASHBOARD}>
-            <span className='main-nav__text'>Home</span>
+      <ul className="main-nav__inner">
+        <li className="main-nav__item">
+          <Link
+            className={
+              isMainPage
+                ? 'main-nav__link main-nav__link--home main-nav__link--active'
+                : 'main-nav__link main-nav__link--home'
+            }
+            to={ROUTES.DASHBOARD}
+          >
+            <span className="main-nav__text">Home</span>
           </Link>
         </li>
-        <li className='main-nav__item main-nav__item--search'>
-          <a className={
-            searchBlock ? 
-              'main-nav__link main-nav__link--search main-nav__link--active' 
-              : 'main-nav__link main-nav__link--search'
+        <li className="main-nav__item main-nav__item--search">
+          <a
+            className={
+              searchBlock
+                ? 'main-nav__link main-nav__link--search main-nav__link--active'
+                : 'main-nav__link main-nav__link--search'
             }
-            onClick={openSearchBlock}>
-            <span className='main-nav__text'>Search</span>
+            onClick={openSearchBlock}
+          >
+            <span className="main-nav__text">Search</span>
           </a>
         </li>
         <li className="main-nav__item">
           <a className="main-nav__link main-nav__link--explore" href="#">
-          <span className='main-nav__text'>Explore</span>
+            <span className="main-nav__text">Explore</span>
           </a>
         </li>
         <li className="main-nav__item">
           <a className="main-nav__link main-nav__link--reels" href="#">
-          <span className='main-nav__text'>Reels</span>
+            <span className="main-nav__text">Reels</span>
           </a>
         </li>
         <li className="main-nav__item">
           <a className="main-nav__link main-nav__link--messages" href="#">
-            <span className='main-nav__text'>Messages</span>
+            <span className="main-nav__text">Messages</span>
           </a>
         </li>
         <li className="main-nav__item">
           <a className="main-nav__link main-nav__link--notifications" href="#">
-            <span className='main-nav__text'>Notifications</span>
+            <span className="main-nav__text">Notifications</span>
           </a>
         </li>
         <li className="main-nav__item">
@@ -74,10 +82,14 @@ export default function Menu() {
         <li className="main-nav__item">
           {user ? (
             <Link
-              className="main-nav__link main-nav__link--profile"
+              className={
+                isMainPage
+                  ? 'main-nav__link main-nav__link--profile '
+                  : 'main-nav__link main-nav__link--profile main-nav__link--active'
+              }
               to={`/${user.displayName}`}
             >
-              <span className='main-nav__text'>Profile</span>
+              <span className="main-nav__text">Profile</span>
             </Link>
           ) : null}
         </li>
