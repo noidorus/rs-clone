@@ -77,9 +77,9 @@ export async function updateFollowedUserFollowers(
   const { followers } = querySnapshot.data() as IUser;
 
   if (!isFollowingProfile) {
-    updateDoc(docRef, { followers: [...followers, loggedUserId] }).catch((err) =>
-      console.log(err)
-    );
+    updateDoc(docRef, {
+      followers: [...followers, loggedUserId],
+    }).catch((err) => console.log(err));
   } else {
     const newArr = followers.filter((val) => val != loggedUserId);
     updateDoc(docRef, { followers: newArr }).catch((err) => console.log(err));
@@ -203,5 +203,21 @@ export async function updateUserAvatar(
       .catch((error) => {
         console.log(error);
       });
+  }
+}
+
+export async function updateUserData(
+  newUsername: string,
+  newFullname: string,
+  docId: string | undefined
+) {
+  if (docId) {
+    const userColl = collection(db, 'users');
+    const docRef = doc(userColl, docId);
+
+    updateDoc(docRef, {
+      username: newUsername,
+      fullName: newFullname,
+    }).catch((err) => console.log(err));
   }
 }
