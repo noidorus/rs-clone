@@ -15,11 +15,11 @@ function App() {
   const [user, setUser] = useState(currUser);
 
   useEffect(() => {
-    setUser(user);
-  }, [user]);
+    setUser(currUser);
+  }, [currUser]);
 
   return (
-    <UserContext.Provider value={{user, setUser}}>
+    <UserContext.Provider value={{ user, setUser }}>
       <Router>
         <Suspense fallback={<p>Loading...</p>}>
           <Routes>
