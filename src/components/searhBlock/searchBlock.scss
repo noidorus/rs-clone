@@ -9,6 +9,18 @@
   border-bottom-right-radius: 16px;
   border-right: 1px solid rgb(var(--secondary-bg_700));
   background-color: var(--bg-color_100);
+
+  @media screen and (max-width: 767px) {
+    height: 50vh;
+    top: 68px;
+    left: auto;
+    right: 16px;
+    border-radius: 8px;
+  }
+
+  @media screen and (max-width: 476px) {
+    width: 240px;
+  }
 }
 
 .search__header {
