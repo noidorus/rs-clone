@@ -4,7 +4,7 @@ import FirebaseContext, { IFirebase } from '../context/firebase-context';
 
 export default function authListener() {
   const storageData = localStorage.getItem('auth-user') || '{}';
-  const [user, setUser] = useState<User | null>(JSON.parse(storageData));
+  const [currUser, setCurrUser] = useState<User | null>(JSON.parse(storageData));
   const { firebase } = useContext(FirebaseContext) as IFirebase;
 
   useEffect(() => {
@@ -12,15 +12,15 @@ export default function authListener() {
     const listener = onAuthStateChanged(auth, (user) => {
       if (user) {
         localStorage.setItem('auth-user', JSON.stringify(user));
-        setUser(user);
+        setCurrUser(user);
       } else {
         localStorage.removeItem('auth-user');
-        setUser(null);
+        setCurrUser(null);
       }
     });
 
     return () => listener();
   }, [firebase]);
 
-  return { user };
+  return { currUser };
 }

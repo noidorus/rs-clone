@@ -2,6 +2,8 @@ import React, { Dispatch, useContext, useEffect, useState } from 'react';
 import { IUserProfile } from '../../types/types';
 import UserContext from '../../context/user-context';
 import ProfileAvatar from '../profileAvatar/profile-avatar';
+import EditProfileButton from '../editProfileButton/editprofile';
+
 
 import { getLoggedUserData } from '../../hooks/getLoggedUserData';
 import { isFollowingUserProfile, toggleFollow } from '../../firebase/services';
@@ -17,7 +19,7 @@ export default function UserHeader({
   followersCount,
   setFollowersCount,
 }: Props) {
-  const loggedUser = useContext(UserContext);
+  const loggedUser = useContext(UserContext).user;
   const loggedUserData = getLoggedUserData(loggedUser?.uid);
 
   const { username, avatarData, userId, docId, following } = user;
@@ -69,7 +71,7 @@ export default function UserHeader({
       <div>
         <h4>{username}</h4>
         {isLoggedUserProfile ? (
-          <button>Edit profile</button>
+          <EditProfileButton  loggedUserData={loggedUserData} />
         ) : (
           <button onClick={handleToggleFollow}>
             {isFollowingProfile ? 'Unfollow' : 'Follow'}
