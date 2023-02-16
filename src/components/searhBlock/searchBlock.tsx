@@ -52,7 +52,7 @@ function SearchBlock() {
   return (
     <div className="search">
       <header className="search__header">
-        <h2 className="title">Search</h2>
+        <h2 className="search__title">Search</h2>
         <Search 
           value={value}
           handleChange={handleChange}
@@ -60,9 +60,9 @@ function SearchBlock() {
         />
       </header>
       <div className="search__inner">
-        {status === 'success' && (<ul>{usersVisble.map((user, index) => 
+        {status === 'success' && (<ul className="search__results results">{usersVisble.map((user, index) => 
           {return (
-            <li key={index}>
+            <li className="results__item" key={index}>
             <PreviewUser 
                 key={user.userId}
                 user={user}
@@ -72,6 +72,7 @@ function SearchBlock() {
           })}
           </ul>)
         }
+        {!usersVisble.length && (<div className="search__empty">No recent searches.</div>)}
         {status === 'loading' && (<div>loading</div>) }
         {status === 'error' && (<div>WTF?</div>) }
         </div>

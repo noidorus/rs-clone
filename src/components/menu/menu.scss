@@ -1,7 +1,7 @@
 .main-nav {
   position: fixed;
   left: 0;
-  width: 245px;
+  width: 335px;
   height: 100vh;
   padding-top: 8px;
   padding-right: 12px;
@@ -10,6 +10,10 @@
   border-right: solid 1px rgb(var(--secondary-bg_700));
   transition: width 0.5s;
   z-index: 1;
+
+  @media screen and (min-width: 1920px) {
+    width: 245px;
+  } 
 
   @media screen and (max-width: 1263px) {
     width: 72px;

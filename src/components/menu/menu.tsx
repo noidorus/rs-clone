@@ -34,7 +34,7 @@ export default function Menu({ isMainPage }: { isMainPage: boolean }) {
         <li className="main-nav__item">
           <Link
             className={
-              isMainPage
+              isMainPage && !searchBlock
                 ? 'main-nav__link main-nav__link--home main-nav__link--active'
                 : 'main-nav__link main-nav__link--home'
             }
@@ -84,7 +84,7 @@ export default function Menu({ isMainPage }: { isMainPage: boolean }) {
             <Link
               className={
                 isMainPage
-                  ? 'main-nav__link main-nav__link--profile '
+                  ? 'main-nav__link main-nav__link--profile'
                   : 'main-nav__link main-nav__link--profile main-nav__link--active'
               }
               to={`/${user.displayName}`}
