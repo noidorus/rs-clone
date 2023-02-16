@@ -15,8 +15,8 @@ export default function Dashboard() {
   });
   
   return (
-    <div>
-      <Menu />
-    </div>
+    <main className="main-page">
+      <Menu isMainPage={true} />
+    </main>
   );
 }

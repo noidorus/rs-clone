@@ -37,7 +37,7 @@ export default function Profile() {
 
   return (
     <main className="main-page">
-      <Menu />
+      <Menu isMainPage={false} />
       <UserProfile user={user} />
     </main>
   );

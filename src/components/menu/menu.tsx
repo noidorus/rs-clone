@@ -10,9 +10,8 @@ import './menu.scss';
 import { FirebaseApp } from '@firebase/app-types';
 import SearchBlock from '../searhBlock/searchBlock';
 
-export default function Menu() {
+export default function Menu({ isMainPage }: { isMainPage: boolean }) {
   const firebase = useContext(FirebaseContext)?.firebase as FirebaseApp;
-
   const [searchBlock, setSearchBlock] = useState(false);
   const user = useContext(UserContext);
 
@@ -34,58 +33,70 @@ export default function Menu() {
       <ul className="main-nav__inner">
         <li className="main-nav__item">
           <Link
-            className="main-nav__link main-nav__link--active main-nav__link--home"
+            className={
+              isMainPage
+                ? 'main-nav__link main-nav__link--home main-nav__link--active'
+                : 'main-nav__link main-nav__link--home'
+            }
             to={ROUTES.DASHBOARD}
           >
-            Home
+            <span className="main-nav__text">Home</span>
           </Link>
         </li>
-        <li className="main-nav__item">
-          <div
-            className="main-nav__link main-nav__link--search"
+        <li className="main-nav__item main-nav__item--search">
+          <a
+            className={
+              searchBlock
+                ? 'main-nav__link main-nav__link--search main-nav__link--active'
+                : 'main-nav__link main-nav__link--search'
+            }
             onClick={openSearchBlock}
           >
-            Search
-          </div>
+            <span className="main-nav__text">Search</span>
+          </a>
         </li>
         <li className="main-nav__item">
           <a className="main-nav__link main-nav__link--explore" href="#">
-            Explore
+            <span className="main-nav__text">Explore</span>
           </a>
         </li>
         <li className="main-nav__item">
           <a className="main-nav__link main-nav__link--reels" href="#">
-            Reels
+            <span className="main-nav__text">Reels</span>
           </a>
         </li>
         <li className="main-nav__item">
           <a className="main-nav__link main-nav__link--messages" href="#">
-            Messages
+            <span className="main-nav__text">Messages</span>
           </a>
         </li>
         <li className="main-nav__item">
           <a className="main-nav__link main-nav__link--notifications" href="#">
-            Notifications
+            <span className="main-nav__text">Notifications</span>
           </a>
         </li>
         <li className="main-nav__item">
           {/* подправить стили внутри */}
           <LoadPhotoButton />
         </li>
-        <li>
+        <li className="main-nav__item">
           {user ? (
             <Link
-              className="main-nav__link main-nav__link--profile"
+              className={
+                isMainPage
+                  ? 'main-nav__link main-nav__link--profile '
+                  : 'main-nav__link main-nav__link--profile main-nav__link--active'
+              }
               to={`/${user.displayName}`}
             >
-              Profile
+              <span className="main-nav__text">Profile</span>
             </Link>
           ) : null}
         </li>
-        <li>
-          <button type="button" onClick={() => signOut(getAuth(firebase))}>
-            Sign Out
-          </button>
+        <li className="main-nav__item main-nav__item--logout">
+          <a className="main-nav__link main-nav__link--signout" type="button" onClick={() => signOut(getAuth(firebase))}>
+          <span className='main-nav__text'>Sign Out</span>
+          </a>
         </li>
       </ul>
       {searchBlock && <SearchBlock />}
