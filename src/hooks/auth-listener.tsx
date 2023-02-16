@@ -3,7 +3,7 @@ import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
 import FirebaseContext, { IFirebase } from '../context/firebase-context';
 
 export default function authListener() {
-  const storageData = localStorage.getItem('auth-user') || `{}`;
+  const storageData = localStorage.getItem('auth-user') || '{}';
   const [user, setUser] = useState<User | null>(JSON.parse(storageData));
   const { firebase } = useContext(FirebaseContext) as IFirebase;
 

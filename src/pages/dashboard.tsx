@@ -9,10 +9,14 @@ export default function Dashboard() {
   const user = useContext(UserContext);
 
   useEffect(() => {
+    document.title = 'Instagram';
+  }, [])
+
+  useEffect(() => {
     if (user === null) {  
       navigate(ROUTES.LOGIN);
     }
-  });
+  }, [user]);
   
   return (
     <main className="main-page">

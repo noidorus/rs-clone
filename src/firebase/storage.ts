@@ -29,6 +29,6 @@ export function deletePhotoFromStorage(path: string) {
   const desertRef = ref(storage, path);
 
   deleteObject(desertRef)
-    .then((data) => console.log('Object deleted: ', data))
+    .then()
     .catch((err) => console.log(err));
 }

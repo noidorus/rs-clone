@@ -15,6 +15,12 @@ export default function Profile() {
   const loggedUser = useContext(UserContext);
   const [user, setUser] = useState<IUserProfile | null>(null);
 
+  
+  useEffect(() => {
+    document.title = `Instagram - ${username}`;
+  }, [username]);
+
+
   useEffect(() => {
     if (loggedUser === null) {
       navigate(ROUTES.LOGIN);
