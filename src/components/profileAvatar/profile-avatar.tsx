@@ -18,14 +18,18 @@ export default function ProfileAvatar({
   isLoggedUserProfile,
 }: Props) {
   const [showModal, setShowModal] = useState(false);
-  const user = useContext(UserContext);
-  const oldAvatarPath = avatarData?.imagePath;
+  const {user} = useContext(UserContext);
+  const avatarPathToDeletePath = avatarData?.imagePath;
+
+  const [avatarSrc, setAvatarSrc] = useState(avatarData?.avatarSrc);
 
   const callback = (url: string, imagePath: string) => {
-    if (oldAvatarPath) {
-      deletePhotoFromStorage(oldAvatarPath);
+    if (avatarPathToDeletePath) {
+      deletePhotoFromStorage(avatarPathToDeletePath);
     }
+
     updateUserAvatar(url, imagePath, user?.displayName);
+    setAvatarSrc(url);
     setShowModal(false);
   };
 
@@ -49,7 +53,7 @@ export default function ProfileAvatar({
             height: '150px',
             borderRadius: '50%',
           }}
-          src={avatarData ? avatarData.avatarSrc : './images/icons/profile.jpg'}
+          src={avatarSrc ? avatarSrc : './images/icons/profile.jpg'}
           alt="avatar"
         />
         {/* <Skeleton circle height={150} width={150} count={1} /> */}

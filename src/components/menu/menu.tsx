@@ -13,7 +13,7 @@ import SearchBlock from '../searhBlock/searchBlock';
 export default function Menu({ isMainPage }: { isMainPage: boolean }) {
   const firebase = useContext(FirebaseContext)?.firebase as FirebaseApp;
   const [searchBlock, setSearchBlock] = useState(false);
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   function openSearchBlock() {
     setSearchBlock(!searchBlock);
@@ -94,8 +94,12 @@ export default function Menu({ isMainPage }: { isMainPage: boolean }) {
           ) : null}
         </li>
         <li className="main-nav__item main-nav__item--logout">
-          <a className="main-nav__link main-nav__link--signout" type="button" onClick={() => signOut(getAuth(firebase))}>
-          <span className='main-nav__text'>Sign Out</span>
+          <a
+            className="main-nav__link main-nav__link--signout"
+            type="button"
+            onClick={() => signOut(getAuth(firebase))}
+          >
+            <span className="main-nav__text">Sign Out</span>
           </a>
         </li>
       </ul>

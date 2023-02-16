@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import * as ROUTES from './constants/routes';
 import authListener from './hooks/auth-listener';
@@ -11,10 +11,15 @@ const Dashboard = lazy(() => import('./pages/dashboard'));
 const Profile = lazy(() => import('./pages/profile'));
 
 function App() {
-  const { user } = authListener();
+  const { currUser } = authListener();
+  const [user, setUser] = useState(currUser);
+
+  useEffect(() => {
+    setUser(currUser);
+  }, [currUser]);
 
   return (
-    <UserContext.Provider value={user}>
+    <UserContext.Provider value={{ user, setUser }}>
       <Router>
         <Suspense fallback={<p>Loading...</p>}>
           <Routes>
