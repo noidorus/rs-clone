@@ -4,12 +4,16 @@
   "scripts": {
     "start": "webpack serve --open --config ./webpack.config.js --env mode=dev",
     "build": "webpack --config ./webpack.config.js --env mode=prod",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
+  "homepage": "https://huffpufftuff.github.io/rs-clone/",
   "dependencies": {
     "@firebase/app-types": "^0.9.0",
     "date-fns": "^2.29.3",
     "firebase": "^9.17.1",
+    "gh-pages": "^5.0.0",
     "normalize.css": "^8.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
