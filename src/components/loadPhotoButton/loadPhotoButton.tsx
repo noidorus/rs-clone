@@ -5,7 +5,7 @@ import { User } from 'firebase/auth';
 import UploadImageModal from '../modal/modal';
 
 export default function LoadPhotoButton() {
-  const user = useContext(UserContext) as User;
+  const user = useContext(UserContext).user as User;
 
   const [showModal, setShowModal] = useState(false); // потом поменять на false
   const [caption, setCaption] = useState('');
@@ -21,14 +21,13 @@ export default function LoadPhotoButton() {
     <>
       <a
         className={
-          showModal ? 
-            'main-nav__link main-nav__link--create main-nav__link--active' 
+          showModal
+            ? 'main-nav__link main-nav__link--create main-nav__link--active'
             : 'main-nav__link main-nav__link--create'
-          }
-        
+        }
         onClick={() => setShowModal(true)}
       >
-        <span className='main-nav__text'>Create</span>
+        <span className="main-nav__text">Create</span>
       </a>
       {showModal ? (
         <UploadImageModal

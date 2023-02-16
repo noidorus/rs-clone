@@ -27,6 +27,5 @@ root.render(
 // helpers,
 // hooks,
 // pages,
-// lib (firebase),
-// services (firebase fn),
-// styles (tailwind's folder (app/tailwind))
+// firebase (lib, services, storage),
+

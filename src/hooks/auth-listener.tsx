@@ -3,24 +3,25 @@ import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
 import FirebaseContext, { IFirebase } from '../context/firebase-context';
 
 export default function authListener() {
-  const storageData = localStorage.getItem('auth-user') || `{}`;
-  const [user, setUser] = useState<User | null>(JSON.parse(storageData));
+  const storageData = localStorage.getItem('auth-user') || '{}';
+  const [currUser, setCurrUser] = useState<User | null>(JSON.parse(storageData));
   const { firebase } = useContext(FirebaseContext) as IFirebase;
-
+  const auth = getAuth(firebase);
+  
   useEffect(() => {
-    const auth = getAuth(firebase);
+    
     const listener = onAuthStateChanged(auth, (user) => {
       if (user) {
         localStorage.setItem('auth-user', JSON.stringify(user));
-        setUser(user);
+        setCurrUser(user);
       } else {
         localStorage.removeItem('auth-user');
-        setUser(null);
+        setCurrUser(null);
       }
     });
 
     return () => listener();
-  }, [firebase]);
+  }, [auth]);
 
-  return { user };
+  return { currUser };
 }

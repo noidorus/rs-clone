@@ -4,16 +4,22 @@ import UserContext from '../context/user-context';
 import { getUserByUsername } from '../firebase/services';
 import * as ROUTES from '../constants/routes';
 import { IUserProfile } from '../types/types';
-
+import { User } from 'firebase/auth';
 import Menu from '../components/menu/menu';
 import UserProfile from '../components/userProfile';
 import './profile.scss';
 
+
 export default function Profile() {
   const navigate = useNavigate();
   const { username } = useParams(); // Get username from link /p/:username
-  const loggedUser = useContext(UserContext);
+  const loggedUser = useContext(UserContext).user;
+
   const [user, setUser] = useState<IUserProfile | null>(null);
+  
+  useEffect(() => {
+    document.title = `Instagram - ${username}`;
+  }, [username]);
 
   useEffect(() => {
     if (loggedUser === null) {
@@ -26,6 +32,7 @@ export default function Profile() {
       const currUser = await getUserByUsername(
         username?.toLowerCase() as string
       );
+
       if (currUser?.userId) {
         setUser(currUser);
       } else {
@@ -37,7 +44,7 @@ export default function Profile() {
 
   return (
     <main className="main-page">
-      <Menu />
+      <Menu isMainPage={false} />
       <UserProfile user={user} />
     </main>
   );

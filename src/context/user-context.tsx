@@ -1,6 +1,14 @@
-import { createContext } from 'react';
+import { createContext, Dispatch, SetStateAction } from 'react';
 import { User } from 'firebase/auth';
 
-const UserContext = createContext<User | null>(null);
+export interface IUserContext {
+  user: User | null;
+  setUser: Dispatch<React.SetStateAction<User | null>>;
+}
+
+const UserContext = createContext<IUserContext>({
+  user: null,
+  setUser: () => {},
+});
 
 export default UserContext;
