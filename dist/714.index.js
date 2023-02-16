@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunkrs_clone=globalThis.webpackChunkrs_clone||[]).push([[714],{2714:(e,n,t)=>{t.r(n),t.d(n,{default:()=>u});var l=t(7294);function u(){return(0,l.useEffect)((function(){document.title="Instagram - Not Found!"}),[]),l.createElement("div",null,l.createElement("div",null,l.createElement("p",null,"Not Found!")))}}}]);
