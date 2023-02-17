@@ -6,6 +6,8 @@ import { getUserDataHook } from '../../hooks/getLoggedUserData';
 import { IPhotoDoc } from '../../types/types';
 import Timeline from '../timeline';
 
+import './index.scss'
+
 interface MainPageProps {
   photos: IPhotoDoc[];
   setPhotos: Dispatch<SetStateAction<IPhotoDoc[]>>;
@@ -37,7 +39,7 @@ export default function MainPage({ photos, setPhotos, user }: MainPageProps) {
   }, [userData]);
 
   return (
-    <div>
+    <div className='dashboard'>
       <Timeline photosData={photos} />
     </div>
   );
