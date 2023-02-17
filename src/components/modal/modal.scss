@@ -15,3 +15,130 @@
     bottom: 0;
   }
 }
+
+.modal__inner {
+  display: flex;
+  flex-direction: column;
+  width: 736px;
+  max-width: 855px;
+  min-width: 250px;
+  height: 779px;
+  min-height: 391px;
+  max-height: 898px;
+  background-color: var(--bg-color_100);
+  border-radius: 12px;
+
+  @media screen and (max-width: 992px) {
+    height: 50vh;
+    width: 70vw;
+  }
+}
+
+.modal__header {
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  border-bottom: solid 1px rgb(var(--secondary-bg_700));
+  width: 100%;
+}
+
+.modal__title {
+  font-size: 16px;
+  line-height: 18px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.modal__close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: transparent;
+  border: 0;
+  width: 34px;
+  height: 34px;
+  cursor: pointer;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 2px;
+    background-color: var(--bg-color_100);
+  }
+
+  &::before {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+
+  &::after {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+}
+
+
+.modal__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+
+  ::-webkit-file-upload-button {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 18px;
+    text-decoration: none;
+    padding: 7px 16px;
+    border: none;
+    border-radius: 8px;
+    white-space: nowrap;
+    transition: background-color .2s;
+    cursor: pointer;
+    background-color: rgb(var(--primary-bg_500));
+    color: rgb(var(--text-color_100));
+
+    &:hover:not(:disabled) {
+      background-color: rgb(var(--primary-bg_700));
+    }
+  }
+}
+
+.form {
+  position: relative;
+}
+
+.form__image {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.form__file {
+  margin-top: 40%;
+
+  @media screen and (max-width: 992px) {
+    margin-top: 16vh;
+  }
+}
+
+.form__footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 16px;
+  margin-top: auto;
+}
+
+.form__text {
+  width: 100%;
+  border-radius: 4px;
+  resize: none;
+  border-color: rgb(var(--secondary-bg_700));
+}

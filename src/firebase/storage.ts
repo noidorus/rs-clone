@@ -10,7 +10,7 @@ import { firebase } from './lib';
 
 type CallBackType = (url: string, imagePath: string) => void;
 
-export function loadImageToStorage(image: File, callback: CallBackType) {
+export function loadImageToStorage(image: File, callback: CallBackType): string {
   const storage = getStorage(firebase);
 
   const imageId = uuidv4();
