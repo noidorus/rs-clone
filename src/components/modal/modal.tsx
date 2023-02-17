@@ -65,17 +65,20 @@ export default function UploadImageModal({
       <div className='modal__inner'>
         <header className='modal__header'>
           <h3 className='modal__title'>{type === 'avatar' ? 'Update Avatar!' : 'Upload Image!'}</h3>
+          {imgError && <p>{imgError}</p>}
         </header>
         <form
           className='modal__body form'
           onSubmit={handleSubmit}
         >
-          {imgError && <p>{imgError}</p>}
-          {imagePreviewSrc ? (
-            <img className='form__image' src={imagePreviewSrc} width="300" />
-          ): null}
-          <input className='form__file' type="file" onChange={(e) => handleUpload(e.target.files)} />
-
+          <div className='form__image-wrapper'>
+            <img className='form__image' src={imagePreviewSrc ? imagePreviewSrc : './images/placeholder-image.png'} />
+            <input className='form__file' type="file" onChange={(e) => handleUpload(e.target.files)} />
+            { !imagePreviewSrc ? (
+              <button className='form__action button button--primary' type='button'>Load file</button>
+              ) : null
+            }
+          </div>
           <footer className='form__footer'>
             {setCaption ? (
               <textarea
