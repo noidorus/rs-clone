@@ -6,11 +6,12 @@ import './like.scss';
 import { User } from 'firebase/auth';
 
 interface LikeProps {
-  photo: IPhotoDoc;
+  // photo: IPhotoDoc;
+  likes: string[];
+  docId: string
 }
 
-export default function Like({ photo }: LikeProps) {
-  const { likes, docId } = photo;
+export default function Like({ likes, docId }: LikeProps) {
   const loggedUser = useContext(UserContext).user as User;
 
   const [likesCount, setLikesCount] = useState(likes.length);

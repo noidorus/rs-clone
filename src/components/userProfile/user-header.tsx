@@ -5,7 +5,7 @@ import ProfileAvatar from '../profileAvatar/profile-avatar';
 import EditProfileButton from '../editProfileButton/editprofile';
 
 
-import { getLoggedUserData } from '../../hooks/getLoggedUserData';
+import { getUserDataHook } from '../../hooks/getLoggedUserData';
 import { isFollowingUserProfile, toggleFollow } from '../../firebase/services';
 
 interface Props {
@@ -20,7 +20,7 @@ export default function UserHeader({
   setFollowersCount,
 }: Props) {
   const loggedUser = useContext(UserContext).user;
-  const loggedUserData = getLoggedUserData(loggedUser?.uid);
+  const loggedUserData = getUserDataHook(loggedUser?.uid);
 
   const { username, avatarData, userId, docId, following } = user;
   const [isFollowingProfile, setIsFollowingProfile] = useState(false);

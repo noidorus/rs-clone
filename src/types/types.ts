@@ -23,8 +23,8 @@ export interface MyError {
 
 export interface IComment {
   comment: string;
-  displayName: string;
-  commentDate: number;
+  userId: string;
+  date: number;
 }
 
 
