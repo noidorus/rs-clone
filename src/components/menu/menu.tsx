@@ -32,6 +32,8 @@ export default function Menu({
     setSearchBlock(!searchBlock);
   }
 
+  
+
   return (
     <nav className={searchBlock ? 'main-nav main-nav--compact' : 'main-nav'}>
       <Link className="main-nav__logo" to={ROUTES.DASHBOARD}>
@@ -66,21 +68,6 @@ export default function Menu({
             onClick={openSearchBlock}
           >
             <span className="main-nav__text">Search</span>
-          </a>
-        </li>
-        <li className="main-nav__item">
-          <a className="main-nav__link main-nav__link--explore" href="#">
-            <span className="main-nav__text">Explore</span>
-          </a>
-        </li>
-        <li className="main-nav__item">
-          <a className="main-nav__link main-nav__link--reels" href="#">
-            <span className="main-nav__text">Reels</span>
-          </a>
-        </li>
-        <li className="main-nav__item">
-          <a className="main-nav__link main-nav__link--messages" href="#">
-            <span className="main-nav__text">Messages</span>
           </a>
         </li>
         <li className="main-nav__item">

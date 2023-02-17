@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { IUser } from '../../types/types';
+import { IUser, IUserProfile } from '../../types/types';
 import './foundUsers.scss';
 
-function PreviewUser({ user }: { user: IUser }) {
+function PreviewUser({ user }: { user: IUserProfile }) {
   const { username, fullName, avatarData } = user;
   const src = avatarData?.avatarSrc || './images/icons/profile.jpg';
 

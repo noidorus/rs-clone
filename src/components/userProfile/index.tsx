@@ -1,6 +1,6 @@
 import React, { useEffect, useState, Dispatch, SetStateAction } from 'react';
 import UserHeader from './user-header';
-import Timeline from './timeline';
+import Timeline from '../timeline';
 import { IUserProfile, IPhoto, IPhotoDoc } from '../../types/types';
 import { getPhotosByUserId } from '../../firebase/services';
 
