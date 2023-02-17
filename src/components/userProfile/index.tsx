@@ -22,9 +22,12 @@ export default function UserProfile({
     async function getProfileInfoAndPhotos() {
       if (user) {
         const photos = await getPhotosByUserId(user.userId);
+        const sortedPhotos = photos.sort(
+          (a, b) => b.dateCreated - a.dateCreated
+        );
         setProfile(user);
         setFollowersCount(user.followers.length);
-        setPhotos(photos);
+        setPhotos(sortedPhotos);
       }
     }
     getProfileInfoAndPhotos();

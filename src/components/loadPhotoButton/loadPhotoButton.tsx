@@ -1,18 +1,50 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, Dispatch, SetStateAction } from 'react';
 import UserContext from '../../context/user-context';
-import { setPhotoData } from '../../firebase/services';
+import { sendPhotoDataToFirestore } from '../../firebase/services';
 import { User } from 'firebase/auth';
 import UploadImageModal from '../modal/modal';
 
-export default function LoadPhotoButton() {
+import { IPhotoDoc } from '../../types/types';
+
+interface Props {
+  isMainPage: boolean;
+  photos: IPhotoDoc[];
+  setPhotos: Dispatch<SetStateAction<IPhotoDoc[]>>;
+  profileUsername?: string;
+}
+
+export default function LoadPhotoButton({
+  isMainPage,
+  photos,
+  setPhotos,
+  profileUsername,
+}: Props) {
   const user = useContext(UserContext).user as User;
 
   const [showModal, setShowModal] = useState(false); // потом поменять на false
   const [caption, setCaption] = useState('');
 
-  // send Data to FireStore afte sending to Storage
-  const callback = (url: string, imagePath: string) => {
-    setPhotoData(imagePath, url, user.uid, caption);
+  // send Data to FireStore after sending to Storage
+  const callback = async (url: string, imagePath: string) => {
+    const imageData = {
+      caption: caption,
+      comments: [],
+      dateCreated: Date.now(),
+      imageSrc: url,
+      likes: [],
+      imagePath: imagePath,
+      userId: user.uid,
+    };
+
+    if (user.displayName == profileUsername || isMainPage) {
+      await sendPhotoDataToFirestore(imageData, (docId) => {
+        const photoDoc = { ...imageData, docId };
+        setPhotos([photoDoc, ...photos]);
+      });
+    } else {
+      await sendPhotoDataToFirestore(imageData);
+    }
+
     setShowModal(false);
     setCaption('');
   };

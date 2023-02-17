@@ -5,7 +5,6 @@ import { getRelativeTimeString } from '../../helpers/helpers';
 import Like from './like';
 import Comments from './comments-list';
 
-// function Post({ photo, user }: { photo: IPhotoDoc; user: IUserProfile }) {
 function Post({ photo, user }: { photo: IPhotoDoc; user: IUserProfile }) {
   const date = getRelativeTimeString(photo.dateCreated, 'en');
   const { likes, docId, comments } = photo;

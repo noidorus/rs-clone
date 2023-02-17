@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState, Dispatch, SetStateAction } from 'react';
 import { Link } from 'react-router-dom';
 import { getAuth, signOut } from 'firebase/auth';
 import FirebaseContext from '../../context/firebase-context';
@@ -9,8 +9,21 @@ import * as ROUTES from '../../constants/routes';
 import './menu.scss';
 import { FirebaseApp } from '@firebase/app-types';
 import SearchBlock from '../searhBlock/searchBlock';
+import { IPhotoDoc } from '../../types/types';
 
-export default function Menu({ isMainPage }: { isMainPage: boolean }) {
+interface MenuProps {
+  isMainPage: boolean;
+  photos: IPhotoDoc[];
+  setPhotos: Dispatch<SetStateAction<IPhotoDoc[]>>;
+  profileUsername?: string;
+}
+
+export default function Menu({
+  isMainPage,
+  photos,
+  setPhotos,
+  profileUsername,
+}: MenuProps) {
   const firebase = useContext(FirebaseContext)?.firebase as FirebaseApp;
   const [searchBlock, setSearchBlock] = useState(false);
   const { user } = useContext(UserContext);
@@ -77,7 +90,12 @@ export default function Menu({ isMainPage }: { isMainPage: boolean }) {
         </li>
         <li className="main-nav__item">
           {/* подправить стили внутри */}
-          <LoadPhotoButton />
+          <LoadPhotoButton
+            isMainPage={isMainPage}
+            photos={photos}
+            setPhotos={setPhotos}
+            profileUsername={profileUsername}
+          />
         </li>
         <li className="main-nav__item">
           {user ? (

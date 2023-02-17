@@ -155,26 +155,15 @@ export function getError(error: MyError) {
   }
 }
 
-export function setPhotoData(
-  photoId: string,
-  path: string,
-  userId: string,
-  caption: string
-) {
+export async function sendPhotoDataToFirestore(imageData: IPhoto, callback?: (data: string) => void) {
   const photoColl = collection(db, 'photos');
   const photoRef = doc(photoColl);
 
-  const imageData = {
-    caption: caption,
-    comments: [],
-    dateCreated: Date.now(),
-    imageSrc: path,
-    likes: [],
-    imagePath: photoId,
-    userId: userId,
-  };
+  await setDoc(photoRef, imageData);
 
-  setDoc(photoRef, imageData);
+  if (callback) {
+    callback(photoRef.id)
+  }
 }
 
 export async function getPhotosByUserId(userId: string) {

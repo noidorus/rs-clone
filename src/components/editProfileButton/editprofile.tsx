@@ -45,7 +45,6 @@ export default function EditProfileButton({ loggedUserData }: IProps) {
     } else {
       setError('That username is already taken, please try another!');
     }
-    console.log(usernameExists);
   };
 
   return (
