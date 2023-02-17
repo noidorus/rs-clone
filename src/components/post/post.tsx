@@ -3,11 +3,12 @@ import { IPhoto, IPhotoDoc, IUserProfile } from '../../types/types';
 import PreviewUser from '../foundUser/foundUsers';
 import { getRelativeTimeString } from '../../helpers/helpers';
 import Like from './like';
+import Comments from './comments-list';
 
 // function Post({ photo, user }: { photo: IPhotoDoc; user: IUserProfile }) {
 function Post({ photo, user }: { photo: IPhotoDoc; user: IUserProfile }) {
   const date = getRelativeTimeString(photo.dateCreated, 'en');
-  
+  const { likes, docId, comments } = photo;
 
   return (
     <div
@@ -33,6 +34,7 @@ function Post({ photo, user }: { photo: IPhotoDoc; user: IUserProfile }) {
           ...
         </div>
       </div>
+
       <div>
         <img
           src={photo.imageSrc}
@@ -43,19 +45,19 @@ function Post({ photo, user }: { photo: IPhotoDoc; user: IUserProfile }) {
         />
       </div>
 
-      <Like photo={photo} />
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Like likes={likes} docId={docId} />
+        <div>{date}</div>
+      </div>
 
       <div>{photo.caption}</div>
-      <div>{date}</div>
-      <div>
-        {/* {photo.comments.length !==0 && (<span>{photo.comments[0].comment}</span>)} */}
-        <span>Комментарий</span>
-        <span>Комментарий</span>
-      </div>
-      <div>
-        <input placeholder="Add a comment" />
-        <button>Post</button>
-      </div>
+
+      <Comments comments={comments} docId={docId} />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { IPhoto } from './../types/types';
+import { IComment, IPhoto } from './../types/types';
 import { IUser, MyError } from '../types/types';
 import {
   collection,
@@ -10,7 +10,7 @@ import {
   updateDoc,
   getDoc,
 } from 'firebase/firestore';
-import { db, firebase } from './lib';
+import { db } from './lib';
 
 export async function doesUsernameExist(username: string) {
   const querySnapshot = await getQuerySnapshot('users', 'username', username);
@@ -246,4 +246,15 @@ export async function toggleLike(
     const newArr = likes.filter((val) => val != loggedUserId);
     updateDoc(docRef, { likes: newArr }).catch((e) => console.log(e));
   }
+}
+
+export async function updateComments(data: IComment, docId: string) {
+  const photoColl = collection(db, 'photos');
+  const docRef = doc(photoColl, docId);
+  const photoDoc = await getDoc(docRef);
+  const { comments } = photoDoc.data() as IPhoto;
+
+  updateDoc(docRef, { comments: [...comments, data] }).catch((e) =>
+    console.log(e)
+  );
 }

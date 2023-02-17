@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import { IUserProfile } from "../types/types";
 import { getUserByUserId } from "../firebase/services";
 
-export function getLoggedUserData(userId: string | undefined) {
+export function getUserDataHook(userId: string | undefined) {
   const [activeUser, setActiveUser] = useState<IUserProfile | null>(null);
 
   useEffect(() => {
