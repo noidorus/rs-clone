@@ -5,6 +5,8 @@ import UploadImageModal from '../modal/modal';
 import { updateUserAvatar } from '../../firebase/services';
 import { deletePhotoFromStorage } from '../../firebase/storage';
 
+import './profile-avatar.scss'
+
 interface Props {
   avatarData: {
     avatarSrc: string;
@@ -38,26 +40,17 @@ export default function ProfileAvatar({
 
   return (
     <>
-      <div
+      <div className='avatar'
         style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '150px',
-          height: '150px',
-          border: '1px solid black',
-          borderRadius: '50%',
+          
         }}
         onClick={isLoggedUserProfile ? () => setShowModal(true) : undefined}
       >
         <img
-          style={{
-            width: '150px',
-            height: '150px',
-            borderRadius: '50%',
-          }}
+          className='avatar__image'
           src={avatarSrc ? avatarSrc : './images/icons/profile.jpg'}
           alt="avatar"
+          width='150'
         />
         <Skeleton circle height={150} width={150} count={1} />
       </div>

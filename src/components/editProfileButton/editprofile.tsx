@@ -50,6 +50,7 @@ export default function EditProfileButton({ loggedUserData }: IProps) {
   return (
     <>
       <button
+        className='button'
         onClick={() => {
           if (loggedUserData) {
             setNewUsername(loggedUserData.username);

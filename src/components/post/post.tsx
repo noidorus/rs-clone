@@ -17,9 +17,9 @@ function Post({ photo }: { photo: IPhotoDoc }) {
   }, [currUser]);
 
   return (
-    <div
+    <div className='post-list__item'
       style={{
-        maxWidth: '33%',
+        maxWidth: '32%',
       }}
     >
       <div
