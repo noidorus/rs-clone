@@ -1,34 +1,13 @@
-import React from 'react';
-import { IPhoto, IUserProfile } from '../../types/types';
+import React, { useState } from 'react';
+import { IPhoto, IPhotoDoc, IUserProfile } from '../../types/types';
 import PreviewUser from '../foundUser/foundUsers';
+import { getRelativeTimeString } from '../../helpers/helpers';
+import Like from './like';
 
-function Post({ photo, user }: { photo: IPhoto; user: IUserProfile }) {
-  function getRelativeTimeString(date: number, lang = navigator.language) {
-    const deltaSeconds = Math.round((date - Date.now()) / 1000);
-    if (Math.abs(deltaSeconds) > 3600 * 24 * 3) {
-      return new Date(date).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      });
-    } else {
-      const cutoffs = [60, 3600, 3600 * 24, 3600 * 24 * 7];
-      const units: Intl.RelativeTimeFormatUnit[] = [
-        'second',
-        'minute',
-        'hour',
-        'day',
-      ];
-      const unitIndex = cutoffs.findIndex(
-        (cutoff) => cutoff > Math.abs(deltaSeconds)
-      );
-      const divisor = unitIndex ? cutoffs[unitIndex - 1] : 1;
-      const rtf = new Intl.RelativeTimeFormat('en', {});
-      return rtf.format(Math.floor(deltaSeconds / divisor), units[unitIndex]);
-    }
-  }
-
+// function Post({ photo, user }: { photo: IPhotoDoc; user: IUserProfile }) {
+function Post({ photo, user }: { photo: IPhotoDoc; user: IUserProfile }) {
   const date = getRelativeTimeString(photo.dateCreated, 'en');
+  
 
   return (
     <div
@@ -63,28 +42,9 @@ function Post({ photo, user }: { photo: IPhoto; user: IUserProfile }) {
           }}
         />
       </div>
-      <div
-        style={{
-          display: 'flex',
-          gap: '20px',
-          alignItems: 'center',
-        }}
-      >
-        <div
-          style={{
-            background: 'url("./images/icons/notifications.svg") no-repeat',
-            width: '26px',
-            height: '26px',
-          }}
-        ></div>
-        <div>
-          {photo.likes.length !== 0 && (
-            <span>
-              {photo.likes.length} {photo.likes.length === 1 ? 'like' : 'likes'}
-            </span>
-          )}
-        </div>
-      </div>
+
+      <Like photo={photo} />
+
       <div>{photo.caption}</div>
       <div>{date}</div>
       <div>

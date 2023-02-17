@@ -1,3 +1,4 @@
+import { IPhoto } from './../types/types';
 import { IUser, MyError } from '../types/types';
 import {
   collection,
@@ -107,20 +108,13 @@ export async function setDataUsers() {
   return users;
 }
 
-export async function setDataPhotos() {
-  const photosColection = collection(db, 'photos');
-  const photosData = await getDocs(photosColection);
-  const photos = photosData.docs.map((photo) => photo.data());
-  return photos;
-}
-
 export async function getQuerySnapshot(
   collName: string,
   fieldPath: string,
   value: string
 ) {
-  const userColection = collection(db, collName);
-  const userQuery = query(userColection, where(fieldPath, '==', value));
+  const coll = collection(db, collName);
+  const userQuery = query(coll, where(fieldPath, '==', value));
 
   return await getDocs(userQuery);
 }
@@ -183,6 +177,18 @@ export function setPhotoData(
   setDoc(photoRef, imageData);
 }
 
+export async function getPhotosByUserId(userId: string) {
+  const photosQuery = await getQuerySnapshot('photos', 'userId', userId);
+
+  return photosQuery.docs.map((photo) => {
+    const photoData = photo.data() as IPhoto;
+    return {
+      ...photoData,
+      docId: photo.id,
+    };
+  });
+}
+
 export async function updateUserAvatar(
   url: string,
   imagePath: string,
@@ -219,5 +225,25 @@ export async function updateUserData(
       username: newUsername,
       fullName: newFullname,
     }).catch((err) => console.log(err));
+  }
+}
+
+export async function toggleLike(
+  isLikedPhoto: boolean,
+  docId: string,
+  loggedUserId: string
+) {
+  const photoColl = collection(db, 'photos');
+  const docRef = doc(photoColl, docId);
+  const photoDoc = await getDoc(docRef);
+  const { likes } = photoDoc.data() as IPhoto;
+
+  if (!isLikedPhoto) {
+    updateDoc(docRef, { likes: [...likes, loggedUserId] }).catch((e) =>
+      console.log(e)
+    );
+  } else {
+    const newArr = likes.filter((val) => val != loggedUserId);
+    updateDoc(docRef, { likes: newArr }).catch((e) => console.log(e));
   }
 }
