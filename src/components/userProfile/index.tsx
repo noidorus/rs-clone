@@ -4,6 +4,8 @@ import Timeline from '../timeline';
 import { IUserProfile, IPhoto, IPhotoDoc } from '../../types/types';
 import { getPhotosByUserId } from '../../firebase/services';
 
+import './index.scss';
+
 interface UserPageProps {
   user: IUserProfile;
   photos: IPhotoDoc[];
@@ -34,7 +36,7 @@ export default function UserProfile({
   }, [user?.username]);
 
   return (
-    <div>
+    <div className='profile'>
       {profile ? (
         <UserHeader
           user={profile}

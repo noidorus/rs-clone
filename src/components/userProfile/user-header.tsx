@@ -8,6 +8,8 @@ import EditProfileButton from '../editProfileButton/editprofile';
 import { getUserDataHook } from '../../hooks/getLoggedUserData';
 import { isFollowingUserProfile, toggleFollow } from '../../firebase/services';
 
+import './user-header.scss';
+
 interface Props {
   user: IUserProfile;
   followersCount: number;
@@ -58,36 +60,41 @@ export default function UserHeader({
   }, [loggedUser?.displayName, userId]);
 
   return (
-    <div
-      style={{
-        display: 'flex',
-      }}
+    <header
+      className='profile__header'
     >
+      <div className='profile__image'>
       <ProfileAvatar
         isLoggedUserProfile={isLoggedUserProfile}
         avatarData={avatarData ? avatarData : null}
       />
-
-      <div>
-        <h4>{username}</h4>
-        {isLoggedUserProfile ? (
-          <EditProfileButton  loggedUserData={loggedUserData} />
-        ) : (
-          <button onClick={handleToggleFollow}>
-            {isFollowingProfile ? 'Unfollow' : 'Follow'}
-          </button>
-        )}
-        <div
-          style={{
-            display: 'flex',
-            gap: '1em',
-          }}
-        >
-          <p>{0} - Publication</p>
-          <p>{followersCount} - Followers</p>
-          <p>{following.length} - Followings</p>
-        </div>
       </div>
-    </div>
+      <div className='profile__info info'>
+        <header className='info__header'>
+          <h4 className='info__title'>{username}</h4>
+          {isLoggedUserProfile ? (
+            <EditProfileButton  loggedUserData={loggedUserData} />
+          ) : (
+            <button className='button' onClick={handleToggleFollow}>
+              {isFollowingProfile ? 'Unfollow' : 'Follow'}
+            </button>
+          )}
+        </header>
+        <ul className='info__inner shared'>
+          <li className='shared__item'>
+            <span className='shared__value'>{0}</span>
+            <span className='shared__name'> Publication</span>
+          </li>
+          <li className='shared__item'>
+            <span className='shared__value'>{followersCount}</span>
+            <span className='shared__name'> Followers</span>
+          </li>
+          <li className='shared__item'>
+            <span className='shared__value'>{following.length}</span>
+            <span className='shared__name'> Followings</span>
+          </li>
+        </ul>
+      </div>
+    </header>
   );
 }

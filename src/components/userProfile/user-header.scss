@@ -1,0 +1,53 @@
+.profile__header {
+  display: flex;
+  padding-bottom: 44px;
+  border-bottom: solid 1px rgb(var(--secondary-bg_700));
+}
+
+.profile__image {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 30px;
+  flex-grow: 1;
+}
+
+.profile__info {
+  flex-grow: 2;
+}
+
+.info__header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.info__title {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 25px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.shared {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  list-style: none;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-left: 0;
+}
+
+.shared__value,
+.shared__name {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.shared__value {
+  font-weight: 600;
+}
