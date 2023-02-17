@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import UserContext from '../../context/user-context';
 import UploadImageModal from '../modal/modal';
@@ -20,8 +20,11 @@ export default function ProfileAvatar({
   const [showModal, setShowModal] = useState(false);
   const { user } = useContext(UserContext);
   const avatarPathToDeletePath = avatarData?.imagePath;
-
   const [avatarSrc, setAvatarSrc] = useState(avatarData?.avatarSrc);
+
+  useEffect(() => {
+    setAvatarSrc(avatarData?.avatarSrc);
+  }, [avatarData]);
 
   const callback = (url: string, imagePath: string) => {
     if (avatarPathToDeletePath) {
@@ -56,7 +59,7 @@ export default function ProfileAvatar({
           src={avatarSrc ? avatarSrc : './images/icons/profile.jpg'}
           alt="avatar"
         />
-        {/* <Skeleton circle height={150} width={150} count={1} /> */}
+        <Skeleton circle height={150} width={150} count={1} />
       </div>
 
       {showModal ? (

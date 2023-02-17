@@ -1,5 +1,5 @@
 import { User } from 'firebase/auth';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import UserContext from '../../context/user-context';
 
@@ -16,6 +16,10 @@ export default function Comments({ comments, docId }: CommentsProps) {
   const loggedUser = useContext(UserContext).user as User;
   const [newComment, setNewComment] = useState('');
   const [commentsArr, setCommentsArr] = useState(comments);
+
+  useEffect(() => {
+    setCommentsArr(comments);
+  }, [comments]);
 
   const submitComment = (e: React.FormEvent) => {
     e.preventDefault();

@@ -6,7 +6,6 @@ import './like.scss';
 import { User } from 'firebase/auth';
 
 interface LikeProps {
-  // photo: IPhotoDoc;
   likes: string[];
   docId: string
 }

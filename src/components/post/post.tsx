@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IPhoto, IPhotoDoc, IUserProfile } from '../../types/types';
 import PreviewUser from '../foundUser/foundUsers';
 import { getRelativeTimeString } from '../../helpers/helpers';
 import Like from './like';
 import Comments from './comments-list';
+import { getUserDataHook } from '../../hooks/getLoggedUserData';
 
-// function Post({ photo, user }: { photo: IPhotoDoc; user: IUserProfile }) {
-function Post({ photo, user }: { photo: IPhotoDoc; user: IUserProfile }) {
+function Post({ photo }: { photo: IPhotoDoc }) {
   const date = getRelativeTimeString(photo.dateCreated, 'en');
-  const { likes, docId, comments } = photo;
+  const { likes, docId, comments, userId } = photo;
+  const currUser = getUserDataHook(userId);
+  const [user, setUser] = useState(currUser);
+
+  useEffect(() => {
+    setUser(currUser);
+  }, [currUser]);
 
   return (
     <div
@@ -23,7 +29,7 @@ function Post({ photo, user }: { photo: IPhotoDoc; user: IUserProfile }) {
           justifyContent: 'space-between',
         }}
       >
-        <PreviewUser user={user} />
+        {user ? <PreviewUser user={user} /> : null}
         <div
           style={{
             fontSize: '50px',

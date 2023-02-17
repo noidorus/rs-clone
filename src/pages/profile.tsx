@@ -43,7 +43,7 @@ export default function Profile() {
 
   return (
     <main className="main-page">
-      <Menu isMainPage={false} />
+      <Menu isMainPage={false} photos={userPhotos} setPhotos={setUserPhotos} profileUsername={username} />
       {user ? <UserProfile user={user} photos={userPhotos} setPhotos={setUserPhotos} /> : null}
     </main>
   );
