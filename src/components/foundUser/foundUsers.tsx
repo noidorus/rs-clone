@@ -1,28 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { IUser } from '../../types/types';
+import './foundUsers.scss';
 
 function PreviewUser({ user }: { user: IUser }) {
   const { username, fullName, avatarData } = user;
   const src = avatarData?.avatarSrc || './images/icons/profile.jpg';
 
   return (
-    <div>
+    <div className='user'>
       <Link
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '10px',
-          padding: 0,
-          margin: '10px 0',
-        }}
+        className='user__link'
         to={`/${username}`}
       >
-        <img src={src} width="53" height="53" style={{
-          borderRadius: '50%'
-        }}/>
-        <span>{username}</span>
-        <span>({fullName})</span>
+        <div className='user__image-wrapper'>
+          <img className='user__image' src={src} width="44" height="44"/>
+        </div>
+        <div className='user__info'>
+          <span className='user__name'>{username}</span>
+          <span className='user__full-name'>({fullName})</span>
+        </div>
       </Link>
     </div>
   );

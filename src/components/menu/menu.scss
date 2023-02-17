@@ -11,6 +11,10 @@
   transition: width 0.5s;
   z-index: 1;
 
+  @media screen and (min-width: 1920px) {
+    width: 335px;
+  } 
+
   @media screen and (max-width: 1263px) {
     width: 72px;
 

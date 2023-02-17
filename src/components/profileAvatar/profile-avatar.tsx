@@ -18,7 +18,7 @@ export default function ProfileAvatar({
   isLoggedUserProfile,
 }: Props) {
   const [showModal, setShowModal] = useState(false);
-  const {user} = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const avatarPathToDeletePath = avatarData?.imagePath;
 
   const [avatarSrc, setAvatarSrc] = useState(avatarData?.avatarSrc);
