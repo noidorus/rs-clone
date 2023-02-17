@@ -1,47 +1,22 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import UserHeader from './user-header';
-import { IUserProfile, IPhoto } from '../../types/types';
-import { setDataPhotos } from '../../firebase/services';
-import Post from '../post/post';
+import Timeline from './timeline';
+import { IUserProfile, IPhoto, IPhotoDoc } from '../../types/types';
+import { getPhotosByUserId } from '../../firebase/services';
 
-interface IState {
-  profile: IUserProfile;
-  followersCount: number;
-}
-
-function getPhotosByUser(photos: IPhoto[], id: string) {
-  return photos
-    .filter((photo) => photo.userId === id)
-    .sort((a, b) => b.dateCreated - a.dateCreated);
-}
 
 export default function UserProfile({ user }: { user: IUserProfile | null }) {
-  const [photos, setPhoto] = useState<IPhoto[]>([]);
-  const [photosVisible, setPhotoVisible] = useState<IPhoto[]>([]);
-
+  const [photos, setPhoto] = useState<IPhotoDoc[]>([]);
   const [profile, setProfile] = useState<IUserProfile | null>(null);
   const [followersCount, setFollowersCount] = useState(0);
 
   useEffect(() => {
-    if (user) {
-      setPhotoVisible(getPhotosByUser(photos, user.userId));
-    } else {
-      setPhotoVisible([]);
-    }
-  }, [photos]);
-
-  useEffect(() => {
     async function getProfileInfoAndPhotos() {
       if (user) {
+        const photos = await getPhotosByUserId(user.userId)
         setProfile(user);
         setFollowersCount(user.followers.length);
-        setDataPhotos()
-          .then((data) => {
-            setPhoto(data as IPhoto[]);
-          })
-          .catch((err) => {
-            setPhoto([]);
-          });
+        setPhoto(photos);
       }
     }
 
@@ -58,23 +33,7 @@ export default function UserProfile({ user }: { user: IUserProfile | null }) {
         />
       ) : null}
 
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: '20px',
-        }}
-      >
-        {profile
-          ? photosVisible.map((photo, index) => {
-              return (
-                <div key={index}>
-                  <Post photo={photo} user={profile} />
-                </div>
-              );
-            })
-          : null}
-      </div>
+      {profile ? <Timeline photosData={photos} user={profile} /> : null}
     </div>
   );
 }
