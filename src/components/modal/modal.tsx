@@ -20,6 +20,8 @@ export default function UploadImageModal({
 }: Props) {
   const [imgUpload, setImgUpload] = useState<File | null>(null);
   const [imgError, setImgError] = useState('');
+  const [imagePreviewSrc, setImagePreviewSrc] = useState<string | undefined>(null);
+  const reader = new FileReader();
 
   const handleUpload = (filesList: FileList | null) => {
     const img = filesList ? filesList[0] : null;
@@ -33,6 +35,14 @@ export default function UploadImageModal({
     if (!img.type.includes('image')) {
       setImgError('Please select image file');
       return;
+    }
+
+    if (img) {
+      reader.readAsDataURL(img);
+      reader.addEventListener("load", function() {
+        const url = reader.result;
+        setImagePreviewSrc(url?.toString());
+      });
     }
 
     setImgError('');
@@ -53,46 +63,43 @@ export default function UploadImageModal({
   return (
     <div className='modal'>
       <div className='modal__inner'>
+        <header className='modal__header'>
+          <h3 className='modal__title'>{type === 'avatar' ? 'Update Avatar!' : 'Upload Image!'}</h3>
+        </header>
         <form
-          style={{
-            // Временные стили
-            border: '1px solid black',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexDirection: 'column',
-            width: '400px',
-            height: '400px',
-            background: '#fff'
-          }}
+          className='modal__body form'
           onSubmit={handleSubmit}
         >
           {imgError && <p>{imgError}</p>}
+          {imagePreviewSrc ? (
+            <img className='form__image' src={imagePreviewSrc} width="300" />
+          ): null}
+          <input className='form__file' type="file" onChange={(e) => handleUpload(e.target.files)} />
 
-          <h3>{type === 'avatar' ? 'Update Avatar!' : 'Upload Image!'}</h3>
-          <input type="file" onChange={(e) => handleUpload(e.target.files)} />
+          <footer className='form__footer'>
+            {setCaption ? (
+              <textarea
+                className='form__text'
+                placeholder="Your caption:"
+                rows={3}
+                onChange={(e) => setCaption(e.target.value.trim())}
+              />
+            ) : null}
 
-          {setCaption ? (
-            <textarea
-              placeholder="Your caption:"
-              rows={3}
-              onChange={(e) => setCaption(e.target.value.trim())}
-            />
-          ) : null}
-
-          <button type="submit">
-            {type === 'avatar' ? 'Update Avatar!' : 'Upload Image!'}
-          </button>
+            <button className='button button--primary' type="submit">
+              {type === 'avatar' ? 'Update Avatar!' : 'Upload Image!'}
+            </button>
+          </footer>
+        </form>
           <button
+            className='modal__close'
             type="button"
             onClick={(e) => {
               setShowModal(false);
               setImgUpload(null);
             }}
           >
-            Close modal
           </button>
-        </form>
       </div>
     </div>
   );
