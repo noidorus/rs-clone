@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { IPhoto, IPhotoDoc, IUserProfile } from '../../types/types';
+import { IPhotoDoc } from '../../types/types';
 import PreviewUser from '../foundUser/foundUsers';
 import { getRelativeTimeString } from '../../helpers/helpers';
 import Like from './like';
 import Comments from './comments-list';
 import { getUserDataHook } from '../../hooks/getLoggedUserData';
+import Skeleton from 'react-loading-skeleton';
+
 
 function Post({ photo }: { photo: IPhotoDoc }) {
   const date = getRelativeTimeString(photo.dateCreated, 'en');
@@ -17,7 +19,8 @@ function Post({ photo }: { photo: IPhotoDoc }) {
   }, [currUser]);
 
   return (
-    <div className='post-list__item'
+    <div
+      className="post-list__item"
       style={{
         maxWidth: '32%',
       }}
@@ -64,7 +67,7 @@ function Post({ photo }: { photo: IPhotoDoc }) {
       <div>{photo.caption}</div>
 
       <Comments comments={comments} docId={docId} />
-    </div>
+    </div> || <Skeleton />
   );
 }
 
