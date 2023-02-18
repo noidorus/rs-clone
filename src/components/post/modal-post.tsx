@@ -1,9 +1,16 @@
 import React, { useRef } from "react";
-import { ModalPropsType } from "../../types/types";
+import { IUserProfile, IPhotoDoc } from "../../types/types";
 import PreviewUser from "../foundUser/foundUsers";
 import Like from "./like";
 import { getRelativeTimeString } from '../../helpers/helpers';
 import Comments from "./comments-list";
+import { useOnClickOutside } from "../../helpers/useOnClickOutside";
+
+type ModalPropsType = {
+  user: IUserProfile | null; 
+  photo: IPhotoDoc;
+  closeModal: () => void;
+}
 
 function ModalPost(props: ModalPropsType) {
   const { caption, dateCreated, comments, docId, imageSrc, likes, userId } = props.photo;
@@ -12,14 +19,15 @@ function ModalPost(props: ModalPropsType) {
   if (!props.user) {
     return null
   }
+  useOnClickOutside(menuRef, props.closeModal);
 
   return (
-    <div ref={menuRef} className="modal">
       <div style={{
         width: '100%',
         margin: '0 5%'
       }}>
-        <div style={{
+    <div  className="modal">
+        <div ref={menuRef} style={{
           display: 'flex',
           backgroundColor: '#FFFFFF'
         }}>
@@ -82,3 +90,7 @@ function ModalPost(props: ModalPropsType) {
 }
 
 export default ModalPost;
+
+function dispatch(arg0: void) {
+  throw new Error("Function not implemented.");
+}

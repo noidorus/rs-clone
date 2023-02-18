@@ -29,10 +29,12 @@ export default function Menu({
   const { user } = useContext(UserContext);
 
   function openSearchBlock() {
-    setSearchBlock(!searchBlock);
+    setSearchBlock(true);
   }
-
   
+  function closeSearchBlock() {
+    setSearchBlock(false);
+  }
 
   return (
     <nav className={searchBlock ? 'main-nav main-nav--compact' : 'main-nav'}>
@@ -108,7 +110,9 @@ export default function Menu({
           </a>
         </li>
       </ul>
-      {searchBlock && <SearchBlock />}
+      {searchBlock && <SearchBlock 
+        closeSearchBlock={closeSearchBlock}
+      />}
     </nav>
   );
 }

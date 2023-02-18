@@ -13,7 +13,7 @@ export interface IUser {
 }
 
 export interface IUserProfile extends IUser {
-  docId: string;
+  docId?: string;
 }
 
 export interface MyError {
@@ -47,8 +47,3 @@ export type SearchPropsType = {
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   clearInput: () => void;
 };
-
-export type ModalPropsType = {
-  user: IUserProfile | null; 
-  photo: IPhotoDoc; 
-}
