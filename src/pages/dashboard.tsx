@@ -9,7 +9,7 @@ import MainPage from '../components/dashboard';
 export default function Dashboard() {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
-
+  
   const [photos, setPhotos] = useState<IPhotoDoc[]>([]);
 
   useEffect(() => {
