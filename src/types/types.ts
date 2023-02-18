@@ -47,3 +47,8 @@ export type SearchPropsType = {
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   clearInput: () => void;
 };
+
+export type ModalPropsType = {
+  user: IUserProfile | null; 
+  photo: IPhotoDoc; 
+}
