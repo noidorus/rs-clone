@@ -19,6 +19,7 @@ function Post({ photo }: { photo: IPhotoDoc }) {
   function showModal(): void {
     setIsOpenModal(true);
   }
+
   function closeModal(): void {
     setIsOpenModal(false);
   }

@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { setDataUsers } from "../../firebase/services";
+import { useOnClickOutside } from "../../helpers/useOnClickOutside";
 import { IUser } from "../../types/types";
 import PreviewUser from "../foundUser/foundUsers";
 import { Search } from "../search/search";
-
 import './searchBlock.scss';
-
 function filteredUsers(users: IUser[], value: string) {
   const filteredUsers = value
     ? users.filter(
@@ -16,14 +15,20 @@ function filteredUsers(users: IUser[], value: string) {
     : [];
   return filteredUsers;
 }
+export type propsCloseSearchBlock ={
+  closeSearchBlock:() => void;
+}
 
-function SearchBlock() {
+function SearchBlock(props: propsCloseSearchBlock) {
   const [value, setValue] = useState('');
   const [users, setUsers] = useState<IUser[]>([]);
   const [usersVisble, setUsersVisible] = useState<IUser[]>([]);
   const [status, setStatus] = useState<'loading' | 'error' | 'success'>(
     'success'
   );
+  const searchRef = useRef<HTMLDivElement>(null);
+  useOnClickOutside(searchRef, props.closeSearchBlock);
+
 
   useEffect(() => {
     setStatus('loading');
@@ -50,7 +55,7 @@ function SearchBlock() {
     setValue('');
   }
   return (
-    <div className="search">
+    <div ref={searchRef} className="search">
       <header className="search__header">
         <h2 className="search__title">Search</h2>
         <Search 
