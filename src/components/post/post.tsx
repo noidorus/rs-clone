@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { IPhoto, IPhotoDoc, IUserProfile } from '../../types/types';
-import { getUserDataHook } from '../../hooks/getLoggedUserData';
 import ModalPost from './modal-post';
-import Like from './like';
 import './post.scss';
-import Comments from './comments-list';
+import { IPhotoDoc } from '../../types/types';
 import PreviewUser from '../foundUser/foundUsers';
 import { getRelativeTimeString } from '../../helpers/helpers';
+import Like from './like';
+import Comments from './comments-list';
+import { getUserDataHook } from '../../hooks/getLoggedUserData';
+import Skeleton from 'react-loading-skeleton';
 
 function Post({ photo }: { photo: IPhotoDoc }) {
   const { likes, docId, dateCreated, comments, userId } = photo;
@@ -30,7 +31,8 @@ function Post({ photo }: { photo: IPhotoDoc }) {
 
   if (location.pathname === '/') {
     return (
-      <div className='post-list__item'
+      <div
+        className="post-list__item"
         style={{
           maxWidth: '32%',
         }}
@@ -77,11 +79,12 @@ function Post({ photo }: { photo: IPhotoDoc }) {
         <div>{photo.caption}</div>
 
         <Comments comments={comments} docId={docId} />
-      </div>
-    )
+      </div> || <Skeleton />
+    );
   } else {
     return (
-      <div className='post-list__item'
+      <div
+        className="post-list__item"
         style={{
           maxWidth: '32%',
         }}
@@ -107,8 +110,6 @@ function Post({ photo }: { photo: IPhotoDoc }) {
       </div>
     );
   }
-
-
 }
 
 export default Post;
