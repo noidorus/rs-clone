@@ -11,8 +11,7 @@ interface LikeProps {
 }
 
 export default function Like({ likes, docId }: LikeProps) {
-  const loggedUser = useContext(UserContext).user as User;
-
+  const loggedUser = useContext(UserContext).user as User;  
   const [likesCount, setLikesCount] = useState(likes.length);
   const [isLikedPhoto, setIsLikedPhoto] = useState(false);
 

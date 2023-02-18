@@ -10,22 +10,23 @@ import { getRelativeTimeString } from '../../helpers/helpers';
 
 function Post({ photo }: { photo: IPhotoDoc }) {
   const { likes, docId, dateCreated, comments, userId } = photo;
-    const date = getRelativeTimeString(dateCreated, 'en');
-
+  const date = getRelativeTimeString(dateCreated, 'en');
   const currUser = getUserDataHook(userId);
+  
   const [user, setUser] = useState(currUser);
   const [isOpenModal, setIsOpenModal] = useState(false);
-  console.log(location.pathname)
-  function showModal(isOpenModal: boolean): void {
+
+  function showModal(): void {
     setIsOpenModal(true);
   }
-  function closeModal(isOpenModal: boolean): void {
+  function closeModal(): void {
     setIsOpenModal(false);
   }
 
   useEffect(() => {
     setUser(currUser);
   }, [currUser]);
+
   if (location.pathname === '/') {
     return (
       <div className='post-list__item'
@@ -76,14 +77,14 @@ function Post({ photo }: { photo: IPhotoDoc }) {
 
         <Comments comments={comments} docId={docId} />
       </div>
-    );
+    )
   } else {
     return (
       <div className='post-list__item'
         style={{
           maxWidth: '32%',
         }}
-        onClick={() => showModal(isOpenModal)}>
+        onClick={() => showModal()}>
         <div className='post__image'>
           <img
             src={photo.imageSrc}
@@ -100,6 +101,7 @@ function Post({ photo }: { photo: IPhotoDoc }) {
         {isOpenModal && <ModalPost
           user={user}
           photo={photo}
+          closeModal={closeModal}
         />}
       </div>
     );
