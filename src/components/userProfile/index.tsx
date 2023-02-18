@@ -1,8 +1,10 @@
 import React, { useEffect, useState, Dispatch, SetStateAction } from 'react';
 import UserHeader from './user-header';
-import Timeline from './timeline';
+import Timeline from '../timeline';
 import { IUserProfile, IPhoto, IPhotoDoc } from '../../types/types';
 import { getPhotosByUserId } from '../../firebase/services';
+
+import './index.scss';
 
 interface UserPageProps {
   user: IUserProfile;
@@ -22,16 +24,19 @@ export default function UserProfile({
     async function getProfileInfoAndPhotos() {
       if (user) {
         const photos = await getPhotosByUserId(user.userId);
+        const sortedPhotos = photos.sort(
+          (a, b) => b.dateCreated - a.dateCreated
+        );
         setProfile(user);
         setFollowersCount(user.followers.length);
-        setPhotos(photos);
+        setPhotos(sortedPhotos);
       }
     }
     getProfileInfoAndPhotos();
   }, [user?.username]);
 
   return (
-    <div>
+    <div className='profile'>
       {profile ? (
         <UserHeader
           user={profile}

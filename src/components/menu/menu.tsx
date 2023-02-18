@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState, Dispatch, SetStateAction } from 'react';
 import { Link } from 'react-router-dom';
 import { getAuth, signOut } from 'firebase/auth';
 import FirebaseContext from '../../context/firebase-context';
@@ -9,14 +9,31 @@ import * as ROUTES from '../../constants/routes';
 import './menu.scss';
 import { FirebaseApp } from '@firebase/app-types';
 import SearchBlock from '../searhBlock/searchBlock';
+import { IPhotoDoc } from '../../types/types';
 
-export default function Menu({ isMainPage }: { isMainPage: boolean }) {
+interface MenuProps {
+  isMainPage: boolean;
+  photos: IPhotoDoc[];
+  setPhotos: Dispatch<SetStateAction<IPhotoDoc[]>>;
+  profileUsername?: string;
+}
+
+export default function Menu({
+  isMainPage,
+  photos,
+  setPhotos,
+  profileUsername,
+}: MenuProps) {
   const firebase = useContext(FirebaseContext)?.firebase as FirebaseApp;
   const [searchBlock, setSearchBlock] = useState(false);
   const { user } = useContext(UserContext);
 
   function openSearchBlock() {
-    setSearchBlock(!searchBlock);
+    setSearchBlock(true);
+  }
+  
+  function closeSearchBlock() {
+    setSearchBlock(false);
   }
 
   return (
@@ -56,28 +73,18 @@ export default function Menu({ isMainPage }: { isMainPage: boolean }) {
           </a>
         </li>
         <li className="main-nav__item">
-          <a className="main-nav__link main-nav__link--explore" href="#">
-            <span className="main-nav__text">Explore</span>
-          </a>
-        </li>
-        <li className="main-nav__item">
-          <a className="main-nav__link main-nav__link--reels" href="#">
-            <span className="main-nav__text">Reels</span>
-          </a>
-        </li>
-        <li className="main-nav__item">
-          <a className="main-nav__link main-nav__link--messages" href="#">
-            <span className="main-nav__text">Messages</span>
-          </a>
-        </li>
-        <li className="main-nav__item">
           <a className="main-nav__link main-nav__link--notifications" href="#">
             <span className="main-nav__text">Notifications</span>
           </a>
         </li>
         <li className="main-nav__item">
           {/* подправить стили внутри */}
-          <LoadPhotoButton />
+          <LoadPhotoButton
+            isMainPage={isMainPage}
+            photos={photos}
+            setPhotos={setPhotos}
+            profileUsername={profileUsername}
+          />
         </li>
         <li className="main-nav__item">
           {user ? (
@@ -103,7 +110,9 @@ export default function Menu({ isMainPage }: { isMainPage: boolean }) {
           </a>
         </li>
       </ul>
-      {searchBlock && <SearchBlock />}
+      {searchBlock && <SearchBlock 
+        closeSearchBlock={closeSearchBlock}
+      />}
     </nav>
   );
 }

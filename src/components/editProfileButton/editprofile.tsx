@@ -45,12 +45,12 @@ export default function EditProfileButton({ loggedUserData }: IProps) {
     } else {
       setError('That username is already taken, please try another!');
     }
-    console.log(usernameExists);
   };
 
   return (
     <>
       <button
+        className='button'
         onClick={() => {
           if (loggedUserData) {
             setNewUsername(loggedUserData.username);

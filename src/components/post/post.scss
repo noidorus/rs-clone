@@ -1,0 +1,42 @@
+.post__preview {
+  display: none;
+}
+.post__image {
+  height: 313px;
+}
+.post__image > img{
+  width: 293px;
+  height: 293px;
+  cursor: pointer;
+}
+.post__image:hover img {
+  filter: brightness(0.65);
+}
+.post__image:hover .post__preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(0, -150px);
+}
+
+.post-preview__likes {
+  background: url('../../../public/images/icons/notifications-white.svg')
+    no-repeat;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.post-preview__comments {
+  background: url('../../../public/images/icons/messages-fill.svg')
+    no-repeat;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.post-preview__text {
+  color: white;
+  font-size: 32px;
+  font-weight: 700;
+}

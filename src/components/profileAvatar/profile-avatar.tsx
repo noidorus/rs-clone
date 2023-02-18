@@ -1,9 +1,11 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import UserContext from '../../context/user-context';
 import UploadImageModal from '../modal/modal';
 import { updateUserAvatar } from '../../firebase/services';
 import { deletePhotoFromStorage } from '../../firebase/storage';
+
+import './profile-avatar.scss'
 
 interface Props {
   avatarData: {
@@ -20,8 +22,11 @@ export default function ProfileAvatar({
   const [showModal, setShowModal] = useState(false);
   const { user } = useContext(UserContext);
   const avatarPathToDeletePath = avatarData?.imagePath;
-
   const [avatarSrc, setAvatarSrc] = useState(avatarData?.avatarSrc);
+
+  useEffect(() => {
+    setAvatarSrc(avatarData?.avatarSrc);
+  }, [avatarData]);
 
   const callback = (url: string, imagePath: string) => {
     if (avatarPathToDeletePath) {
@@ -35,28 +40,19 @@ export default function ProfileAvatar({
 
   return (
     <>
-      <div
+      <div className='avatar'
         style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '150px',
-          height: '150px',
-          border: '1px solid black',
-          borderRadius: '50%',
+          
         }}
         onClick={isLoggedUserProfile ? () => setShowModal(true) : undefined}
       >
         <img
-          style={{
-            width: '150px',
-            height: '150px',
-            borderRadius: '50%',
-          }}
+          className='avatar__image'
           src={avatarSrc ? avatarSrc : './images/icons/profile.jpg'}
           alt="avatar"
+          width='150'
         />
-        {/* <Skeleton circle height={150} width={150} count={1} /> */}
+        <Skeleton circle height={150} width={150} count={1} />
       </div>
 
       {showModal ? (
