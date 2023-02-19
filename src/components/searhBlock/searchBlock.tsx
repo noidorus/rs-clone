@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { setDataUsers } from "../../firebase/services";
-import { useOnClickOutside } from "../../helpers/useOnClickOutside";
-import { IUser } from "../../types/types";
+import { useOnClickOutside } from "../../hooks/useOnClickOutside";
+import { IUser, IUserProfile } from "../../types/types";
 import PreviewUser from "../post/post-header";
 import { Search } from "../search/search";
 import './searchBlock.scss';
-function filteredUsers(users: IUser[], value: string) {
+
+
+function filteredUsers(users: IUserProfile[], value: string) {
   const filteredUsers = value
     ? users.filter(
         (user) =>
@@ -21,8 +23,8 @@ export type propsCloseSearchBlock ={
 
 function SearchBlock(props: propsCloseSearchBlock) {
   const [value, setValue] = useState('');
-  const [users, setUsers] = useState<IUser[]>([]);
-  const [usersVisble, setUsersVisible] = useState<IUser[]>([]);
+  const [users, setUsers] = useState<IUserProfile[]>([]);
+  const [usersVisble, setUsersVisible] = useState<IUserProfile[]>([]);
   const [status, setStatus] = useState<'loading' | 'error' | 'success'>(
     'success'
   );
@@ -35,7 +37,7 @@ function SearchBlock(props: propsCloseSearchBlock) {
     setDataUsers()
       .then((data) => {
         setStatus('success');
-        setUsers(data as IUser[]);
+        setUsers(data as IUserProfile[]);
       })
       .catch((err) => {
         setStatus('error');

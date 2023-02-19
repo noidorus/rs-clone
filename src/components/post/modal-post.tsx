@@ -10,7 +10,7 @@ import PostHeader from './post-header';
 import Like from './like';
 import { getRelativeTimeString } from '../../helpers/helpers';
 import Comments from './comments-list';
-import { useOnClickOutside } from '../../helpers/useOnClickOutside';
+import { useOnClickOutside } from '../../hooks/useOnClickOutside';
 import CommentForm from './comment-form';
 
 type ModalPropsType = {
