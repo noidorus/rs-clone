@@ -5,21 +5,19 @@ import { User } from 'firebase/auth';
 import UploadImageModal from '../modal/modal';
 
 import { IPhotoDoc } from '../../types/types';
+import PhotosContext from '../../context/photos-context';
 
 interface Props {
   isMainPage: boolean;
-  photos: IPhotoDoc[];
-  setPhotos: Dispatch<SetStateAction<IPhotoDoc[]>>;
   profileUsername?: string;
 }
 
 export default function LoadPhotoButton({
   isMainPage,
-  photos,
-  setPhotos,
   profileUsername,
 }: Props) {
   const user = useContext(UserContext).user as User;
+  const { photos, setPhotos } = useContext(PhotosContext);
 
   const [showModal, setShowModal] = useState(false); // потом поменять на false
   const [caption, setCaption] = useState('');

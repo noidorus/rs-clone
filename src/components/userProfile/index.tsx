@@ -1,24 +1,22 @@
-import React, { useEffect, useState, Dispatch, SetStateAction } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import UserHeader from './user-header';
 import Timeline from '../timeline';
-import { IUserProfile, IPhoto, IPhotoDoc } from '../../types/types';
+import { IUserProfile } from '../../types/types';
 import { getPhotosByUserId } from '../../firebase/services';
 
 import './index.scss';
+import PhotosContext from '../../context/photos-context';
 
 interface UserPageProps {
   user: IUserProfile;
-  photos: IPhotoDoc[];
-  setPhotos: Dispatch<SetStateAction<IPhotoDoc[]>>;
 }
 
 export default function UserProfile({
   user,
-  photos,
-  setPhotos,
 }: UserPageProps) {
   const [profile, setProfile] = useState<IUserProfile | null>(null);
   const [followersCount, setFollowersCount] = useState(0);
+  const {setPhotos} = useContext(PhotosContext)
 
   useEffect(() => {
     async function getProfileInfoAndPhotos() {
@@ -45,7 +43,7 @@ export default function UserProfile({
         />
       ) : null}
 
-      {profile ? <Timeline photosData={photos} user={profile} /> : null}
+      {profile ? <Timeline  /> : null}
     </div>
   );
 }

@@ -1,21 +1,20 @@
-import { async } from '@firebase/util';
 import { User } from 'firebase/auth';
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
+import PhotosContext from '../../context/photos-context';
 import { getPhotosByUserId } from '../../firebase/services';
 import { getUserDataHook } from '../../hooks/getLoggedUserData';
 import { IPhotoDoc } from '../../types/types';
 import Timeline from '../timeline';
 
-import './index.scss'
+import './index.scss';
 
 interface MainPageProps {
-  photos: IPhotoDoc[];
-  setPhotos: Dispatch<SetStateAction<IPhotoDoc[]>>;
   user: User;
 }
 
-export default function MainPage({ photos, setPhotos, user }: MainPageProps) {
+export default function MainPage({ user }: MainPageProps) {
   const userData = getUserDataHook(user.uid);
+  const { setPhotos } = useContext(PhotosContext);
 
   useEffect(() => {
     async function getPhotos() {
@@ -39,8 +38,8 @@ export default function MainPage({ photos, setPhotos, user }: MainPageProps) {
   }, [userData]);
 
   return (
-    <div className='dashboard'>
-      <Timeline photosData={photos} />
+    <div className="dashboard">
+      <Timeline />
     </div>
   );
 }

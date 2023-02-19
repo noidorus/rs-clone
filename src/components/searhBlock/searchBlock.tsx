@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { setDataUsers } from "../../firebase/services";
 import { useOnClickOutside } from "../../helpers/useOnClickOutside";
 import { IUser } from "../../types/types";
-import PreviewUser from "../foundUser/foundUsers";
+import PreviewUser from "../post/post-header";
 import { Search } from "../search/search";
 import './searchBlock.scss';
 function filteredUsers(users: IUser[], value: string) {

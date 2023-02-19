@@ -7,6 +7,7 @@ import { IPhotoDoc, IUserProfile } from '../types/types';
 import Menu from '../components/menu/menu';
 import UserProfile from '../components/userProfile';
 import './profile.scss';
+import PhotosContext from '../context/photos-context';
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ export default function Profile() {
   const loggedUser = useContext(UserContext).user;
 
   const [user, setUser] = useState<IUserProfile | null>(null);
-  const [userPhotos, setUserPhotos] = useState<IPhotoDoc[]>([]);;
+  const [photos, setPhotos] = useState<IPhotoDoc[]>([]);
 
   useEffect(() => {
     document.title = `Instagram - ${username}`;
@@ -42,9 +43,18 @@ export default function Profile() {
   }, [username, navigate]);
 
   return (
-    <main className="main-page">
-      <Menu isMainPage={false} photos={userPhotos} setPhotos={setUserPhotos} profileUsername={username} />
-      {user ? <UserProfile user={user} photos={userPhotos} setPhotos={setUserPhotos} /> : null}
-    </main>
+    <PhotosContext.Provider value={{photos, setPhotos}}>
+      <main className="main-page">
+        <Menu
+          isMainPage={false}
+          profileUsername={username}
+        />
+        {user ? (
+          <UserProfile
+            user={user}
+          />
+        ) : null}
+      </main>
+    </PhotosContext.Provider>
   );
 }
