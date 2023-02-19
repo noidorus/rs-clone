@@ -13,15 +13,11 @@ import { IPhotoDoc } from '../../types/types';
 
 interface MenuProps {
   isMainPage: boolean;
-  photos: IPhotoDoc[];
-  setPhotos: Dispatch<SetStateAction<IPhotoDoc[]>>;
   profileUsername?: string;
 }
 
 export default function Menu({
   isMainPage,
-  photos,
-  setPhotos,
   profileUsername,
 }: MenuProps) {
   const firebase = useContext(FirebaseContext)?.firebase as FirebaseApp;
@@ -81,8 +77,6 @@ export default function Menu({
           {/* подправить стили внутри */}
           <LoadPhotoButton
             isMainPage={isMainPage}
-            photos={photos}
-            setPhotos={setPhotos}
             profileUsername={profileUsername}
           />
         </li>

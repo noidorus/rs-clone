@@ -1,5 +1,4 @@
-import { IComment, IPhoto } from './../types/types';
-import { IUser, MyError } from '../types/types';
+import { IComment, IPhoto, IUser, MyError } from './../types/types';
 import {
   collection,
   query,
@@ -104,7 +103,10 @@ export async function getUserByUserId(userId: string) {
 export async function setDataUsers() {
   const usersColection = collection(db, 'users');
   const usersData = await getDocs(usersColection);
-  const users = usersData.docs.map((user) => user.data());
+  const users = usersData.docs.map((user) => {
+    const data = user.data() as IUser;
+    return { ...data, docId: user.id };
+  });
   return users;
 }
 
@@ -155,14 +157,17 @@ export function getError(error: MyError) {
   }
 }
 
-export async function sendPhotoDataToFirestore(imageData: IPhoto, callback?: (data: string) => void) {
+export async function sendPhotoDataToFirestore(
+  imageData: IPhoto,
+  callback?: (data: string) => void
+) {
   const photoColl = collection(db, 'photos');
   const photoRef = doc(photoColl);
 
   await setDoc(photoRef, imageData);
 
   if (callback) {
-    callback(photoRef.id)
+    callback(photoRef.id);
   }
 }
 

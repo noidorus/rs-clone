@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Post from './post/post';
 
 import { IPhotoDoc, IUserProfile } from '../types/types';
 
 import './timeline.scss';
+import PhotosContext from '../context/photos-context';
 
-interface TimeLineProps {
-  photosData: IPhotoDoc[];
-  user?: IUserProfile;
-}
 
-export default function Timeline({ photosData }: TimeLineProps) {
-  const elements = photosData.map((photo, index) => {
+
+export default function Timeline() {
+  const {photos} = useContext(PhotosContext)
+
+  const elements = photos.map((photo, index) => {
     return <Post key={index} photo={photo} />;
   });
 

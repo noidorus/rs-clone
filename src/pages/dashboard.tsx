@@ -5,11 +5,12 @@ import * as ROUTES from '../constants/routes';
 import { useNavigate } from 'react-router-dom';
 import { IPhotoDoc } from '../types/types';
 import MainPage from '../components/dashboard';
+import PhotosContext from '../context/photos-context';
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
-  
+
   const [photos, setPhotos] = useState<IPhotoDoc[]>([]);
 
   useEffect(() => {
@@ -23,9 +24,13 @@ export default function Dashboard() {
   }, [user]);
 
   return (
-    <main className="main-page">
-      <Menu isMainPage={true} photos={photos} setPhotos={setPhotos} />
-      {user ? <MainPage photos={photos} setPhotos={setPhotos} user={user} /> : null}
-    </main>
+    <PhotosContext.Provider value={{photos, setPhotos}}>
+      <main className="main-page">
+        <Menu isMainPage={true} />
+        {user ? (
+          <MainPage user={user} />
+        ) : null}
+      </main>
+    </PhotosContext.Provider>
   );
 }
