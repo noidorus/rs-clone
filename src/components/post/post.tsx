@@ -9,6 +9,7 @@ import Comments from './comments-list';
 import { getUserDataHook } from '../../hooks/getLoggedUserData';
 import Skeleton from 'react-loading-skeleton';
 import CommentForm from './comment-form';
+import CommentsContext from '../../context/comments-context';
 
 function Post({ photo }: { photo: IPhotoDoc }) {
   const { likes, docId, dateCreated, comments, userId } = photo;
@@ -17,7 +18,7 @@ function Post({ photo }: { photo: IPhotoDoc }) {
 
   const [user, setUser] = useState(currUser);
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [commentsArr, setCommentsArr] = useState(comments);
+  const [commentsArr, setCommentsArr] = useState<IComment[]>([]);
 
   function showModal(): void {
     setIsOpenModal(true);
@@ -31,9 +32,13 @@ function Post({ photo }: { photo: IPhotoDoc }) {
     setUser(currUser);
   }, [currUser]);
 
+  useEffect(() => {
+    setCommentsArr(comments);
+  }, [comments]);
+
   if (location.pathname === '/') {
     return (
-      (
+      <CommentsContext.Provider value={{ commentsArr, setCommentsArr }}>
         <div
           className="post-list__item"
           style={{
@@ -78,26 +83,17 @@ function Post({ photo }: { photo: IPhotoDoc }) {
             </p>
           ) : null}
 
-          <CommentForm
-            comments={commentsArr}
-            docId={docId}
-            setCommentsArr={setCommentsArr}
-          />
+          <CommentForm docId={docId} />
 
           {isOpenModal && (
-            <ModalPost
-              user={user}
-              commentsArr={comments}
-              photo={photo}
-              closeModal={closeModal}
-            />
+            <ModalPost user={user} photo={photo} closeModal={closeModal} />
           )}
         </div>
-      ) || <Skeleton />
+      </CommentsContext.Provider>
     );
   } else {
     return (
-      (
+      <CommentsContext.Provider value={{ commentsArr, setCommentsArr }}>
         <div
           className="post-list__item"
           style={{
@@ -125,13 +121,13 @@ function Post({ photo }: { photo: IPhotoDoc }) {
           {isOpenModal && (
             <ModalPost
               user={user}
-              commentsArr={comments}
+              // commentsArr={comments}
               photo={photo}
               closeModal={closeModal}
             />
           )}
         </div>
-      ) || <Skeleton />
+      </CommentsContext.Provider>
     );
   }
 }

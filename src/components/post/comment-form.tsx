@@ -3,19 +3,24 @@ import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
 import UserContext from '../../context/user-context';
 import { IComment } from '../../types/types';
 import { updateComments } from '../../firebase/services';
+import CommentsContext from '../../context/comments-context';
 
 interface CommentsProps {
-  comments: IComment[];
+  // comments: IComment[];
   docId: string;
-  setCommentsArr: Dispatch<SetStateAction<IComment[]>>
+  // setCommentsArr: Dispatch<SetStateAction<IComment[]>>
 }
 
-export default function CommentForm({ comments, setCommentsArr , docId }: CommentsProps) {
+export default function CommentForm({ docId }: CommentsProps) {
   const loggedUser = useContext(UserContext).user as User;
+  const {commentsArr, setCommentsArr} = useContext(CommentsContext)
+
+
   const [newComment, setNewComment] = useState('');
 
   const submitComment = (e: React.FormEvent) => {
     e.preventDefault();
+
     const commentData = {
       comment: newComment,
       date: Date.now(),
@@ -24,7 +29,8 @@ export default function CommentForm({ comments, setCommentsArr , docId }: Commen
 
     if (newComment.length > 0) {
       updateComments(commentData, docId).catch((e) => console.log(e));
-      setCommentsArr([...comments, commentData]);
+      setCommentsArr([...commentsArr, commentData]);
+      // console.log(comments)
     }
 
     setNewComment('');

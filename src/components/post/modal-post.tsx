@@ -4,6 +4,7 @@ import React, {
   SetStateAction,
   useEffect,
   useState,
+  useContext,
 } from 'react';
 import { IUserProfile, IPhotoDoc, IComment } from '../../types/types';
 import PostHeader from './post-header';
@@ -12,24 +13,28 @@ import { getRelativeTimeString } from '../../helpers/helpers';
 import Comments from './comments-list';
 import { useOnClickOutside } from '../../hooks/useOnClickOutside';
 import CommentForm from './comment-form';
+import CommentsContext from '../../context/comments-context';
 
 type ModalPropsType = {
   user: IUserProfile | null;
   photo: IPhotoDoc;
   closeModal: () => void;
-  commentsArr: IComment[];
+  // commentsArr: IComment[];
 };
 
-function ModalPost({ user, photo, closeModal, commentsArr }: ModalPropsType) {
+function ModalPost({ user, photo, closeModal }: ModalPropsType) {
+// function ModalPost({ user, photo, closeModal, commentsArr }: ModalPropsType) {
   const { caption, dateCreated, docId, imageSrc, likes } = photo;
   const date = getRelativeTimeString(dateCreated, 'en');
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const [comments, setComments] = useState(commentsArr);
-
-  useEffect(() => {
-    setComments(commentsArr);
-  }, [commentsArr]);
+  const {commentsArr, setCommentsArr} = useContext(CommentsContext)
+  // const [comments, setComments] = useState(commentsArr);
+ 
+  // useEffect(() => {
+  //   setComments(commentsArr);
+  //   console.log('comments', comments)
+  // }, [commentsArr]);
 
   useOnClickOutside(menuRef, closeModal);
 
@@ -85,7 +90,7 @@ function ModalPost({ user, photo, closeModal, commentsArr }: ModalPropsType) {
             >
               <div>{caption}</div>
 
-              <Comments comments={comments} />
+              <Comments comments={commentsArr} />
 
               <div>
                 <div style={{
@@ -97,8 +102,8 @@ function ModalPost({ user, photo, closeModal, commentsArr }: ModalPropsType) {
                 </div>
                 
                 <CommentForm
-                  setCommentsArr={setComments}
-                  comments={comments}
+                  // setCommentsArr={setComments}
+                  // comments={comments}
                   docId={docId}
                 />
               </div>
