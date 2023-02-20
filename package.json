@@ -6,7 +6,7 @@
     "build": "webpack --config ./webpack.config.js --env mode=prod",
     "lint": "eslint . --ext .ts",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "netlify deploy"
   },
   "homepage": "https://huffpufftuff.github.io/rs-clone/",
   "dependencies": {
