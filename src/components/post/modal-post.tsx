@@ -22,7 +22,7 @@ type ModalPropsType = {
 };
 
 function ModalPost({ user, photo, closeModal }: ModalPropsType) {
-  const { caption, dateCreated, docId, imageSrc, likes } = photo;
+  const { caption, dateCreated, docId, imageSrc, likes, userId } = photo;
   const date = getRelativeTimeString(dateCreated, 'en');
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -82,7 +82,7 @@ function ModalPost({ user, photo, closeModal }: ModalPropsType) {
             >
               <div>{caption}</div>
 
-              <Comments comments={commentsArr} />
+              <Comments comments={commentsArr} photoDocId={docId} photoUserId={userId} />
 
               <div>
                 <div

@@ -1,20 +1,48 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { getUserDataHook } from '../../hooks/getLoggedUserData';
 import { getRelativeTimeString } from '../../helpers/helpers';
 import { IComment, IUserProfile } from '../../types/types';
+import UserContext from '../../context/user-context';
+import { deleteComment } from '../../firebase/services';
+import CommentsContext from '../../context/comments-context';
 
 interface CommentProps {
   commentData: IComment;
+  photoDocId: string;
+  photoUserId: string;
 }
 
-export default function CommentItem({ commentData }: CommentProps) {
+export default function CommentItem({
+  commentData,
+  photoDocId,
+  photoUserId,
+}: CommentProps) {
   const { userId, comment, date } = commentData;
   const prettyDate = getRelativeTimeString(date, 'en');
   const commentUser = getUserDataHook(userId);
-  const [user, setUSer] = useState<IUserProfile | null>(null);
+  const loggedUser = useContext(UserContext).user;
+  const [user, setUser] = useState<IUserProfile | null>(commentUser);
+  const { setCommentsArr } = useContext(CommentsContext);
+
+  const checkCanDelete = () => {
+    if (photoUserId == loggedUser?.uid) {
+      return true;
+    } else if (userId == loggedUser?.uid) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const canDelete = checkCanDelete();
+
+  const handleDeleteComment = async () => {
+    const newCommentsArr = await deleteComment(photoDocId, date);
+    setCommentsArr(newCommentsArr);
+  };
 
   useEffect(() => {
-    setUSer(commentUser);
+    setUser(commentUser);
   }, [commentUser]);
 
   return (
@@ -29,7 +57,17 @@ export default function CommentItem({ commentData }: CommentProps) {
         </span>
       ) : null}
       <span>{comment}</span>
-      <p>{prettyDate}</p>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
+        <p>{prettyDate}</p>
+        {canDelete ? (
+          <button onClick={handleDeleteComment}>Delete comment</button>
+        ) : null}
+      </div>
     </li>
   );
 }

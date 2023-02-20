@@ -68,7 +68,7 @@ function Post({ photo }: { photo: IPhotoDoc }) {
 
           <div>{photo.caption}</div>
 
-          <Comments comments={commentsArr} />
+          <Comments comments={commentsArr} photoDocId={docId} photoUserId={userId} />
 
           {commentsArr.length > 2 ? (
             <p
@@ -118,12 +118,7 @@ function Post({ photo }: { photo: IPhotoDoc }) {
             </div>
           </div>
           {isOpenModal && (
-            <ModalPost
-              user={user}
-              // commentsArr={comments}
-              photo={photo}
-              closeModal={closeModal}
-            />
+            <ModalPost user={user} photo={photo} closeModal={closeModal} />
           )}
         </div>
       </CommentsContext.Provider>

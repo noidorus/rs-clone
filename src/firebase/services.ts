@@ -265,14 +265,33 @@ export async function updateComments(
 
   const newCommentsArr = [...comments, data];
 
-  updateDoc(docRef, { comments: newCommentsArr }).catch((e) => console.log(e));
+  await updateDoc(docRef, { comments: newCommentsArr }).catch((e) =>
+    console.log(e)
+  );
 
   return newCommentsArr;
 }
 
-export async function deletePhotoFromFirestore(docId: string) {
+export async function deletePhotoFromFirestore(docId: string): Promise<void> {
   const docRef = doc(db, 'photos', docId);
   await deleteDoc(docRef)
     .then((data) => console.log(data))
     .catch((e) => console.log(e));
+}
+
+export async function deleteComment(
+  docId: string,
+  date: number
+): Promise<IComment[]> {
+  const photoColl = collection(db, 'photos');
+  const docRef = doc(photoColl, docId);
+  const photoDoc = await getDoc(docRef);
+  const { comments } = photoDoc.data() as IPhoto;
+
+  const newCommentsArr = comments.filter((elem) => elem.date != date);
+
+  await updateDoc(docRef, { comments: newCommentsArr }).catch((e) =>
+    console.log(e)
+  );
+  return newCommentsArr;
 }
