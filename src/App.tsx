@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import * as ROUTES from './constants/routes';
 import authListener from './hooks/auth-listener';
 import UserContext from './context/user-context';
@@ -13,9 +13,10 @@ const Profile = lazy(() => import('./pages/profile'));
 function App() {
   const { user, setUser } = authListener();
 
+
   return (
     <UserContext.Provider value={{ user, setUser }}>
-      <Router>
+      <BrowserRouter>
         <Suspense fallback={<p>Loading...</p>}>
           <Routes>
             <Route path={ROUTES.LOGIN} element={<Login />} />
@@ -25,7 +26,7 @@ function App() {
             <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />
           </Routes>
         </Suspense>
-      </Router>
+      </BrowserRouter>
     </UserContext.Provider>
   );
 }
