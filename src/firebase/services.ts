@@ -1,4 +1,11 @@
-import { IComment, IPhoto, IUser, MyError } from './../types/types';
+import {
+  IComment,
+  IPhoto,
+  IUser,
+  MyError,
+  IUserProfile,
+  IPhotoDoc,
+} from './../types/types';
 import {
   collection,
   query,
@@ -8,10 +15,13 @@ import {
   setDoc,
   updateDoc,
   getDoc,
+  QuerySnapshot,
+  DocumentData,
+  deleteDoc,
 } from 'firebase/firestore';
 import { db } from './lib';
 
-export async function doesUsernameExist(username: string) {
+export async function doesUsernameExist(username: string): Promise<boolean> {
   const querySnapshot = await getQuerySnapshot('users', 'username', username);
   return querySnapshot.docs.length > 0;
 }
@@ -19,7 +29,7 @@ export async function doesUsernameExist(username: string) {
 export async function isFollowingUserProfile(
   loggedUserName: string | null | undefined,
   profileUserId: string
-) {
+): Promise<boolean> {
   const usersColl = collection(db, 'users');
   const userQuery = query(usersColl, where('username', '==', loggedUserName));
 
@@ -37,7 +47,7 @@ async function updateLoggedUserFollowing(
   isFollowingProfile: boolean,
   loggedDocId: string,
   userId: string
-) {
+): Promise<void> {
   const userColl = collection(db, 'users');
   const docRef = doc(userColl, loggedDocId);
   const querySnapshot = await getDoc(docRef);
@@ -59,7 +69,7 @@ export async function toggleFollow(
   docId: string,
   loggedUserId: string | undefined,
   loggedDocId: string | undefined
-) {
+): Promise<void> {
   if (loggedUserId && loggedDocId) {
     await updateLoggedUserFollowing(isFollowingProfile, loggedDocId, userId);
     await updateFollowedUserFollowers(isFollowingProfile, docId, loggedUserId);
@@ -70,7 +80,7 @@ export async function updateFollowedUserFollowers(
   isFollowingProfile: boolean,
   docId: string,
   loggedUserId: string
-) {
+): Promise<void> {
   const userColl = collection(db, 'users');
   const docRef = doc(userColl, docId);
   const querySnapshot = await getDoc(docRef);
@@ -86,7 +96,7 @@ export async function updateFollowedUserFollowers(
   }
 }
 
-export async function getUserByUserId(userId: string) {
+export async function getUserByUserId(userId: string): Promise<IUserProfile> {
   const querySnapshot = await getQuerySnapshot('users', 'userId', userId);
 
   const [res] = querySnapshot.docs.map((item) => {
@@ -100,7 +110,7 @@ export async function getUserByUserId(userId: string) {
   return res;
 }
 
-export async function setDataUsers() {
+export async function setDataUsers(): Promise<IUserProfile[]> {
   const usersColection = collection(db, 'users');
   const usersData = await getDocs(usersColection);
   const users = usersData.docs.map((user) => {
@@ -114,14 +124,16 @@ export async function getQuerySnapshot(
   collName: string,
   fieldPath: string,
   value: string
-) {
+): Promise<QuerySnapshot<DocumentData>> {
   const coll = collection(db, collName);
   const userQuery = query(coll, where(fieldPath, '==', value));
 
   return await getDocs(userQuery);
 }
 
-export async function getUserByUsername(username: string) {
+export async function getUserByUsername(
+  username: string
+): Promise<IUserProfile> {
   const querySnapshot = await getQuerySnapshot('users', 'username', username);
 
   const res = querySnapshot.docs.map((item) => {
@@ -135,14 +147,14 @@ export async function getUserByUsername(username: string) {
   return res[0];
 }
 
-export async function setUserData(user: IUser) {
+export async function setUserData(user: IUser): Promise<void> {
   const userColl = collection(db, 'users');
   const userRef = doc(userColl);
 
   setDoc(userRef, user);
 }
 
-export function getError(error: MyError) {
+export function getError(error: MyError): string {
   switch (error.code) {
     case 'auth/email-already-in-use':
       return 'The email address is already in use';
@@ -160,7 +172,7 @@ export function getError(error: MyError) {
 export async function sendPhotoDataToFirestore(
   imageData: IPhoto,
   callback?: (data: string) => void
-) {
+): Promise<void> {
   const photoColl = collection(db, 'photos');
   const photoRef = doc(photoColl);
 
@@ -171,7 +183,7 @@ export async function sendPhotoDataToFirestore(
   }
 }
 
-export async function getPhotosByUserId(userId: string) {
+export async function getPhotosByUserId(userId: string): Promise<IPhotoDoc[]> {
   const photosQuery = await getQuerySnapshot('photos', 'userId', userId);
 
   return photosQuery.docs.map((photo) => {
@@ -187,7 +199,7 @@ export async function updateUserAvatar(
   url: string,
   imagePath: string,
   userName: string | null | undefined
-) {
+): Promise<void> {
   if (userName) {
     const userColl = collection(db, 'users');
     const user = await getUserByUsername(userName);
@@ -210,7 +222,7 @@ export async function updateUserData(
   newUsername: string,
   newFullname: string,
   docId: string | undefined
-) {
+): Promise<void> {
   if (docId) {
     const userColl = collection(db, 'users');
     const docRef = doc(userColl, docId);
@@ -226,7 +238,7 @@ export async function toggleLike(
   isLikedPhoto: boolean,
   docId: string,
   loggedUserId: string
-) {
+): Promise<void> {
   const photoColl = collection(db, 'photos');
   const docRef = doc(photoColl, docId);
   const photoDoc = await getDoc(docRef);
@@ -242,13 +254,25 @@ export async function toggleLike(
   }
 }
 
-export async function updateComments(data: IComment, docId: string) {
+export async function updateComments(
+  data: IComment,
+  docId: string
+): Promise<IComment[]> {
   const photoColl = collection(db, 'photos');
   const docRef = doc(photoColl, docId);
   const photoDoc = await getDoc(docRef);
   const { comments } = photoDoc.data() as IPhoto;
 
-  updateDoc(docRef, { comments: [...comments, data] }).catch((e) =>
-    console.log(e)
-  );
+  const newCommentsArr = [...comments, data];
+
+  updateDoc(docRef, { comments: newCommentsArr }).catch((e) => console.log(e));
+
+  return newCommentsArr;
+}
+
+export async function deletePhotoFromFirestore(docId: string) {
+  const docRef = doc(db, 'photos', docId);
+  await deleteDoc(docRef)
+    .then((data) => console.log(data))
+    .catch((e) => console.log(e));
 }

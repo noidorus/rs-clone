@@ -24,11 +24,11 @@ export function loadImageToStorage(image: File, callback: CallBackType) {
   });
 }
 
-export function deletePhotoFromStorage(path: string) {
+export async function deletePhotoFromStorage(path: string): Promise<void> {
   const storage = getStorage(firebase);
   const desertRef = ref(storage, path);
 
-  deleteObject(desertRef)
+  await deleteObject(desertRef)
     .then()
     .catch((err) => console.log(err));
 }

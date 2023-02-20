@@ -7,7 +7,6 @@ import { getRelativeTimeString } from '../../helpers/helpers';
 import Like from './like';
 import Comments from './comments-list';
 import { getUserDataHook } from '../../hooks/getLoggedUserData';
-import Skeleton from 'react-loading-skeleton';
 import CommentForm from './comment-form';
 import CommentsContext from '../../context/comments-context';
 
@@ -45,7 +44,7 @@ function Post({ photo }: { photo: IPhotoDoc }) {
             maxWidth: '32%',
           }}
         >
-          {user ? <PostHeader user={user} /> : null}
+          {user ? <PostHeader photoData={photo} user={user} /> : null}
 
           <div>
             <img
