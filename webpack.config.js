@@ -3,6 +3,7 @@ const { merge } = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const { NetlifyPlugin } = require('netlify-webpack-plugin');
 
 const baseConfig = {
   entry: path.resolve(__dirname, './src/index.tsx'),
@@ -50,6 +51,16 @@ const baseConfig = {
         {
           from: path.resolve(__dirname, './public/images'),
           to: path.resolve(__dirname, 'dist/images'),
+        },
+      ],
+    }),
+    new NetlifyPlugin({
+      redirects: [
+        {
+          from: '/*',
+          to: '/index.html',
+          status: 200,
+          force: false,
         },
       ],
     }),
