@@ -3,12 +3,12 @@ import { getFirestore } from 'firebase/firestore';
 import 'firebase/auth';
 
 const config = {
-  apiKey: 'AIzaSyBaDvHPUZe--Aez_W44jDqaTqs4csapE5g',
-  authDomain: 'rs-clone-instagram.firebaseapp.com',
-  projectId: 'rs-clone-instagram',
-  storageBucket: 'rs-clone-instagram.appspot.com',
-  messagingSenderId: '306740386545',
-  appId: '1:306740386545:web:280fd76936cc742b2ba750',
+  apiKey: "AIzaSyCu8nbwEAd8Z3IMndd1cRPatVt4Mvy_y2E",
+  authDomain: "second-clone-instagram.firebaseapp.com",
+  projectId: "second-clone-instagram",
+  storageBucket: "second-clone-instagram.appspot.com",
+  messagingSenderId: "284252354778",
+  appId: "1:284252354778:web:953642e4b78243779b0de3"
 };
 
 const firebase = initializeApp(config);

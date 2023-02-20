@@ -37,7 +37,7 @@ export default function SignUp() {
           emailAddress,
           password
         );
-
+        
         updateProfile(createUserResult.user, {
           displayName: username.toLowerCase(),
         });
@@ -56,7 +56,7 @@ export default function SignUp() {
           },
         };
         setUserData(newUser);
-
+        
         navigate(ROUTES.DASHBOARD);
       } catch (error) {
         const err = error as MyError;
