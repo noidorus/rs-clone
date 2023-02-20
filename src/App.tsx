@@ -11,12 +11,7 @@ const Dashboard = lazy(() => import('./pages/dashboard'));
 const Profile = lazy(() => import('./pages/profile'));
 
 function App() {
-  const { currUser } = authListener();
-  const [user, setUser] = useState(currUser);
-
-  useEffect(() => {
-    setUser(currUser);
-  }, [currUser]);
+  const { user, setUser } = authListener();
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
