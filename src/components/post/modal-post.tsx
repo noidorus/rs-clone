@@ -19,22 +19,14 @@ type ModalPropsType = {
   user: IUserProfile | null;
   photo: IPhotoDoc;
   closeModal: () => void;
-  // commentsArr: IComment[];
 };
 
 function ModalPost({ user, photo, closeModal }: ModalPropsType) {
-// function ModalPost({ user, photo, closeModal, commentsArr }: ModalPropsType) {
   const { caption, dateCreated, docId, imageSrc, likes } = photo;
   const date = getRelativeTimeString(dateCreated, 'en');
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const {commentsArr, setCommentsArr} = useContext(CommentsContext)
-  // const [comments, setComments] = useState(commentsArr);
- 
-  // useEffect(() => {
-  //   setComments(commentsArr);
-  //   console.log('comments', comments)
-  // }, [commentsArr]);
+  const { commentsArr } = useContext(CommentsContext);
 
   useOnClickOutside(menuRef, closeModal);
 
@@ -77,7 +69,7 @@ function ModalPost({ user, photo, closeModal }: ModalPropsType) {
               justifyContent: 'space-between',
             }}
           >
-            {user ? <PostHeader user={user} /> : null}
+            {user ? <PostHeader photoData={photo} user={user} closeModal={closeModal} /> : null}
 
             <div
               style={{
@@ -93,19 +85,17 @@ function ModalPost({ user, photo, closeModal }: ModalPropsType) {
               <Comments comments={commentsArr} />
 
               <div>
-                <div style={{
-                display: 'flex',
-                justifyContent: 'space-between'
-              }}>
-                <Like likes={likes} docId={docId} />
-                <div>{date}</div>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <Like likes={likes} docId={docId} />
+                  <div>{date}</div>
                 </div>
-                
-                <CommentForm
-                  // setCommentsArr={setComments}
-                  // comments={comments}
-                  docId={docId}
-                />
+
+                <CommentForm docId={docId} />
               </div>
             </div>
           </div>

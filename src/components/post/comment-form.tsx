@@ -6,19 +6,16 @@ import { updateComments } from '../../firebase/services';
 import CommentsContext from '../../context/comments-context';
 
 interface CommentsProps {
-  // comments: IComment[];
   docId: string;
-  // setCommentsArr: Dispatch<SetStateAction<IComment[]>>
 }
 
 export default function CommentForm({ docId }: CommentsProps) {
   const loggedUser = useContext(UserContext).user as User;
-  const {commentsArr, setCommentsArr} = useContext(CommentsContext)
-
+  const { setCommentsArr } = useContext(CommentsContext);
 
   const [newComment, setNewComment] = useState('');
 
-  const submitComment = (e: React.FormEvent) => {
+  const submitComment = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const commentData = {
@@ -28,9 +25,8 @@ export default function CommentForm({ docId }: CommentsProps) {
     };
 
     if (newComment.length > 0) {
-      updateComments(commentData, docId).catch((e) => console.log(e));
-      setCommentsArr([...commentsArr, commentData]);
-      // console.log(comments)
+      const newCommentsArr = await updateComments(commentData, docId);
+      setCommentsArr(newCommentsArr);
     }
 
     setNewComment('');

@@ -20,7 +20,7 @@ export default function UploadImageModal({
 }: Props) {
   const [imgUpload, setImgUpload] = useState<File | null>(null);
   const [imgError, setImgError] = useState('');
-  const [imagePreviewSrc, setImagePreviewSrc] = useState<string | undefined>(null);
+  const [imagePreviewSrc, setImagePreviewSrc] = useState<string | undefined| null>(null);
   const reader = new FileReader();
 
   const handleUpload = (filesList: FileList | null) => {
