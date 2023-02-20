@@ -9,6 +9,7 @@ import { getUserDataHook } from '../../hooks/getLoggedUserData';
 import { isFollowingUserProfile, toggleFollow } from '../../firebase/services';
 
 import './user-header.scss';
+import PhotosContext from '../../context/photos-context';
 
 interface Props {
   user: IUserProfile;
@@ -23,6 +24,7 @@ export default function UserHeader({
 }: Props) {
   const loggedUser = useContext(UserContext).user;
   const loggedUserData = getUserDataHook(loggedUser?.uid);
+  const {photos} = useContext(PhotosContext)
 
   const { username, avatarData, userId, docId, following } = user;
   const [isFollowingProfile, setIsFollowingProfile] = useState(false);
@@ -82,7 +84,7 @@ export default function UserHeader({
         </header>
         <ul className='info__inner shared'>
           <li className='shared__item'>
-            <span className='shared__value'>{0}</span>
+            <span className='shared__value'>{photos.length}</span>
             <span className='shared__name'> Publication</span>
           </li>
           <li className='shared__item'>

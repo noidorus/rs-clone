@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { IUserProfile } from '../../types/types';
-import './foundUsers.scss';
+import './post-header.scss';
 
 function PreviewUser({ user }: { user: IUserProfile }) {
   const { username, fullName, avatarData } = user;
