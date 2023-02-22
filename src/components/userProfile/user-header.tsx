@@ -1,15 +1,13 @@
-import React, { Dispatch, useContext, useEffect, useState } from 'react';
+import React, { Dispatch, useContext, useEffect, useState, MouseEvent } from 'react';
 import { IUserProfile } from '../../types/types';
 import UserContext from '../../context/user-context';
 import ProfileAvatar from '../profileAvatar/profile-avatar';
 import EditProfileButton from '../editProfileButton/editprofile';
-
-
 import { getUserDataHook } from '../../hooks/getLoggedUserData';
 import { isFollowingUserProfile, toggleFollow } from '../../firebase/services';
-
 import './user-header.scss';
 import PhotosContext from '../../context/photos-context';
+import { FollowersList } from './folowers-list';
 
 interface Props {
   user: IUserProfile;
@@ -24,7 +22,7 @@ export default function UserHeader({
 }: Props) {
   const loggedUser = useContext(UserContext).user;
   const loggedUserData = getUserDataHook(loggedUser?.uid);
-  const {photos} = useContext(PhotosContext)
+  const { photos } = useContext(PhotosContext)
 
   const { username, avatarData, userId, docId, following } = user;
   const [isFollowingProfile, setIsFollowingProfile] = useState(false);
@@ -61,21 +59,35 @@ export default function UserHeader({
     checkIsFollowingProfile();
   }, [loggedUser?.displayName, userId]);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalName, setIsModalName] = useState('');
+
+  function openModal(e: MouseEvent) {
+    setIsModalOpen(true);
+    setIsModalName(e.currentTarget.textContent as string);
+  }
+
+  function closeModal() {
+    setIsModalOpen(false);
+    setIsModalName('');
+  }
+
+
   return (
     <header
       className='profile__header'
     >
       <div className='profile__image'>
-      <ProfileAvatar
-        isLoggedUserProfile={isLoggedUserProfile}
-        avatarData={avatarData ? avatarData : null}
-      />
+        <ProfileAvatar
+          isLoggedUserProfile={isLoggedUserProfile}
+          avatarData={avatarData ? avatarData : null}
+        />
       </div>
       <div className='profile__info info'>
         <header className='info__header'>
           <h4 className='info__title'>{username}</h4>
           {isLoggedUserProfile ? (
-            <EditProfileButton  loggedUserData={loggedUserData} />
+            <EditProfileButton loggedUserData={loggedUserData} />
           ) : (
             <button className='button' onClick={handleToggleFollow}>
               {isFollowingProfile ? 'Unfollow' : 'Follow'}
@@ -89,14 +101,19 @@ export default function UserHeader({
           </li>
           <li className='shared__item'>
             <span className='shared__value'>{followersCount}</span>
-            <span className='shared__name'> Followers</span>
+            <span className='shared__name' onClick={openModal}> Followers</span>
           </li>
           <li className='shared__item'>
             <span className='shared__value'>{following.length}</span>
-            <span className='shared__name'> Followings</span>
+            <span className='shared__name' onClick={openModal}> Following</span>
           </li>
         </ul>
       </div>
+      {isModalOpen && <FollowersList
+        user={user}
+        modalName={modalName}
+        closeModal={closeModal}
+      />}
     </header>
   );
 }
