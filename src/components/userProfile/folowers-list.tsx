@@ -66,7 +66,9 @@ export function FollowersList({ user, modalName, closeModal }: PropsFollowersLis
               if (user) {
                 return <PreviewUser
                   name={user.username}
-                  avatar={user.avatarData?.avatarSrc || './images/icons/profile.jpg'} />;
+                  avatar={user.avatarData?.avatarSrc || './images/icons/profile.jpg'}
+                  closeModal={closeModal}
+                  />;
               }
             })}
           </ul>
