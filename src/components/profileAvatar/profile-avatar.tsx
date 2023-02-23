@@ -40,7 +40,7 @@ export default function ProfileAvatar({
 
   return (
     <>
-      <div className='avatar'
+      <button className='avatar'
         style={{
           
         }}
@@ -53,7 +53,7 @@ export default function ProfileAvatar({
           width='150'
         />
         <Skeleton circle height={150} width={150} count={1} />
-      </div>
+      </button>
 
       {showModal ? (
         <UploadImageModal

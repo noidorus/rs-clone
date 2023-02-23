@@ -3,6 +3,6 @@
   margin: 0 auto;
 
   .post-list__inner {
-    flex-direction: column;
+    grid-template-columns: 1fr;
   }
 }
