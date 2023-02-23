@@ -13,6 +13,7 @@ export interface IUser {
 }
 
 export interface IUserProfile extends IUser {
+  [x: string]: any;
   docId: string;
 }
 

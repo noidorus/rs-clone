@@ -5,11 +5,13 @@ import CommentItem from './comment-item';
 
 interface CommentsProps {
   comments: IComment[];
+  photoDocId: string
+  photoUserId: string
 }
 
-export default function Comments({ comments }: CommentsProps) {
+export default function Comments({ comments, photoDocId, photoUserId }: CommentsProps) {
   const elements = comments.map((value, i) => {
-    return <CommentItem key={`p${i}`} commentData={value} />;
+    return <CommentItem key={`p${i}`} commentData={value} photoDocId={photoDocId} photoUserId={photoUserId} />;
   });
 
   return (
