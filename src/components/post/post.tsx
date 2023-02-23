@@ -44,6 +44,8 @@ function Post({ photo }: { photo: IPhotoDoc }) {
           <div>
             <img
               src={photo.imageSrc}
+              width="400px"
+              height="400px"
             />
           </div>
 
