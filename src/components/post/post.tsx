@@ -38,30 +38,16 @@ function Post({ photo }: { photo: IPhotoDoc }) {
   if (location.pathname === '/') {
     return (
       <CommentsContext.Provider value={{ commentsArr, setCommentsArr }}>
-        <div
-          className="post-list__item"
-          style={{
-            maxWidth: '32%',
-          }}
-        >
+        <div className="post-list__item">
           {user ? <PostHeader photoData={photo} user={user} /> : null}
 
           <div>
             <img
               src={photo.imageSrc}
-              style={{
-                width: 293,
-                height: 293,
-              }}
             />
           </div>
 
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-            }}
-          >
+          <div>
             <Like likes={likes} docId={docId} />
             <div>{date}</div>
           </div>
@@ -71,13 +57,7 @@ function Post({ photo }: { photo: IPhotoDoc }) {
           <Comments comments={commentsArr} photoDocId={docId} photoUserId={userId} />
 
           {commentsArr.length > 2 ? (
-            <p
-              style={{
-                cursor: 'pointer',
-                color: 'blue',
-              }}
-              onClick={showModal}
-            >
+            <p onClick={showModal}>
               Show more comments...
             </p>
           ) : null}
@@ -93,34 +73,35 @@ function Post({ photo }: { photo: IPhotoDoc }) {
   } else {
     return (
       <CommentsContext.Provider value={{ commentsArr, setCommentsArr }}>
-        <div
-          className="post-list__item"
-          style={{
-            maxWidth: '32%',
-          }}
+        <a
+          className="post-list__item post"
           onClick={() => showModal()}
         >
-          <div className="post__image">
-            <img src={photo.imageSrc} />
-            <div className="post__preview">
+          <div className="post__inner">
+            <img className='post__image' src={photo.imageSrc} />
+            <div className="post__overlay overlay">
               {
                 <>
-                  <div className="post-preview__likes"></div>
-                  {likes.length !== 0 && (
-                    <div className="post-preview__text">{likes.length}</div>
-                  )}
-                  <div className="post-preview__comments"></div>
-                  {comments.length !== 0 && (
-                    <div className="post-preview__text">{comments.length}</div>
-                  )}
+                  <div className='overlay__item'>
+                    <div className="overlay__likes"></div>
+                    {likes.length !== 0 && (
+                      <div className="overlay__text">{likes.length}</div>
+                    )}
+                  </div>
+                  <div className='overlay__item'>
+                    <div className="overlay__comments"></div>
+                    {comments.length !== 0 && (
+                      <div className="overlay__text">{comments.length}</div>
+                    )}
+                  </div>
                 </>
               }
             </div>
           </div>
+        </a>
           {isOpenModal && (
             <ModalPost user={user} photo={photo} closeModal={closeModal} />
           )}
-        </div>
       </CommentsContext.Provider>
     );
   }

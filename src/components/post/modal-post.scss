@@ -1,0 +1,14 @@
+.modal--post {
+  padding: 24px;
+
+  .modal__inner {
+    height: 100%;
+    max-width: none;
+    border-radius: 4px;
+  }
+
+  .modal__content {
+    display: flex;
+    height: 100%;
+  }
+}

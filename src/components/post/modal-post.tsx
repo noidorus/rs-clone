@@ -15,6 +15,8 @@ import { useOnClickOutside } from '../../hooks/useOnClickOutside';
 import CommentForm from './comment-form';
 import CommentsContext from '../../context/comments-context';
 
+import './modal-post.scss';
+
 type ModalPropsType = {
   user: IUserProfile | null;
   photo: IPhotoDoc;
@@ -31,28 +33,10 @@ function ModalPost({ user, photo, closeModal }: ModalPropsType) {
   useOnClickOutside(menuRef, closeModal);
 
   return (
-    <div
-      style={{
-        width: '100%',
-        margin: '0 5%',
-      }}
-    >
-      <div className="modal">
-        <div
-          ref={menuRef}
-          style={{
-            display: 'flex',
-            backgroundColor: '#FFFFFF',
-          }}
-        >
-          <div
-            style={{
-              height: '100%',
-              maxWidth: '50%',
-              flexShrink: 0,
-              margin: '2%',
-            }}
-          >
+    <div className='modal modal--post'>
+      <div className="modal__inner">
+        <div className='modal__content' ref={menuRef}>
+          <div>
             <img
               src={imageSrc}
               style={{
