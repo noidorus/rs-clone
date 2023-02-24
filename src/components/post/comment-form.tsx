@@ -35,12 +35,13 @@ export default function CommentForm({ docId }: CommentsProps) {
   return (
     <form onSubmit={submitComment}>
       <input
+        className='field'
         type="text"
         placeholder="Add a comment"
         onChange={({ target }) => setNewComment(target.value)}
         value={newComment}
       />
-      <button type="submit">Post</button>
+      <button className='button' type="submit">Post</button>
     </form>
   );
 }

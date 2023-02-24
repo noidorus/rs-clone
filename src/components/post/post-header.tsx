@@ -38,17 +38,11 @@ function PostHeader({ user, photoData, closeModal }: PostHeaderProps) {
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      }}
-    >
-      <div className="user">
+    <header className='post-header'>
+      <div className="post-header__user user">
         <Link className="user__link" to={`/${username}`}>
           <div className="user__image-wrapper">
-            <img className="user__image" src={avatar} width="44" height="44" />
+            <img className="user__image" src={avatar} width="32" />
           </div>
           <div className="user__info">
             <span className="user__name">{username}</span>
@@ -57,8 +51,8 @@ function PostHeader({ user, photoData, closeModal }: PostHeaderProps) {
         </Link>
       </div>
 
-      {isMyPhoto ? <button onClick={handleDeletePhoto}>Delete</button> : null}
-    </div>
+      {isMyPhoto ? <button className='post-header__delete button button--delete' onClick={handleDeletePhoto}></button> : null}
+    </header>
   );
 }
 
