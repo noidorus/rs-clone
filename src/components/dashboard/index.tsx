@@ -39,9 +39,20 @@ export default function MainPage({ user }: MainPageProps) {
   }, [userData]);
 
   return (
-    <div className="dashboard">
-      <Timeline />
-      <Recomendation />
+    <div className="dashboard" >
+      <div style={{
+        display: 'flex',
+        gap: '50px'
+      }}>
+
+        <Timeline />
+        {userData
+          ? <Recomendation
+            userData={userData}
+          />
+          : null
+        }
+      </div>
     </div>
   );
 }
