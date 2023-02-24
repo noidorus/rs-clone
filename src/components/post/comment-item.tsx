@@ -65,7 +65,7 @@ export default function CommentItem({
       >
         <p>{prettyDate}</p>
         {canDelete ? (
-          <button onClick={handleDeleteComment}>Delete comment</button>
+          <button className='button button--delete' onClick={handleDeleteComment}></button>
         ) : null}
       </div>
     </li>

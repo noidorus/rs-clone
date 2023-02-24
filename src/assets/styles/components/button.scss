@@ -30,3 +30,21 @@
     background-color: rgb(var(--primary-bg_700));
   }
 }
+
+.button--delete {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background-image: url('../public/images/icons/delete.svg');
+  background-repeat: no-repeat;
+  background-size: 24px 24px;
+  background-position: center;
+  opacity: .3;
+  background-color: transparent;
+  transition: opacity .3s;
+
+  &:hover:not(:disabled) {
+    opacity: .7;
+    background-color: transparent;
+  }
+}
