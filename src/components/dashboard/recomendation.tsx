@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { setDataUsers } from '../../firebase/services';
+import { shuffle } from '../../helpers/helpers';
 import { IUserProfile } from '../../types/types';
 import { PreviewUser } from '../userProfile/preview-user';
 
@@ -16,14 +17,11 @@ export function Recomendation(props: PropsRecomendations) {
   useEffect(() => {
     setDataUsers().
       then((data) => {
-        data = data.filter(el => !props.userData.following.includes(el.userId) && el.userId !== props.userData.userId)
+        data = data.filter(el => !props.userData.following.includes(el.userId) && el.userId !== props.userData.userId);
+        data = shuffle(data).slice(0, 5)
         setUsers(data);
       })
   }, []);
-
-  // useEffect(() => {
-  // }, [users]);
-
 
   return (
     <div style={{
