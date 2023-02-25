@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { setDataUsers } from '../../firebase/services';
+import { toggleFollow, setDataUsers } from '../../firebase/services';
 import { shuffle } from '../../helpers/helpers';
 import { IUserProfile } from '../../types/types';
 import { PreviewUser } from '../userProfile/preview-user';
+import { RecommendedUser } from './recommended-user';
 
 type PropsRecomendations = {
   userData: IUserProfile;
@@ -12,7 +13,6 @@ export function Recomendation(props: PropsRecomendations) {
   if (!props.userData) null;
 
   const [users, setUsers] = useState<IUserProfile[]>([]);
-  // const [usersForDraw, setUsersForDraw] = useState<IUserProfile[]>([]);
 
   useEffect(() => {
     setDataUsers().
@@ -41,9 +41,9 @@ export function Recomendation(props: PropsRecomendations) {
       }}>
         {users.map(user => {
           return (
-            <PreviewUser
-              name={user.username}
-              avatar={user.avatarData?.avatarSrc || './images/icons/profile.jpg'}
+            <RecommendedUser 
+              user={user}
+              loggedUser={props.userData}
             />
           )
         })}
