@@ -10,6 +10,7 @@
   white-space: nowrap;
   color: rgb(var(--text-color_900));
   transition: background-color .2s;
+  touch-action: manipulation;
   cursor: pointer;
 
   &:hover:not(:disabled) {
@@ -46,5 +47,18 @@
   &:hover:not(:disabled) {
     opacity: .7;
     background-color: transparent;
+  }
+}
+
+.button--transparent {
+  font-weight: 500;
+  padding: 0;
+  background-color: transparent;
+  transition: color .2s;
+  color: rgb(var(--primary-bg_500));
+
+  &:hover:not(:disabled) {
+    background-color: transparent;
+    color: rgb(var(--primary-bg_600));
   }
 }

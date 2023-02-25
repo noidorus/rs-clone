@@ -3,6 +3,8 @@ import React from 'react';
 import { IComment, IUserProfile } from '../../types/types';
 import CommentItem from './comment-item';
 
+import './comments-list.scss';
+
 interface CommentsProps {
   comments: IComment[];
   photoDocId: string
@@ -15,16 +17,8 @@ export default function Comments({ comments, photoDocId, photoUserId }: Comments
   });
 
   return (
-    <div>
-      <ul
-        style={{
-          listStyle: 'none',
-          padding: 0,
-        }}
-      >
-        {elements}
-      </ul>
-
-    </div>
+    <ul className='comments-list'>
+      {elements}
+    </ul>
   );
 }

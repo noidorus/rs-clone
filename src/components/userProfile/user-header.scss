@@ -2,6 +2,10 @@
   display: flex;
   padding-bottom: 44px;
   border-bottom: solid 1px rgb(var(--secondary-bg_700));
+
+  @media screen and (max-width: 736px) {
+    padding-top: 30px;
+  }
 }
 
 .profile__image {
