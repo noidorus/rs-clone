@@ -32,24 +32,20 @@ export default function Like({ likes, docId }: LikeProps) {
   }, []);
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        gap: '20px',
-        alignItems: 'center',
-      }}
-    >
-      <div
-        className={isLikedPhoto ? 'like-activ' : 'like'}
+    <div className='like'>
+      <button
+        className={isLikedPhoto ? 'like__action like__action--activ' : 'like__action'}
         onClick={() => handleToggleLike()}
-      />
+      ></button>
 
-      <div>
-        {likesCount !== 0 && (
-          <span>
+      <div className='like__counter-wrapper'>
+        {likesCount !== 0 ? (
+          <span className='like__value'>
             {likesCount} {likesCount === 1 ? 'like' : 'likes'}
           </span>
-        )}
+        ): <span className='like__counter'>
+            Be the first to <button className='like__first' type="button" onClick={() => handleToggleLike()}>like this</button>
+          </span>}
       </div>
     </div>
   );

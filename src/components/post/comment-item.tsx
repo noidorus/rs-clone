@@ -6,6 +6,8 @@ import UserContext from '../../context/user-context';
 import { deleteComment } from '../../firebase/services';
 import CommentsContext from '../../context/comments-context';
 
+import './comment-item.scss';
+
 interface CommentProps {
   commentData: IComment;
   photoDocId: string;
@@ -46,26 +48,21 @@ export default function CommentItem({
   }, [commentUser]);
 
   return (
-    <li>
-      {user ? (
-        <span
-          style={{
-            marginRight: '10px',
-          }}
-        >
-          {user.username}
-        </span>
-      ) : null}
-      <span>{comment}</span>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-      >
-        <p>{prettyDate}</p>
+    <li className='comments-list__item comment'>
+      <div className='comment__inner'>
+        <div className='comment__message'>
+          {user ? (
+            <span className='comment__user'>
+              {user.username}
+            </span>
+          ) : null}
+          <span className='comment__text'>{comment}</span>
+        </div>
+        <p className='comment__date'>{prettyDate}</p>
+      </div>
+      <div className='comment__action'>
         {canDelete ? (
-          <button className='button button--delete' onClick={handleDeleteComment}></button>
+          <button className='comment__delete button button--delete' onClick={handleDeleteComment}></button>
         ) : null}
       </div>
     </li>

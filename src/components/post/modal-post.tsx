@@ -51,15 +51,10 @@ function ModalPost({ user, photo, closeModal }: ModalPropsType) {
               <Comments comments={commentsArr} photoDocId={docId} photoUserId={userId} />
 
             </div>
-              <footer className='comments__footer'>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                  }}
-                >
+              <footer className='comments__footer comments-footer'>
+                <div className='comments-footer__inner'>
                   <Like likes={likes} docId={docId} />
-                  <div>{date}</div>
+                  <div className='comments-footer__date'>{date}</div>
                 </div>
 
                 <CommentForm docId={docId} />

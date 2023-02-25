@@ -4,6 +4,10 @@
   padding: 14px 16px;
   border-bottom: 1px solid rgb(var(--secondary-bg_500));
 
+  @media screen and (max-width: 736px) {
+    order: -1;
+  }
+
   .user__link {
     display: flex;
     align-items: center;
