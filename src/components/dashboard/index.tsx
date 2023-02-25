@@ -7,6 +7,7 @@ import { IPhotoDoc } from '../../types/types';
 import Timeline from '../timeline';
 
 import './index.scss';
+import { Recomendation } from './recomendation';
 
 interface MainPageProps {
   user: User;
@@ -38,8 +39,20 @@ export default function MainPage({ user }: MainPageProps) {
   }, [userData]);
 
   return (
-    <div className="dashboard">
-      <Timeline />
+    <div className="dashboard" >
+      <div style={{
+        display: 'flex',
+        gap: '50px'
+      }}>
+
+        <Timeline />
+        {userData
+          ? <Recomendation
+            userData={userData}
+          />
+          : null
+        }
+      </div>
     </div>
   );
 }

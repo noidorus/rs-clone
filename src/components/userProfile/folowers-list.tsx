@@ -64,11 +64,14 @@ export function FollowersList({ user, modalName, closeModal }: PropsFollowersLis
           }}>
             {usersForDraw && usersForDraw.map((user) => {
               if (user) {
-                return <PreviewUser
+                return (
+                <div onClick={closeModal}>
+                  <PreviewUser 
                   name={user.username}
                   avatar={user.avatarData?.avatarSrc || './images/icons/profile.jpg'}
-                  closeModal={closeModal}
-                  />;
+                  />
+                </div>
+                );
               }
             })}
           </ul>
