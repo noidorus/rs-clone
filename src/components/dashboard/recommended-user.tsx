@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { toggleFollow } from '../../firebase/services'
 import { IUserProfile } from '../../types/types'
 import { PreviewUser } from '../userProfile/preview-user'
+import { Modal } from './modal'
 
 type PropsRecommendedUser = {
   user: IUserProfile,
@@ -12,15 +13,19 @@ export function RecommendedUser(props: PropsRecommendedUser) {
   const user = props.user;
   const loggedUser = props.loggedUser;
   const [isFollowingProfile, setIsFollowingProfile] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
   function addFollow() {
     if(!isFollowingProfile){
       toggleFollow(isFollowingProfile, user.userId, user.docId, loggedUser.userId, loggedUser.docId);
       setIsFollowingProfile(true)
     } else {
-      toggleFollow(isFollowingProfile, user.userId, user.docId, loggedUser.userId, loggedUser.docId);
-      setIsFollowingProfile(false)
+      setIsOpenModal(true);
     }
+  }
+
+  function closeModal() {
+    setIsOpenModal(false)
   }
 
   return (
@@ -41,6 +46,12 @@ export function RecommendedUser(props: PropsRecommendedUser) {
       }} className='button' onClick={() => addFollow()}>
         {isFollowingProfile ? 'Unfollow' : 'Follow'}
       </button>
+      {isOpenModal && <Modal
+        user={user}
+        closeModal={closeModal}
+        loggedUser={loggedUser}
+        setIsFollowingProfile={setIsFollowingProfile}
+      />}
     </div>
   )
 }
