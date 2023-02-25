@@ -1,11 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { IUserProfile } from '../../types/types';
 
 type PropsPreviewUser = {
   name: string;
   avatar: string;
-  closeModal: () => void
 }
 export function PreviewUser(props: PropsPreviewUser) {
   return (
@@ -18,7 +16,7 @@ export function PreviewUser(props: PropsPreviewUser) {
           gap: '20px',
           marginLeft: '20px'
         }}
-          onClick={props.closeModal}>
+        >
           <img className="user__image"
             src={props.avatar}
             width='44'
