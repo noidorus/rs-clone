@@ -31,12 +31,8 @@ export function Recomendation(props: PropsRecomendations) {
         name={props.userData.username}
         avatar={props.userData.avatarData?.avatarSrc || './images/icons/profile.jpg'}
       />
-      <h3>Suggestions for you:</h3>
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        rowGap: 15
-      }}>
+      <h3 className='recomendations__title'>Suggestions for you</h3>
+      <ul className='recomendations__list'>
         {users.map(user => {
           return (
             <RecommendedUser 
@@ -45,7 +41,7 @@ export function Recomendation(props: PropsRecomendations) {
             />
           )
         })}
-      </div>
+      </ul>
     </div>
   )
 }
