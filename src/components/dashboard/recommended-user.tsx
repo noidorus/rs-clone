@@ -4,6 +4,8 @@ import { IUserProfile } from '../../types/types'
 import { PreviewUser } from '../userProfile/preview-user'
 import { Modal } from './modal'
 
+import './recommended-user.scss';
+
 type PropsRecommendedUser = {
   user: IUserProfile,
   loggedUser: IUserProfile
@@ -29,21 +31,12 @@ export function RecommendedUser(props: PropsRecommendedUser) {
   }
 
   return (
-    <div style={{
-      display: 'flex',
-      width: 350,
-      justifyContent: 'space-between'
-    }}>
+    <li className='recomendations__item'>
       <PreviewUser
         name={user.username}
         avatar={user.avatarData?.avatarSrc || './images/icons/profile.jpg'}
       />
-      <button style={{
-        color: '#0095F6',
-        border: 'none',
-        background: 'rgba(0, 0, 0, 0)',
-        padding: 0,
-      }} className='button' onClick={() => addFollow()}>
+      <button className='button button--transparent' onClick={() => addFollow()}>
         {isFollowingProfile ? 'Unfollow' : 'Follow'}
       </button>
       {isOpenModal && <Modal
@@ -52,6 +45,6 @@ export function RecommendedUser(props: PropsRecommendedUser) {
         loggedUser={loggedUser}
         setIsFollowingProfile={setIsFollowingProfile}
       />}
-    </div>
+    </li>
   )
 }

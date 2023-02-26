@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import './preview-user.scss';
+
 type PropsPreviewUser = {
   name: string;
   avatar: string;
@@ -8,22 +10,15 @@ type PropsPreviewUser = {
 export function PreviewUser(props: PropsPreviewUser) {
   return (
     <>
-      <Link className="user__link" to={`/${props.name}`}>
-        <li style={{
-          display: 'flex',
-          justifyContent: 'start',
-          alignItems: 'center',
-          gap: '20px',
-          marginLeft: '20px'
-        }}
-        >
-          <img className="user__image"
+      <Link className="recomendations__user recomendations-user" to={`/${props.name}`}>
+        <div className='recomendations-user__image-wrapper'>
+          <img className="recomendations-user__image"
             src={props.avatar}
-            width='44'
-            height='44'
+            width='56'
+            height='56'
           />
-          <div>{props.name}</div>
-        </li>
+        </div>
+        <span className="recomendations-user__name">{props.name}</span>
       </Link>
     </>
   )
