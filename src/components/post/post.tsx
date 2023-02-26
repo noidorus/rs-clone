@@ -38,48 +38,48 @@ function Post({ photo }: { photo: IPhotoDoc }) {
   if (location.pathname === '/') {
     return (
       <CommentsContext.Provider value={{ commentsArr, setCommentsArr }}>
-        <div className="post-list__item">
+        <div className="post-list__item post post--dashboard">
           {user ? <PostHeader photoData={photo} user={user} /> : null}
 
-          <div>
+          <div className='post__inner'>
             <img
+              className='post__image'
               src={photo.imageSrc}
-              width="400px"
-              height="400px"
+              width="468"
+              height="584"
             />
+
+            <div className='post__like'>
+              <Like likes={likes} docId={docId} />
+              <div className='post__date'>{date}</div>
+            </div>
+
+            <p className='post__desc'>{photo.caption}</p>
+
+            <Comments comments={commentsArr} photoDocId={docId} photoUserId={userId} />
+
+            {commentsArr.length > 2 ? (
+              <a className='post__more' onClick={showModal}>
+                Show more comments...
+              </a>
+            ) : null}
+
+            <CommentForm docId={docId} />
           </div>
-
-          <div>
-            <Like likes={likes} docId={docId} />
-            <div>{date}</div>
-          </div>
-
-          <div>{photo.caption}</div>
-
-          <Comments comments={commentsArr} photoDocId={docId} photoUserId={userId} />
-
-          {commentsArr.length > 2 ? (
-            <p onClick={showModal}>
-              Show more comments...
-            </p>
-          ) : null}
-
-          <CommentForm docId={docId} />
-
-          {isOpenModal && (
-            <ModalPost user={user} photo={photo} closeModal={closeModal} />
-          )}
         </div>
+        {isOpenModal && (
+          <ModalPost user={user} photo={photo} closeModal={closeModal} />
+        )}
       </CommentsContext.Provider>
     );
   } else {
     return (
       <CommentsContext.Provider value={{ commentsArr, setCommentsArr }}>
         <a
-          className="post-list__item post"
+          className='post-list__item post'
           onClick={() => showModal()}
         >
-          <div className="post__inner">
+          <div className='post__inner'>
             <img className='post__image' src={photo.imageSrc} />
             <div className="post__overlay overlay">
               {

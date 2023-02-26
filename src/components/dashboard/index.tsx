@@ -40,10 +40,7 @@ export default function MainPage({ user }: MainPageProps) {
 
   return (
     <div className="dashboard" >
-      <div style={{
-        display: 'flex',
-        gap: '50px'
-      }}>
+      <div className='dashboard__inner'>
 
         <Timeline />
         {userData

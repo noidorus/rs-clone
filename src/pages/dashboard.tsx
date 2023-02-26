@@ -7,6 +7,8 @@ import { IPhotoDoc } from '../types/types';
 import MainPage from '../components/dashboard';
 import PhotosContext from '../context/photos-context';
 
+import './dashboard.scss';
+
 export default function Dashboard() {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);

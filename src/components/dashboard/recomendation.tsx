@@ -5,6 +5,8 @@ import { IUserProfile } from '../../types/types';
 import { PreviewUser } from '../userProfile/preview-user';
 import { RecommendedUser } from './recommended-user';
 
+import './recomendation.scss';
+
 type PropsRecomendations = {
   userData: IUserProfile;
 }
@@ -24,11 +26,7 @@ export function Recomendation(props: PropsRecomendations) {
   }, []);
 
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      marginTop: '50px'
-    }}>
+    <div className='recomendations'>
       <PreviewUser
         name={props.userData.username}
         avatar={props.userData.avatarData?.avatarSrc || './images/icons/profile.jpg'}
