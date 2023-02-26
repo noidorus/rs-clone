@@ -9,6 +9,17 @@
   }
 }
 
+.post--dashboard {
+  position: static;
+  border-bottom: solid 1px rgb(var(--secondary-bg_500));
+  cursor: default;
+
+  .post__image {
+    width: 468px;
+    height: 584px;
+  }
+}
+
 .post__inner {
   width: 100%;
   aspect-ratio: 1/1;
