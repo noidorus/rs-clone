@@ -25,7 +25,7 @@
   height: 720px;
   min-height: 391px;
   max-height: 898px;
-  background-color: var(--bg-color_100);
+  background-color: var(--bg-color_200);
   border-radius: 12px;
 
   @media screen and (max-width: 992px) {
@@ -74,7 +74,7 @@
     left: 50%;
     width: 20px;
     height: 2px;
-    background-color: var(--bg-color_100);
+    background-color: rgb(var(--text-color_100));
   }
 
   &::before {
@@ -105,6 +105,10 @@
   object-fit: contain;
 }
 
+.form__image--default {
+  width: 160px;
+}
+
 .form__file {
   position: absolute;
   top: 0;
@@ -131,6 +135,8 @@
   border-radius: 4px;
   resize: none;
   border-color: rgb(var(--secondary-bg_700));
+  background-color: rgb(var(--secondary-bg_400));
+  color: rgb(var(--text-color_500));
 }
 
 .form__image-wrapper {

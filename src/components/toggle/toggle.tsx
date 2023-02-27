@@ -7,16 +7,15 @@ interface Props {
 }
 
 const Toggle = ({ value, onChange }: Props) => (
-  <label className='root' htmlFor="toggler">
+  <label className='toggler' htmlFor="toggler">
     <input
+      className='visually-hidden'
       id="toggler"
       type="checkbox"
       onClick={onChange}
       checked={value}
       readOnly
     />
-    <span className='slider' />
-    <span className='wave' />
   </label>
 );
 

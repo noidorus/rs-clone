@@ -40,6 +40,7 @@
   width: 482px;
   flex-shrink: 0;
   border-left: 1px solid rgb(var(--secondary-bg_500));
+  background-color: var(--bg-color_100);
 
   @media screen and (max-width: 768px) {
     width: 404px;

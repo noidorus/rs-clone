@@ -96,8 +96,8 @@ export default function Menu({
             </Link>
           ) : null}
         </li>
-        <li className="main-nav__item">
-        {/* <ThemeContext.Consumer>
+        <li className="main-nav__item main-nav__item--theme">
+        <ThemeContext.Consumer>
           {({ theme, setTheme }) => (
             <Toggle
               onChange={() => {
@@ -107,9 +107,9 @@ export default function Menu({
               value={theme === themes.dark}
             />
           )}
-        </ThemeContext.Consumer> */}
+        </ThemeContext.Consumer>
         </li>
-        <li className="main-nav__item main-nav__item--logout">
+        <li className="main-nav__item">
           <a
             className="main-nav__link main-nav__link--signout"
             type="button"
