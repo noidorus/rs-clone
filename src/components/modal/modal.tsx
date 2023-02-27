@@ -72,7 +72,11 @@ export default function UploadImageModal({
           onSubmit={handleSubmit}
         >
           <div className='form__image-wrapper'>
-            <img className='form__image' src={imagePreviewSrc ? imagePreviewSrc : './images/placeholder-image.png'} />
+            { imagePreviewSrc ? (
+              <img className='form__image' src={imagePreviewSrc} />
+              ): <img className='form__image form__image--default' src={'./images/placeholder-image.png'}/>
+            }
+            {/* <img className='form__image' src={imagePreviewSrc ? imagePreviewSrc : './images/placeholder-image.png'} /> */}
             <input className='form__file' type="file" onChange={(e) => handleUpload(e.target.files)} />
             { !imagePreviewSrc ? (
               <button className='form__action button button--primary' type='button'>Load file</button>
