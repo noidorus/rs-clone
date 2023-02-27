@@ -164,6 +164,8 @@ export function getError(error: MyError): string {
       return 'Operation not allowed.';
     case 'auth/weak-password':
       return 'The password is too weak.';
+    case 'auth/user-not-found':
+      return 'User not found!'
     default:
       return error.message;
   }

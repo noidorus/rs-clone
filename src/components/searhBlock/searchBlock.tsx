@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { setDataUsers } from "../../firebase/services";
 import { useOnClickOutside } from "../../hooks/useOnClickOutside";
-import { IUser, IUserProfile } from "../../types/types";
-// import PreviewUser from "../post/post-header";
+import { IUserProfile } from "../../types/types";
 import { Search } from "../search/search";
 import { PreviewUser } from "../userProfile/preview-user";
 import './searchBlock.scss';
@@ -17,6 +16,7 @@ function filteredUsers(users: IUserProfile[], value: string) {
     : [];
   return filteredUsers;
 }
+
 export type propsCloseSearchBlock = {
   closeSearchBlock: () => void;
 }

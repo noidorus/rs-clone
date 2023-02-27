@@ -23,7 +23,7 @@ export default function UploadImageModal({
   const [imagePreviewSrc, setImagePreviewSrc] = useState<string | undefined| null>(null);
   const reader = new FileReader();
 
-  const handleUpload = (filesList: FileList | null) => {
+  const handleUpload = (filesList: FileList | null): void => {
     const img = filesList ? filesList[0] : null;
     setImgError('');
 
@@ -49,7 +49,7 @@ export default function UploadImageModal({
     setImgUpload(img);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
 
     if (!imgUpload) {

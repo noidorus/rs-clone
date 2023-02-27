@@ -17,7 +17,7 @@ export default function CommentForm({ docId }: CommentsProps) {
 
   const [newComment, setNewComment] = useState('');
 
-  const submitComment = async (e: React.FormEvent) => {
+  const submitComment = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
 
     const commentData = {

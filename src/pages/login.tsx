@@ -5,6 +5,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import FirebaseContext from '../context/firebase-context';
 import * as ROUTES from '../constants/routes';
 import './login.scss';
+import { MyError } from '../types/types';
+
+
+import { getError } from '../firebase/services';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -18,7 +22,7 @@ export default function Login() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    
     try {
       const auth = getAuth(firebase);
 
@@ -30,7 +34,12 @@ export default function Login() {
           setTimeout(() => {
             navigate(ROUTES.DASHBOARD);
           }, 100);
+        }).catch((e) => {
+          const error = e as MyError;
+          const message = getError(error)
+          setError(message)
         });
+      
     } catch {
       setEmailAddress('');
       setPassword('');
