@@ -8,6 +8,8 @@ import { doesUsernameExist } from '../../firebase/services';
 import { updateUserData } from '../../firebase/services';
 import UserContext from '../../context/user-context';
 
+import './editprofile.scss';
+
 interface IProps {
   loggedUserData: IUserProfile | null;
 }
@@ -65,17 +67,15 @@ export default function EditProfileButton({ loggedUserData }: IProps) {
       {showModal ? (
         <div className="modal">
           <div className="modal__inner">
-            {error && <p>{error}</p>}
+            {error && <p className='error'>{error}</p>}
             <form
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-              }}
+              className='edit-form'
               onSubmit={handleEditProfile}
             >
-              <label>
+              <label className='field-wrapper'>
                 Username
                 <input
+                  className='field'
                   type="text"
                   defaultValue={loggedUserData?.username}
                   onChange={({ target }) =>
@@ -83,26 +83,30 @@ export default function EditProfileButton({ loggedUserData }: IProps) {
                   }
                 />
               </label>
-              <label>
+              <label className='field-wrapper'>
                 Full Name
                 <input
+                  className='field'
                   type="text"
                   defaultValue={loggedUserData?.fullName}
                   onChange={({ target }) => setNewFullname(target.value)}
                 />
               </label>
-              <button type="submit">Edit</button>
-              <button
-                onClick={() => {
-                  if (loggedUserData) {
-                    setNewUsername(loggedUserData.username);
-                    setNewFullname(loggedUserData.fullName);
-                  }
-                  setShowModal(false);
-                }}
-              >
-                Close
-              </button>
+              <div className='field-wrapper__actions'>
+                <button className='button button--primary' type="submit">Edit</button>
+                <button
+                  className='button'
+                  onClick={() => {
+                    if (loggedUserData) {
+                      setNewUsername(loggedUserData.username);
+                      setNewFullname(loggedUserData.fullName);
+                    }
+                    setShowModal(false);
+                  }}
+                >
+                  Close
+                </button>
+              </div>
             </form>
           </div>
         </div>

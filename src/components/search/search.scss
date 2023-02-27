@@ -35,4 +35,15 @@
   margin-bottom: 0;
   padding-left: 0;
   list-style: none;
+
+  .post-header {
+    padding: 0;
+    border-bottom: none;
+  }
+
+  .user__image-wrapper,
+  .user__image {
+    width: 44px;
+    height: 44px;
+  }
 }

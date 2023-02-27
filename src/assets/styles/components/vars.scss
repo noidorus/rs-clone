@@ -17,3 +17,8 @@
   --secondary-bg_800: 168, 168, 168;
   --secondary-bg_900: 0, 0, 0;
 }
+
+:root[data-theme="dark"] {
+  // --bg-color_100: #000;
+  // --bg-color_500: #000;
+}
