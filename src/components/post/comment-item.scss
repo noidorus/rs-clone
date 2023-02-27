@@ -33,5 +33,6 @@
 .comment__delete {
   width: 24px;
   height: 24px;
-  background-size: 16px 16px;
+  -webkit-mask-size: 16px 16px;
+  mask-size: 16px 16px;
 }
