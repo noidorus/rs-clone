@@ -93,7 +93,7 @@ export default function SignUp() {
           </h2>
         </header>
 
-        {error && <p>{error}</p>}
+        {error && <p className='error'>{error}</p>}
 
         <form
           className="signup-page__form signup-form"

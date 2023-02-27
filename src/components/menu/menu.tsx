@@ -10,6 +10,8 @@ import './menu.scss';
 import { FirebaseApp } from '@firebase/app-types';
 import SearchBlock from '../searhBlock/searchBlock';
 import { IPhotoDoc } from '../../types/types';
+import { ThemeContext, themes } from '../../context/theme-context';
+import Toggle from '../toggle/toggle';
 
 interface MenuProps {
   isMainPage: boolean;
@@ -93,6 +95,19 @@ export default function Menu({
               <span className="main-nav__text">Profile</span>
             </Link>
           ) : null}
+        </li>
+        <li className="main-nav__item">
+        {/* <ThemeContext.Consumer>
+          {({ theme, setTheme }) => (
+            <Toggle
+              onChange={() => {
+                if (theme === themes.light) setTheme(themes.dark)
+                if (theme === themes.dark) setTheme(themes.light)
+              }}
+              value={theme === themes.dark}
+            />
+          )}
+        </ThemeContext.Consumer> */}
         </li>
         <li className="main-nav__item main-nav__item--logout">
           <a
