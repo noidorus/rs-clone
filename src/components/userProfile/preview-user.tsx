@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
 import './preview-user.scss';
 
 type PropsPreviewUser = {
   name: string;
   avatar: string;
 }
+
 export function PreviewUser(props: PropsPreviewUser) {
   return (
     <>
