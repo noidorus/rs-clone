@@ -2,23 +2,23 @@ import React, { useEffect, useRef, useState } from "react";
 import { setDataUsers } from "../../firebase/services";
 import { useOnClickOutside } from "../../hooks/useOnClickOutside";
 import { IUser, IUserProfile } from "../../types/types";
-import PreviewUser from "../post/post-header";
+// import PreviewUser from "../post/post-header";
 import { Search } from "../search/search";
+import { PreviewUser } from "../userProfile/preview-user";
 import './searchBlock.scss';
-
 
 function filteredUsers(users: IUserProfile[], value: string) {
   const filteredUsers = value
     ? users.filter(
-        (user) =>
-          user.username.toUpperCase().includes(value.toUpperCase()) ||
-          user.fullName.toUpperCase().includes(value.toUpperCase())
-      )
+      (user) =>
+        user.username.toUpperCase().includes(value.toUpperCase()) ||
+        user.fullName.toUpperCase().includes(value.toUpperCase())
+    )
     : [];
   return filteredUsers;
 }
-export type propsCloseSearchBlock ={
-  closeSearchBlock:() => void;
+export type propsCloseSearchBlock = {
+  closeSearchBlock: () => void;
 }
 
 function SearchBlock(props: propsCloseSearchBlock) {
@@ -60,29 +60,30 @@ function SearchBlock(props: propsCloseSearchBlock) {
     <div ref={searchRef} className="search">
       <header className="search__header">
         <h2 className="search__title">Search</h2>
-        <Search 
+        <Search
           value={value}
           handleChange={handleChange}
           clearInput={clearInput}
         />
       </header>
       <div className="search__inner">
-        {status === 'success' && (<ul className="search__results results">{usersVisble.map((user, index) => 
-          {return (
-            <li className="results__item" key={index}>
-            <PreviewUser 
+        {status === 'success' && (<ul className="search__results results">{usersVisble.map((user, index) => {
+          return (
+            <li className="results__item" key={index} onClick={props.closeSearchBlock}>
+              <PreviewUser
                 key={user.userId}
-                user={user}
+                name={user.username}
+                avatar={user.avatarData?.avatarSrc || './images/icons/profile.jpg'}
               />
             </li>
-            )
-          })}
-          </ul>)
+          )
+        })}
+        </ul>)
         }
         {!usersVisble.length && (<div className="search__empty">No recent searches.</div>)}
-        {status === 'loading' && (<div>loading</div>) }
-        {status === 'error' && (<div>WTF?</div>) }
-        </div>
+        {status === 'loading' && (<div>loading</div>)}
+        {status === 'error' && (<div>WTF?</div>)}
+      </div>
     </div>
   );
 }
