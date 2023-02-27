@@ -35,53 +35,30 @@ function ModalPost({ user, photo, closeModal }: ModalPropsType) {
   return (
     <div className='modal modal--post'>
       <div className="modal__inner">
-        <div className='modal__content' ref={menuRef}>
-          <div>
+        <div className='modal__content modal-post' ref={menuRef}>
+          <div className='modal-post__left'>
             <img
+              className='modal-post__image'
               src={imageSrc}
-              style={{
-                width: '100%',
-                height: 'auto',
-              }}
             />
           </div>
-          <div
-            style={{
-              width: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-            }}
-          >
+          <div className='modal-post__right comments'>
             {user ? <PostHeader photoData={photo} user={user} closeModal={closeModal} /> : null}
 
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                flexDirection: 'column',
-                margin: '1% 4%',
-                rowGap: '10px',
-              }}
-            >
-              <div>{caption}</div>
+            <div className='comments__inner'>
+              <p className='comments__desc'>{caption}</p>
 
               <Comments comments={commentsArr} photoDocId={docId} photoUserId={userId} />
 
-              <div>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                  }}
-                >
+            </div>
+              <footer className='comments__footer comments-footer'>
+                <div className='comments-footer__inner'>
                   <Like likes={likes} docId={docId} />
-                  <div>{date}</div>
+                  <div className='comments-footer__date'>{date}</div>
                 </div>
 
                 <CommentForm docId={docId} />
-              </div>
-            </div>
+              </footer>
           </div>
         </div>
       </div>

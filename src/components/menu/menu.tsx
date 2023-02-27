@@ -1,4 +1,4 @@
-import React, { useContext, useState, Dispatch, SetStateAction } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getAuth, signOut } from 'firebase/auth';
 import FirebaseContext from '../../context/firebase-context';
@@ -10,6 +10,8 @@ import './menu.scss';
 import { FirebaseApp } from '@firebase/app-types';
 import SearchBlock from '../searhBlock/searchBlock';
 import { IPhotoDoc } from '../../types/types';
+import { ThemeContext, themes } from '../../context/theme-context';
+import Toggle from '../toggle/toggle';
 
 interface MenuProps {
   isMainPage: boolean;
@@ -24,11 +26,11 @@ export default function Menu({
   const [searchBlock, setSearchBlock] = useState(false);
   const { user } = useContext(UserContext);
 
-  function openSearchBlock() {
+  function openSearchBlock(): void {
     setSearchBlock(true);
   }
   
-  function closeSearchBlock() {
+  function closeSearchBlock(): void {
     setSearchBlock(false);
   }
 
@@ -69,12 +71,6 @@ export default function Menu({
           </a>
         </li>
         <li className="main-nav__item">
-          <a className="main-nav__link main-nav__link--notifications" href="#">
-            <span className="main-nav__text">Notifications</span>
-          </a>
-        </li>
-        <li className="main-nav__item">
-          {/* подправить стили внутри */}
           <LoadPhotoButton
             isMainPage={isMainPage}
             profileUsername={profileUsername}
@@ -94,7 +90,20 @@ export default function Menu({
             </Link>
           ) : null}
         </li>
-        <li className="main-nav__item main-nav__item--logout">
+        <li className="main-nav__item main-nav__item--theme">
+        <ThemeContext.Consumer>
+          {({ theme, setTheme }) => (
+            <Toggle
+              onChange={() => {
+                if (theme === themes.light) setTheme(themes.dark)
+                if (theme === themes.dark) setTheme(themes.light)
+              }}
+              value={theme === themes.dark}
+            />
+          )}
+        </ThemeContext.Consumer>
+        </li>
+        <li className="main-nav__item">
           <a
             className="main-nav__link main-nav__link--signout"
             type="button"

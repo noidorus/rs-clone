@@ -5,6 +5,8 @@ import { IComment } from '../../types/types';
 import { updateComments } from '../../firebase/services';
 import CommentsContext from '../../context/comments-context';
 
+import './comment-form.scss';
+
 interface CommentsProps {
   docId: string;
 }
@@ -15,7 +17,7 @@ export default function CommentForm({ docId }: CommentsProps) {
 
   const [newComment, setNewComment] = useState('');
 
-  const submitComment = async (e: React.FormEvent) => {
+  const submitComment = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
 
     const commentData = {
@@ -33,14 +35,15 @@ export default function CommentForm({ docId }: CommentsProps) {
   };
 
   return (
-    <form onSubmit={submitComment}>
+    <form className='comment-form' onSubmit={submitComment}>
       <input
+        className='comment-form__field field field--transparent'
         type="text"
-        placeholder="Add a comment"
+        placeholder="Add a comment..."
         onChange={({ target }) => setNewComment(target.value)}
         value={newComment}
       />
-      <button type="submit">Post</button>
+      <button className='comment-form__action button button--transparent' type="submit">Post</button>
     </form>
   );
 }

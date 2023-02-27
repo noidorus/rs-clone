@@ -42,6 +42,7 @@
       background-image: url('../../../public/images/icons/camera.svg');
       background-position: center;
       background-repeat: no-repeat;
+      filter: brightness(100);
     }
   }
 
@@ -66,6 +67,10 @@
       }
     }
   }
+}
+
+.main-nav__image {
+  filter: var(--icon-filter);
 }
 
 .main-nav--compact {
@@ -94,6 +99,7 @@
     background-image: url('../../../public/images/icons/camera.svg');
     background-position: center;
     background-repeat: no-repeat;
+    filter: brightness(100);
   }
 }
 
@@ -132,6 +138,11 @@
     width: 40px;
     height: 40px;
     padding: 0;
+
+    .main-nav__item--theme {
+      margin-left: 0;
+      margin-top: 8px;
+    }
   }
 }
 
@@ -143,8 +154,13 @@
   }
 }
 
-.main-nav__item--logout {
+.main-nav__item--theme {
   margin-top: auto;
+
+  @media screen and (max-width: 767px) {
+    margin-left: 0;
+    margin-top: 8px;
+  }
 }
 
 .main-nav__link {
@@ -180,7 +196,7 @@
   &::before {
     content: '';
     position: absolute;
-    left: 12px;
+    left: 11px;
     top: 50%;
     width: 24px;
     height: 24px;
@@ -188,6 +204,7 @@
     background-position: center;
     background-repeat: no-repeat;
     transition: transform 0.2s cubic-bezier(0.17, 0.17, 0, 1);
+    filter: var(--icon-filter);
 
     @media screen and (max-width: 767px) {
       left: 7px;
@@ -285,6 +302,7 @@
 
 .main-nav__link--profile {
   &::before {
+    border-radius: 50%;
     background-image: url('../../../public/images/icons/profile.jpg');
     background-size: contain;
   }

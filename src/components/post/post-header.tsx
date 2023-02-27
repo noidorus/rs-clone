@@ -9,7 +9,7 @@ import './post-header.scss';
 
 interface PostHeaderProps {
   user: IUserProfile;
-  photoData: IPhotoDoc;
+  photoData?: IPhotoDoc;
   closeModal?: () => void;
 }
 
@@ -21,34 +21,30 @@ function PostHeader({ user, photoData, closeModal }: PostHeaderProps) {
 
   const isMyPhoto = loggedUser?.displayName == username;
 
-  const handleDeletePhoto = async () => {
-    const storagePath = photoData.imagePath;
-    const docId = photoData.docId;
-    const newPhotos = photos.filter((elem) => elem.docId !== docId);
+  const handleDeletePhoto = async (): Promise<void> => {
+    if (photoData) {
+      const storagePath = photoData.imagePath;
+      const docId = photoData.docId;
+      const newPhotos = photos.filter((elem) => elem.docId !== docId);
 
-    try {
-      await deletePhotoFromStorage(storagePath);
-      await deletePhotoFromFirestore(docId);
+      try {
+        await deletePhotoFromStorage(storagePath);
+        await deletePhotoFromFirestore(docId);
 
-      setPhotos(newPhotos);
-      closeModal ? closeModal() : null;
-    } catch (e) {
-      console.log(e);
+        setPhotos(newPhotos);
+        closeModal ? closeModal() : null;
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      }}
-    >
-      <div className="user">
+    <header className="post-header">
+      <div className="post-header__user user">
         <Link className="user__link" to={`/${username}`}>
           <div className="user__image-wrapper">
-            <img className="user__image" src={avatar} width="44" height="44" />
+            <img className="user__image" src={avatar} width="32" />
           </div>
           <div className="user__info">
             <span className="user__name">{username}</span>
@@ -57,8 +53,13 @@ function PostHeader({ user, photoData, closeModal }: PostHeaderProps) {
         </Link>
       </div>
 
-      {isMyPhoto ? <button onClick={handleDeletePhoto}>Delete</button> : null}
-    </div>
+      {isMyPhoto ? (
+        <button
+          className="post-header__delete button button--delete"
+          onClick={handleDeletePhoto}
+        ></button>
+      ) : null}
+    </header>
   );
 }
 

@@ -1,3 +1,5 @@
+import { IUserProfile } from "../types/types";
+
 export function getRelativeTimeString(date: number, lang = navigator.language) {
   const deltaSeconds = Math.round((date - Date.now()) / 1000);
   if (Math.abs(deltaSeconds) > 3600 * 24 * 3) {
@@ -21,4 +23,12 @@ export function getRelativeTimeString(date: number, lang = navigator.language) {
     const rtf = new Intl.RelativeTimeFormat('en', {});
     return rtf.format(Math.floor(deltaSeconds / divisor), units[unitIndex]);
   }
+}
+
+export function shuffle(array: IUserProfile[]) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
 }

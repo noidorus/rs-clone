@@ -28,7 +28,7 @@ export default function ProfileAvatar({
     setAvatarSrc(avatarData?.avatarSrc);
   }, [avatarData]);
 
-  const callback = async (url: string, imagePath: string) => {
+  const callback = async (url: string, imagePath: string): Promise<void> => {
     if (avatarPathToDeletePath) {
       await deletePhotoFromStorage(avatarPathToDeletePath);
     }

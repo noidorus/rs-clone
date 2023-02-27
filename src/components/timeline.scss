@@ -42,5 +42,6 @@
     background-image: url('../../public/images/icons/posts.svg');
     background-repeat: no-repeat;
     background-size: contain;
+    filter: var(--icon-filter);
   }
 }

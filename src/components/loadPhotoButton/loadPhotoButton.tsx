@@ -23,7 +23,7 @@ export default function LoadPhotoButton({
   const [caption, setCaption] = useState('');
 
   // send Data to FireStore after sending to Storage
-  const callback = async (url: string, imagePath: string) => {
+  const callback = async (url: string, imagePath: string): Promise<void> => {
     const imageData = {
       caption: caption,
       comments: [],

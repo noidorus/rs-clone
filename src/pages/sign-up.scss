@@ -34,6 +34,7 @@
 .signup-header__logo {
   margin-top: 36px;
   margin-bottom: 12px;
+  filter: var(--icon-filter);
 }
 
 .signup-header__text {
@@ -72,4 +73,8 @@
   height: 134px;
   margin-top: auto;
   color: rgb(var(--text-color_300));
+}
+
+.rs__image {
+  filter: var(--icon-filter2);
 }
