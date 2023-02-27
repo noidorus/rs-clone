@@ -101,11 +101,11 @@ export default function UserHeader({
           </li>
           <li className='shared__item'>
             <span className='shared__value'>{followersCount}</span>
-            <span className='shared__name' onClick={openModal}> Followers</span>
+            <span className='shared__name shared__name--actions' onClick={openModal}> Followers</span>
           </li>
           <li className='shared__item'>
             <span className='shared__value'>{following.length}</span>
-            <span className='shared__name' onClick={openModal}> Following</span>
+            <span className='shared__name shared__name--actions' onClick={openModal}> Following</span>
           </li>
         </ul>
       </div>
