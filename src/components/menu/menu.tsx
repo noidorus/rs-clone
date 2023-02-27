@@ -68,11 +68,11 @@ export default function Menu({
             <span className="main-nav__text">Search</span>
           </a>
         </li>
-        <li className="main-nav__item">
+        {/* <li className="main-nav__item">
           <a className="main-nav__link main-nav__link--notifications" href="#">
             <span className="main-nav__text">Notifications</span>
           </a>
-        </li>
+        </li> */}
         <li className="main-nav__item">
           {/* подправить стили внутри */}
           <LoadPhotoButton

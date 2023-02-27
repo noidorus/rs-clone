@@ -35,7 +35,8 @@ export function Recomendation(props: PropsRecomendations) {
       <ul className='recomendations__list'>
         {users.map(user => {
           return (
-            <RecommendedUser 
+            <RecommendedUser
+              key={user.userId}
               user={user}
               loggedUser={props.userData}
             />
