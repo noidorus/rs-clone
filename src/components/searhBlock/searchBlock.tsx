@@ -69,7 +69,7 @@ function SearchBlock(props: propsCloseSearchBlock) {
       <div className="search__inner">
         {status === 'success' && (<ul className="search__results results">{usersVisble.map((user, index) => {
           return (
-            <li className="results__item" key={index}>
+            <li className="results__item" key={index} onClick={props.closeSearchBlock}>
               <PreviewUser
                 key={user.userId}
                 name={user.username}
