@@ -17,6 +17,7 @@ function filteredUsers(users: IUserProfile[], value: string) {
     : [];
   return filteredUsers;
 }
+
 export type propsCloseSearchBlock ={
   closeSearchBlock:() => void;
 }

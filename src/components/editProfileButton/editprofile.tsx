@@ -22,7 +22,7 @@ export default function EditProfileButton({ loggedUserData }: IProps) {
 
   const navigate = useNavigate();
 
-  const handleEditProfile = async (e: React.FormEvent) => {
+  const handleEditProfile = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
 
     const auth = getAuth(firebase);

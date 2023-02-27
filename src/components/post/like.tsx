@@ -15,7 +15,7 @@ export default function Like({ likes, docId }: LikeProps) {
   const [likesCount, setLikesCount] = useState(likes.length);
   const [isLikedPhoto, setIsLikedPhoto] = useState(false);
 
-  const handleToggleLike = () => {
+  const handleToggleLike = (): void => {
     setIsLikedPhoto(!isLikedPhoto);
     setLikesCount(isLikedPhoto ? likesCount - 1 : likesCount + 1);
     toggleLike(isLikedPhoto, docId, loggedUser.uid);

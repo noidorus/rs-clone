@@ -1,4 +1,4 @@
-import React, { useContext, useState, Dispatch, SetStateAction } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getAuth, signOut } from 'firebase/auth';
 import FirebaseContext from '../../context/firebase-context';
@@ -9,7 +9,6 @@ import * as ROUTES from '../../constants/routes';
 import './menu.scss';
 import { FirebaseApp } from '@firebase/app-types';
 import SearchBlock from '../searhBlock/searchBlock';
-import { IPhotoDoc } from '../../types/types';
 
 interface MenuProps {
   isMainPage: boolean;
@@ -24,11 +23,11 @@ export default function Menu({
   const [searchBlock, setSearchBlock] = useState(false);
   const { user } = useContext(UserContext);
 
-  function openSearchBlock() {
+  function openSearchBlock(): void {
     setSearchBlock(true);
   }
   
-  function closeSearchBlock() {
+  function closeSearchBlock(): void {
     setSearchBlock(false);
   }
 
@@ -69,12 +68,6 @@ export default function Menu({
           </a>
         </li>
         <li className="main-nav__item">
-          <a className="main-nav__link main-nav__link--notifications" href="#">
-            <span className="main-nav__text">Notifications</span>
-          </a>
-        </li>
-        <li className="main-nav__item">
-          {/* подправить стили внутри */}
           <LoadPhotoButton
             isMainPage={isMainPage}
             profileUsername={profileUsername}

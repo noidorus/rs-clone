@@ -17,7 +17,7 @@ export function RecommendedUser(props: PropsRecommendedUser) {
   const [isFollowingProfile, setIsFollowingProfile] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
 
-  function addFollow() {
+  function addFollow(): void {
     if(!isFollowingProfile){
       toggleFollow(isFollowingProfile, user.userId, user.docId, loggedUser.userId, loggedUser.docId);
       setIsFollowingProfile(true)
@@ -26,7 +26,7 @@ export function RecommendedUser(props: PropsRecommendedUser) {
     }
   }
 
-  function closeModal() {
+  function closeModal(): void {
     setIsOpenModal(false)
   }
 

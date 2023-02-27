@@ -12,7 +12,7 @@ export function Modal(props: PropsModal) {
   const user = props.user
   const loggedUser = props.loggedUser
 
-  function deleteFollow() {
+  function deleteFollow(): void {
     toggleFollow(true, user.userId, user.docId, loggedUser.userId, loggedUser.docId);
     props.setIsFollowingProfile(false)
     props.closeModal();

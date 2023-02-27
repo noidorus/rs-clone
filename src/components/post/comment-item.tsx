@@ -38,7 +38,7 @@ export default function CommentItem({
 
   const canDelete = checkCanDelete();
 
-  const handleDeleteComment = async () => {
+  const handleDeleteComment = async (): Promise<void> => {
     const newCommentsArr = await deleteComment(photoDocId, date);
     setCommentsArr(newCommentsArr);
   };
