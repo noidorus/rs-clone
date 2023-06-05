@@ -14,7 +14,6 @@ const Profile = lazy(() => import('./pages/profile'));
 function App() {
   const { user, setUser } = authListener();
 
-
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <ThemeProvider>

@@ -26,12 +26,10 @@ export default function Dashboard() {
   }, [user]);
 
   return (
-    <PhotosContext.Provider value={{photos, setPhotos}}>
+    <PhotosContext.Provider value={{ photos, setPhotos }}>
       <main className="main-page">
         <Menu isMainPage={true} />
-        {user ? (
-          <MainPage user={user} />
-        ) : null}
+        {user && <MainPage user={user} />}
       </main>
     </PhotosContext.Provider>
   );
