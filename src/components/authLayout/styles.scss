@@ -1,0 +1,197 @@
+.auth {
+  &-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+
+    &__wrapper {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      margin-top: 108px;
+    }
+
+    &__image {
+      position: relative;
+      width: 380px;
+      height: 581px;
+      background-image: url('../../../public/images/login-bg.png');
+      background-size: 468px 634px;
+      background-position: -46px 0;
+
+      @media screen and (max-width: 875px) {
+        display: none;
+      }
+    }
+
+    &__content {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    &__container {
+      width: 350px;
+      padding: 10px 40px;
+      background-color: var(--bg-color_100);
+      border: solid 1px rgb(var(--secondary-bg_700));
+
+      @media screen and (max-width: 450px) {
+        width: auto;
+        max-width: 350px;
+        min-width: 270px;
+        background-color: transparent;
+        border: none;
+      }
+    }
+
+    &__header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    &__title {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    &__link {
+      text-align: center;
+    }
+
+    &__footer {
+      width: 100%;
+      height: 134px;
+      max-width: 802px;
+      padding-left: 20px;
+      padding-right: 20px;
+      margin-top: auto;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+
+      font-size: 12px;
+      line-height: 16px;
+
+      color: rgb(var(--text-color_300));
+    }
+  }
+
+  &-header {
+    &__logo {
+      margin-top: 36px;
+      margin-bottom: 36px;
+      filter: var(--icon-filter);
+    }
+
+    &__text {
+      font-size: 17px;
+      font-weight: 600;
+      line-height: 20px;
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 16px;
+      color: rgb(var(--text-color_300));
+    }
+  }
+
+  &-image__item {
+    position: absolute;
+    top: 27px;
+    left: 113px;
+    transition: opacity 1.5s;
+    opacity: 0;
+    z-index: 2;
+
+    &--slide1 {
+      animation: slide1 20s infinite;
+    }
+    &--slide2 {
+      animation: slide2 20s infinite;
+    }
+    &--slide3 {
+      animation: slide3 20s infinite;
+    }
+    &--slide4 {
+      animation: slide4 20s infinite;
+    }
+
+    @keyframes slide1 {
+      0% {
+        opacity: 0;
+      }
+      25% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0;
+      }
+    }
+    @keyframes slide2 {
+      25% {
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+      75% {
+        opacity: 0;
+      }
+    }
+    @keyframes slide3 {
+      50% {
+        opacity: 0;
+      }
+      75% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+    @keyframes slide4 {
+      0% {
+        opacity: 0.1;
+      }
+      75% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.owners__list {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  gap: 2px;
+  margin-bottom: 0;
+  margin-top: 0;
+  padding-left: 0;
+
+  &-link {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    text-decoration: none;
+    color: rgb(var(--text-color_300));
+  }
+}
+
+.rs-logo {
+  &__link {
+    color: rgb(var(--text-color_300));
+  }
+
+  &__image {
+    filter: var(--icon-filter2);
+  }
+}

@@ -2,7 +2,6 @@ import {
   IComment,
   IPhoto,
   IUser,
-  MyError,
   IUserProfile,
   IPhotoDoc,
 } from './../types/types';
@@ -19,29 +18,108 @@ import {
   DocumentData,
   deleteDoc,
 } from 'firebase/firestore';
-import { db } from './lib';
+import { db, auth } from './lib';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+  UserCredential,
+} from 'firebase/auth';
+import { CreateUserProps } from './types';
 
-export async function doesUsernameExist(username: string): Promise<boolean> {
+export const logInWithEmailAndPassword = async (
+  email: string,
+  password: string
+): Promise<UserCredential> => {
+  return await signInWithEmailAndPassword(auth, email, password);
+};
+
+export const logOut = async () => {
+  try {
+    await auth.signOut();
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const createUser = async ({
+  username,
+  fullName,
+  email,
+  password,
+}: CreateUserProps) => {
+  const usernameExists = await doesUsernameExist(username);
+  if (!usernameExists) {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      await updateProfile(userCredential.user, { displayName: username });
+
+      const newUser = {
+        userId: userCredential.user.uid,
+        username,
+        fullName,
+        emailAddress: email,
+        following: [],
+        followers: [],
+        dateCreated: Date.now(),
+        avatarData: {
+          avatarSrc: '',
+          imagePath: '',
+        },
+      };
+
+      await createUserDocument(newUser);
+    } catch (err) {
+      throw err;
+    }
+  } else {
+    throw new Error('That username is already taken, please try another!');
+  }
+};
+
+export const doesUsernameExist = async (username: string): Promise<boolean> => {
   const querySnapshot = await getQuerySnapshot('users', 'username', username);
   return querySnapshot.docs.length > 0;
-}
+};
 
-export async function isFollowingUserProfile(
+export const isFollowingUserProfile = async (
   loggedUserName: string | null | undefined,
   profileUserId: string
-): Promise<boolean> {
+): Promise<boolean> => {
   const usersColl = collection(db, 'users');
   const userQuery = query(usersColl, where('username', '==', loggedUserName));
-
   const newQuery = query(
     userQuery,
     where('following', 'array-contains', profileUserId)
   );
-
   const res = await getDocs(newQuery);
 
   return res.docs.length > 0;
-}
+};
+
+const getQuerySnapshot = async (
+  collName: string,
+  fieldPath: string,
+  value: string
+): Promise<QuerySnapshot<DocumentData>> => {
+  const coll = collection(db, collName);
+  const userQuery = query(coll, where(fieldPath, '==', value));
+
+  return await getDocs(userQuery);
+};
+
+const createUserDocument = async (userData: IUser): Promise<void> => {
+  const userColl = collection(db, 'users');
+  const userRef = doc(userColl);
+
+  setDoc(userRef, userData);
+};
+
+////////////
 
 async function updateLoggedUserFollowing(
   isFollowingProfile: boolean,
@@ -119,17 +197,6 @@ export async function setDataUsers(): Promise<IUserProfile[]> {
   return users;
 }
 
-export async function getQuerySnapshot(
-  collName: string,
-  fieldPath: string,
-  value: string
-): Promise<QuerySnapshot<DocumentData>> {
-  const coll = collection(db, collName);
-  const userQuery = query(coll, where(fieldPath, '==', value));
-
-  return await getDocs(userQuery);
-}
-
 export async function getUserByUsername(
   username: string
 ): Promise<IUserProfile | undefined> {
@@ -146,29 +213,22 @@ export async function getUserByUsername(
   return !!res.length ? res[0] : undefined;
 }
 
-export async function setUserData(user: IUser): Promise<void> {
-  const userColl = collection(db, 'users');
-  const userRef = doc(userColl);
-
-  setDoc(userRef, user);
-}
-
-export function getError(error: MyError): string {
-  switch (error.code) {
-    case 'auth/email-already-in-use':
-      return 'The email address is already in use';
-    case 'auth/invalid-email':
-      return 'The email address is not valid.';
-    case 'auth/operation-not-allowed':
-      return 'Operation not allowed.';
-    case 'auth/weak-password':
-      return 'The password is too weak.';
-    case 'auth/user-not-found':
-      return 'User not found!';
-    default:
-      return error.message;
-  }
-}
+// export function getError(error: MyError): string {
+//   switch (error.code) {
+//     case 'auth/email-already-in-use':
+//       return 'The email address is already in use';
+//     case 'auth/invalid-email':
+//       return 'The email address is not valid.';
+//     case 'auth/operation-not-allowed':
+//       return 'Operation not allowed.';
+//     case 'auth/weak-password':
+//       return 'The password is too weak.';
+//     case 'auth/user-not-found':
+//       return 'User not found!';
+//     default:
+//       return error.message;
+//   }
+// }
 
 export async function sendPhotoDataToFirestore(
   imageData: IPhoto

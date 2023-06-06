@@ -10,7 +10,6 @@ export enum Status {
 export interface MainState {
   photos: IPhotoDoc[];
   photosLoadingStatus: Status;
-  // recomendations: [];
   recomendedPhotos: [];
 }
 
@@ -26,4 +25,9 @@ export interface AuthState {
   loggedUser: IUserProfile | null;
   authError: string | null;
   authLoading: boolean;
+}
+
+export interface Credentials {
+  email: string;
+  password: string;
 }

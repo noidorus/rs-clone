@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getAuth, signOut } from 'firebase/auth';
 import FirebaseContext from '../../context/firebase-context';
 import LoadPhotoButton from '../loadPhotoButton/loadPhotoButton';
 import * as ROUTES from '../../constants/routes';
@@ -12,6 +11,7 @@ import { ThemeContext, themes } from '../../context/theme-context';
 import Toggle from '../toggle/toggle';
 
 import { useAppSelector } from '../../hooks/redux.hook';
+import { logOut } from '../../firebase/services';
 
 interface MenuProps {
   isMainPage: boolean;
@@ -30,6 +30,10 @@ export default function Menu({ isMainPage, profileUsername }: MenuProps) {
   function closeSearchBlock(): void {
     setSearchBlock(false);
   }
+
+  const handleSignOut = () => {
+    logOut();
+  };
 
   return (
     <nav className={searchBlock ? 'main-nav main-nav--compact' : 'main-nav'}>
@@ -104,7 +108,7 @@ export default function Menu({ isMainPage, profileUsername }: MenuProps) {
           <a
             className="main-nav__link main-nav__link--signout"
             type="button"
-            onClick={() => signOut(getAuth(firebase))}
+            onClick={handleSignOut}
           >
             <span className="main-nav__text">Sign Out</span>
           </a>

@@ -1,4 +1,5 @@
-import { IUserProfile } from "../types/types";
+import { IUserProfile } from '../types/types';
+import { MyError } from './types';
 
 export function getRelativeTimeString(date: number, lang = navigator.language) {
   const deltaSeconds = Math.round((date - Date.now()) / 1000);
@@ -32,3 +33,23 @@ export function shuffle(array: IUserProfile[]) {
   }
   return array;
 }
+
+export const getAuthError = (e: unknown): string => {
+  const error = e as MyError;
+  switch (error.code) {
+    case 'auth/email-already-in-use':
+      return 'The email address is already in use';
+    case 'auth/invalid-email':
+      return 'The email address is not valid.';
+    case 'auth/operation-not-allowed':
+      return 'Operation not allowed.';
+    case 'auth/user-not-found':
+      return 'User not found!';
+    case 'auth/wrong-password':
+      return 'Wrong username or password!';
+    case 'auth/too-many-requests':
+      return 'Too many requests!';
+    default:
+      return error.message;
+  }
+};
