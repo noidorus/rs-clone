@@ -81,8 +81,7 @@ export async function updateFollowedUserFollowers(
   docId: string,
   loggedUserId: string
 ): Promise<void> {
-  const userColl = collection(db, 'users');
-  const docRef = doc(userColl, docId);
+  const docRef = doc(db, 'users', docId);
   const querySnapshot = await getDoc(docRef);
   const { followers } = querySnapshot.data() as IUser;
 
@@ -133,7 +132,7 @@ export async function getQuerySnapshot(
 
 export async function getUserByUsername(
   username: string
-): Promise<IUserProfile> {
+): Promise<IUserProfile | undefined> {
   const querySnapshot = await getQuerySnapshot('users', 'username', username);
 
   const res = querySnapshot.docs.map((item) => {
@@ -144,7 +143,7 @@ export async function getUserByUsername(
     };
   });
 
-  return res[0];
+  return !!res.length ? res[0] : undefined;
 }
 
 export async function setUserData(user: IUser): Promise<void> {
@@ -165,24 +164,21 @@ export function getError(error: MyError): string {
     case 'auth/weak-password':
       return 'The password is too weak.';
     case 'auth/user-not-found':
-      return 'User not found!'
+      return 'User not found!';
     default:
       return error.message;
   }
 }
 
 export async function sendPhotoDataToFirestore(
-  imageData: IPhoto,
-  callback?: (data: string) => void
-): Promise<void> {
+  imageData: IPhoto
+): Promise<string> {
   const photoColl = collection(db, 'photos');
   const photoRef = doc(photoColl);
 
   await setDoc(photoRef, imageData);
 
-  if (callback) {
-    callback(photoRef.id);
-  }
+  return photoRef.id;
 }
 
 export async function getPhotosByUserId(userId: string): Promise<IPhotoDoc[]> {
@@ -205,18 +201,21 @@ export async function updateUserAvatar(
   if (userName) {
     const userColl = collection(db, 'users');
     const user = await getUserByUsername(userName);
-    const docRef = doc(userColl, user.docId);
 
-    const avatarData = {
-      avatarSrc: url,
-      imagePath: imagePath,
-    };
+    if (user) {
+      const docRef = doc(userColl, user.docId);
 
-    await updateDoc(docRef, { avatarData })
-      .then()
-      .catch((error) => {
-        console.log(error);
-      });
+      const avatarData = {
+        avatarSrc: url,
+        imagePath: imagePath,
+      };
+
+      await updateDoc(docRef, { avatarData })
+        .then()
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }
 }
 

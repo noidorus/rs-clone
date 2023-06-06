@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import PhotosContext from '../../context/photos-context';
-import UserContext from '../../context/user-context';
 import { deletePhotoFromFirestore } from '../../firebase/services';
 import { deletePhotoFromStorage } from '../../firebase/storage';
+import { useAppSelector } from '../../hooks/redux.hook';
 import { IPhotoDoc, IUserProfile } from '../../types/types';
 import './post-header.scss';
 
@@ -16,7 +16,8 @@ interface PostHeaderProps {
 function PostHeader({ user, photoData, closeModal }: PostHeaderProps) {
   const { username, fullName, avatarData } = user;
   const avatar = avatarData?.avatarSrc || './images/icons/profile.jpg';
-  const loggedUser = useContext(UserContext).user;
+
+  const loggedUser = useAppSelector(({ auth }) => auth.loggedUser);
   const { photos, setPhotos } = useContext(PhotosContext);
 
   const isMyPhoto = loggedUser?.displayName == username;

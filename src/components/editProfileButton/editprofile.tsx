@@ -6,7 +6,6 @@ import { IUserProfile } from '../../types/types';
 import { FirebaseApp } from '@firebase/app-types';
 import { doesUsernameExist } from '../../firebase/services';
 import { updateUserData } from '../../firebase/services';
-import UserContext from '../../context/user-context';
 
 import './editprofile.scss';
 
@@ -16,7 +15,7 @@ interface IProps {
 
 export default function EditProfileButton({ loggedUserData }: IProps) {
   const firebase = useContext(FirebaseContext)?.firebase as FirebaseApp;
-  const { setUser } = useContext(UserContext);
+  // const { setUser } = useContext(UserContext);
   const [showModal, setShowModal] = useState(false);
   const [newUsername, setNewUsername] = useState('');
   const [newFullname, setNewFullname] = useState('');
@@ -36,7 +35,7 @@ export default function EditProfileButton({ loggedUserData }: IProps) {
           if (auth.currentUser) {
             updateProfile(auth.currentUser, { displayName: newUsername })
               .then(() => {
-                setUser(auth.currentUser);
+                // setUser(auth.currentUser);
               })
               .then(() => {
                 navigate(`/${newUsername}`);
@@ -52,7 +51,7 @@ export default function EditProfileButton({ loggedUserData }: IProps) {
   return (
     <>
       <button
-        className='button'
+        className="button"
         onClick={() => {
           if (loggedUserData) {
             setNewUsername(loggedUserData.username);
@@ -67,15 +66,12 @@ export default function EditProfileButton({ loggedUserData }: IProps) {
       {showModal ? (
         <div className="modal">
           <div className="modal__inner">
-            {error && <p className='error'>{error}</p>}
-            <form
-              className='edit-form'
-              onSubmit={handleEditProfile}
-            >
-              <label className='field-wrapper'>
+            {error && <p className="error">{error}</p>}
+            <form className="edit-form" onSubmit={handleEditProfile}>
+              <label className="field-wrapper">
                 Username
                 <input
-                  className='field'
+                  className="field"
                   type="text"
                   defaultValue={loggedUserData?.username}
                   onChange={({ target }) =>
@@ -83,19 +79,21 @@ export default function EditProfileButton({ loggedUserData }: IProps) {
                   }
                 />
               </label>
-              <label className='field-wrapper'>
+              <label className="field-wrapper">
                 Full Name
                 <input
-                  className='field'
+                  className="field"
                   type="text"
                   defaultValue={loggedUserData?.fullName}
                   onChange={({ target }) => setNewFullname(target.value)}
                 />
               </label>
-              <div className='field-wrapper__actions'>
-                <button className='button button--primary' type="submit">Edit</button>
+              <div className="field-wrapper__actions">
+                <button className="button button--primary" type="submit">
+                  Edit
+                </button>
                 <button
-                  className='button'
+                  className="button"
                   onClick={() => {
                     if (loggedUserData) {
                       setNewUsername(loggedUserData.username);

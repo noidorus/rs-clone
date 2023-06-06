@@ -1,33 +1,34 @@
-import { User } from 'firebase/auth';
 import React, { useEffect } from 'react';
-import { getUserDataHook } from '../../hooks/getLoggedUserData';
-import Timeline from '../timeline';
+import Timeline from '../timeline/timeline';
 
 import './index.scss';
 import { Recomendation } from './recomendation';
 import { fetchPhotos } from '../../redux/slices/mainPageSlice';
-import { useAppDispatch } from '../../hooks/redux.hook';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux.hook';
+import { IUserProfile } from '../../types/types';
 
 interface MainPageProps {
-  user: User;
+  user: IUserProfile;
 }
 
 export default function MainPage({ user }: MainPageProps) {
-  const userData = getUserDataHook(user.uid);
+  const { photos, photosLoadingStatus } = useAppSelector(
+    ({ dashboard }) => dashboard
+  );
+  // const { user } = useAppSelector(({ auth }) => auth);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (userData) {
-      const usersIds = [...userData.following, userData.userId];
-      dispatch(fetchPhotos(usersIds));
-    }
-  }, [userData]);
+    const usersIds = [...user.following, user.userId];
+    dispatch(fetchPhotos(usersIds));
+  }, [user]);
 
   return (
     <div className="dashboard">
       <div className="dashboard__inner">
-        <Timeline />
-        {userData ? <Recomendation userData={userData} /> : null}
+        <Timeline photos={photos} />
+        {user && <Recomendation userData={user} />}
       </div>
     </div>
   );

@@ -1,11 +1,10 @@
-import React, { useState, useContext, Dispatch, SetStateAction } from 'react';
-import UserContext from '../../context/user-context';
+import React, { useState } from 'react';
 import { sendPhotoDataToFirestore } from '../../firebase/services';
-import { User } from 'firebase/auth';
 import UploadImageModal from '../modal/modal';
 
 import { IPhotoDoc } from '../../types/types';
 import PhotosContext from '../../context/photos-context';
+import { useAppSelector } from '../../hooks/redux.hook';
 
 interface Props {
   isMainPage: boolean;
@@ -16,35 +15,36 @@ export default function LoadPhotoButton({
   isMainPage,
   profileUsername,
 }: Props) {
-  const user = useContext(UserContext).user as User;
-  const { photos, setPhotos } = useContext(PhotosContext);
+  const { loggedUser } = useAppSelector(({ auth }) => auth);
+  // const { photos, setPhotos } = useContext(PhotosContext);
 
   const [showModal, setShowModal] = useState(false); // потом поменять на false
   const [caption, setCaption] = useState('');
 
   // send Data to FireStore after sending to Storage
   const callback = async (url: string, imagePath: string): Promise<void> => {
-    const imageData = {
-      caption: caption,
-      comments: [],
-      dateCreated: Date.now(),
-      imageSrc: url,
-      likes: [],
-      imagePath: imagePath,
-      userId: user.uid,
-    };
+    if (loggedUser) {
+      const imageData = {
+        caption: caption,
+        comments: [],
+        dateCreated: Date.now(),
+        imageSrc: url,
+        likes: [],
+        imagePath: imagePath,
+        userId: loggedUser.userId,
+      };
 
-    if (user.displayName == profileUsername || isMainPage) {
-      await sendPhotoDataToFirestore(imageData, (docId) => {
+      if (loggedUser.displayName == profileUsername || isMainPage) {
+        const docId = await sendPhotoDataToFirestore(imageData);
         const photoDoc = { ...imageData, docId };
-        setPhotos([photoDoc, ...photos]);
-      });
-    } else {
-      await sendPhotoDataToFirestore(imageData);
-    }
+        // setPhotos([photoDoc, ...photos]);
+      } else {
+        await sendPhotoDataToFirestore(imageData);
+      }
 
-    setShowModal(false);
-    setCaption('');
+      setShowModal(false);
+      setCaption('');
+    }
   };
 
   return (

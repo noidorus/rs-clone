@@ -2,17 +2,19 @@ import { FirebaseApp } from '@firebase/app-types';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import FirebaseContext from '../context/firebase-context';
+import FirebaseContext, {
+  FirebaseContextProps,
+} from '../context/firebase-context';
 import * as ROUTES from '../constants/routes';
 import './login.scss';
 import { MyError } from '../types/types';
 
-
 import { getError } from '../firebase/services';
+import { fetchUserCallback } from '../redux/slices/authSlice';
 
 export default function Login() {
   const navigate = useNavigate();
-  const firebase = useContext(FirebaseContext)?.firebase as FirebaseApp;
+  const { auth } = useContext(FirebaseContext) as FirebaseContextProps;
 
   const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
@@ -22,24 +24,23 @@ export default function Login() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    try {
-      const auth = getAuth(firebase);
 
+    try {
       signInWithEmailAndPassword(auth, emailAddress, password)
-        .then((value) => {
-          localStorage.setItem('auth-user', JSON.stringify(value.user));
-        })
-        .then(() => {
+        .then(({ user }) => {
+          // fetchUserCallback(user.uid).then((user) => {
+          // });
+          // localStorage.setItem('auth-user', JSON.stringify(value.user));
           setTimeout(() => {
             navigate(ROUTES.DASHBOARD);
-          }, 100);
-        }).catch((e) => {
+          }, 500);
+        })
+
+        .catch((e) => {
           const error = e as MyError;
-          const message = getError(error)
-          setError(message)
+          const message = getError(error);
+          setError(message);
         });
-      
     } catch {
       setEmailAddress('');
       setPassword('');
@@ -91,7 +92,7 @@ export default function Login() {
                 height="51"
               />
             </header>
-            {error && <p className='error'>{error}</p>}
+            {error && <p className="error">{error}</p>}
 
             <form
               className="login-page__form login-form"

@@ -1,9 +1,8 @@
-import { User } from 'firebase/auth';
-import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
-import UserContext from '../../context/user-context';
-import { IComment } from '../../types/types';
+import React, { useContext, useState } from 'react';
+
 import { updateComments } from '../../firebase/services';
 import CommentsContext from '../../context/comments-context';
+import { useAppSelector } from '../../hooks/redux.hook';
 
 import './comment-form.scss';
 
@@ -12,38 +11,43 @@ interface CommentsProps {
 }
 
 export default function CommentForm({ docId }: CommentsProps) {
-  const loggedUser = useContext(UserContext).user as User;
   const { setCommentsArr } = useContext(CommentsContext);
-
   const [newComment, setNewComment] = useState('');
+  const loggedUser = useAppSelector(({ auth }) => auth.loggedUser);
 
   const submitComment = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
+    if (loggedUser) {
+      const commentData = {
+        comment: newComment,
+        date: Date.now(),
+        userId: loggedUser.uid,
+      };
 
-    const commentData = {
-      comment: newComment,
-      date: Date.now(),
-      userId: loggedUser.uid,
-    };
+      if (newComment.length > 0) {
+        const newCommentsArr = await updateComments(commentData, docId);
+        setCommentsArr(newCommentsArr);
+      }
 
-    if (newComment.length > 0) {
-      const newCommentsArr = await updateComments(commentData, docId);
-      setCommentsArr(newCommentsArr);
+      setNewComment('');
     }
-
-    setNewComment('');
   };
 
   return (
-    <form className='comment-form' onSubmit={submitComment}>
+    <form className="comment-form" onSubmit={submitComment}>
       <input
-        className='comment-form__field field field--transparent'
+        className="comment-form__field field field--transparent"
         type="text"
         placeholder="Add a comment..."
         onChange={({ target }) => setNewComment(target.value)}
         value={newComment}
       />
-      <button className='comment-form__action button button--transparent' type="submit">Post</button>
+      <button
+        className="comment-form__action button button--transparent"
+        type="submit"
+      >
+        Post
+      </button>
     </form>
   );
 }

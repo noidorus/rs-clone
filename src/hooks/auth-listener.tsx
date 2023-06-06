@@ -1,27 +1,34 @@
+import { User } from 'firebase/auth';
 import React, { useState, useEffect, useContext } from 'react';
-import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
-import FirebaseContext, { IFirebase } from '../context/firebase-context';
 
-export default function authListener() {
-  const storageData = localStorage.getItem('auth-user') || '{}';
-  const [user, setUser] = useState<User | null>(JSON.parse(storageData));
-  const { firebase } = useContext(FirebaseContext) as IFirebase;
-  
-  
+import FirebaseContext, {
+  FirebaseContextProps,
+} from '../context/firebase-context';
+import { useAppDispatch } from '../hooks/redux.hook';
+import { setUser, fetchUser } from '../redux/slices/authSlice';
+
+const authListener = () => {
+  const storageData = localStorage.getItem('auth-user') || 'null';
+  const [user, setNewUser] = useState<User | null>(JSON.parse(storageData));
+  const { auth } = useContext(FirebaseContext) as FirebaseContextProps;
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
-    const auth = getAuth(firebase);
-    const listener = onAuthStateChanged(auth, (user: User | null) => {
+    const listener = auth.onAuthStateChanged(async (user: User | null) => {
+      console.log('logg: ', user);
+
       if (user) {
-        localStorage.setItem('auth-user', JSON.stringify(user));
-        setUser(user);
+        dispatch(fetchUser(user.uid));
       } else {
         localStorage.removeItem('auth-user');
-        setUser(null);
+        dispatch(setUser(user));
       }
     });
 
     return () => listener();
-  }, [firebase]);
+  }, [auth]);
 
-  return { user, setUser };
-}
+  return { user, setNewUser };
+};
+
+export default authListener;

@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useState } from 'react';
 import { getUserDataHook } from '../../hooks/getLoggedUserData';
 import { getRelativeTimeString } from '../../helpers/helpers';
 import { IComment, IUserProfile } from '../../types/types';
-import UserContext from '../../context/user-context';
 import { deleteComment } from '../../firebase/services';
 import CommentsContext from '../../context/comments-context';
 
 import './comment-item.scss';
+import { useAppSelector } from '../../hooks/redux.hook';
 
 interface CommentProps {
   commentData: IComment;
@@ -22,7 +22,8 @@ export default function CommentItem({
   const { userId, comment, date } = commentData;
   const prettyDate = getRelativeTimeString(date, 'en');
   const commentUser = getUserDataHook(userId);
-  const loggedUser = useContext(UserContext).user;
+
+  const loggedUser = useAppSelector(({ auth }) => auth.loggedUser);
   const [user, setUser] = useState<IUserProfile | null>(commentUser);
   const { setCommentsArr } = useContext(CommentsContext);
 
@@ -48,21 +49,20 @@ export default function CommentItem({
   }, [commentUser]);
 
   return (
-    <li className='comments-list__item comment'>
-      <div className='comment__inner'>
-        <div className='comment__message'>
-          {user ? (
-            <span className='comment__user'>
-              {user.username}
-            </span>
-          ) : null}
-          <span className='comment__text'>{comment}</span>
+    <li className="comments-list__item comment">
+      <div className="comment__inner">
+        <div className="comment__message">
+          {user ? <span className="comment__user">{user.username}</span> : null}
+          <span className="comment__text">{comment}</span>
         </div>
-        <p className='comment__date'>{prettyDate}</p>
+        <p className="comment__date">{prettyDate}</p>
       </div>
-      <div className='comment__action'>
+      <div className="comment__action">
         {canDelete ? (
-          <button className='comment__delete button button--delete' onClick={handleDeleteComment}></button>
+          <button
+            className="comment__delete button button--delete"
+            onClick={handleDeleteComment}
+          ></button>
         ) : null}
       </div>
     </li>

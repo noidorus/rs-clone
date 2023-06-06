@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 
 import App from './App';
 import FirebaseContext from './context/firebase-context';
-import { firebase, db } from './firebase/lib';
+import { firebase, db, auth } from './firebase/lib';
 
 import './main.scss';
 import { setupStore } from './redux/setupStore';
@@ -13,11 +13,20 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLDivElement
 );
 
-const store = setupStore();
+const storageData = localStorage.getItem('auth-user') || 'null';
+const preloadedState = {
+  auth: {
+    loggedUser: JSON.parse(storageData),
+    authError: null,
+    authLoading: false,
+  },
+};
+
+const store = setupStore(preloadedState);
 
 root.render(
   <Provider store={store}>
-    <FirebaseContext.Provider value={{ firebase, db }}>
+    <FirebaseContext.Provider value={{ firebase, db, auth }}>
       <App />
     </FirebaseContext.Provider>
   </Provider>

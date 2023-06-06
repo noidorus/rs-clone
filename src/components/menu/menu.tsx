@@ -2,34 +2,31 @@ import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getAuth, signOut } from 'firebase/auth';
 import FirebaseContext from '../../context/firebase-context';
-import UserContext from '../../context/user-context';
 import LoadPhotoButton from '../loadPhotoButton/loadPhotoButton';
 import * as ROUTES from '../../constants/routes';
 
 import './menu.scss';
 import { FirebaseApp } from '@firebase/app-types';
 import SearchBlock from '../searhBlock/searchBlock';
-import { IPhotoDoc } from '../../types/types';
 import { ThemeContext, themes } from '../../context/theme-context';
 import Toggle from '../toggle/toggle';
+
+import { useAppSelector } from '../../hooks/redux.hook';
 
 interface MenuProps {
   isMainPage: boolean;
   profileUsername?: string;
 }
 
-export default function Menu({
-  isMainPage,
-  profileUsername,
-}: MenuProps) {
+export default function Menu({ isMainPage, profileUsername }: MenuProps) {
   const firebase = useContext(FirebaseContext)?.firebase as FirebaseApp;
   const [searchBlock, setSearchBlock] = useState(false);
-  const { user } = useContext(UserContext);
+  const { loggedUser } = useAppSelector(({ auth }) => auth);
 
   function openSearchBlock(): void {
     setSearchBlock(true);
   }
-  
+
   function closeSearchBlock(): void {
     setSearchBlock(false);
   }
@@ -77,31 +74,31 @@ export default function Menu({
           />
         </li>
         <li className="main-nav__item">
-          {user ? (
+          {loggedUser ? (
             <Link
               className={
                 isMainPage
                   ? 'main-nav__link main-nav__link--profile'
                   : 'main-nav__link main-nav__link--profile main-nav__link--active'
               }
-              to={`/${user.displayName}`}
+              to={`/${loggedUser.username}`}
             >
               <span className="main-nav__text">Profile</span>
             </Link>
           ) : null}
         </li>
         <li className="main-nav__item main-nav__item--theme">
-        <ThemeContext.Consumer>
-          {({ theme, setTheme }) => (
-            <Toggle
-              onChange={() => {
-                if (theme === themes.light) setTheme(themes.dark)
-                if (theme === themes.dark) setTheme(themes.light)
-              }}
-              value={theme === themes.dark}
-            />
-          )}
-        </ThemeContext.Consumer>
+          <ThemeContext.Consumer>
+            {({ theme, setTheme }) => (
+              <Toggle
+                onChange={() => {
+                  if (theme === themes.light) setTheme(themes.dark);
+                  if (theme === themes.dark) setTheme(themes.light);
+                }}
+                value={theme === themes.dark}
+              />
+            )}
+          </ThemeContext.Consumer>
         </li>
         <li className="main-nav__item">
           <a
@@ -113,9 +110,7 @@ export default function Menu({
           </a>
         </li>
       </ul>
-      {searchBlock && <SearchBlock 
-        closeSearchBlock={closeSearchBlock}
-      />}
+      {searchBlock && <SearchBlock closeSearchBlock={closeSearchBlock} />}
     </nav>
   );
 }
