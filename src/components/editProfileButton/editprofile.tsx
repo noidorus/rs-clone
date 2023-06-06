@@ -8,6 +8,7 @@ import { doesUsernameExist } from '../../firebase/services';
 import { updateUserData } from '../../firebase/services';
 
 import './editprofile.scss';
+import { useAppDispatch } from '../../hooks/redux.hook';
 
 interface IProps {
   loggedUserData: IUserProfile | null;
@@ -15,11 +16,11 @@ interface IProps {
 
 export default function EditProfileButton({ loggedUserData }: IProps) {
   const firebase = useContext(FirebaseContext)?.firebase as FirebaseApp;
-  // const { setUser } = useContext(UserContext);
   const [showModal, setShowModal] = useState(false);
   const [newUsername, setNewUsername] = useState('');
   const [newFullname, setNewFullname] = useState('');
   const [error, setError] = useState('');
+  const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
 
@@ -35,7 +36,7 @@ export default function EditProfileButton({ loggedUserData }: IProps) {
           if (auth.currentUser) {
             updateProfile(auth.currentUser, { displayName: newUsername })
               .then(() => {
-                // setUser(auth.currentUser);
+                // dispatch(fetchUser(auth.currentUser));
               })
               .then(() => {
                 navigate(`/${newUsername}`);

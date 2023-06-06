@@ -14,9 +14,6 @@ interface Props {
 
 export default function UserHeader({ user }: Props) {
   const [followersCount, setFollowersCount] = useState(user.followers.length);
-
-  // const loggedUser = useContext(UserContext).user;
-  // const loggedUserData = getUserDataHook(loggedUser?.uid);
   const photos = useAppSelector(({ profile }) => profile.photos);
   const loggedUser = useAppSelector(({ auth }) => auth.loggedUser);
 
