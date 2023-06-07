@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import UploadImageModal from '../modal/modal';
 import { updateUserAvatar } from '../../firebase/services';
@@ -42,7 +42,6 @@ export default function ProfileAvatar({
     <>
       <button
         className="avatar"
-        style={{}}
         onClick={isLoggedUserProfile ? () => setShowModal(true) : undefined}
       >
         <img
@@ -51,7 +50,6 @@ export default function ProfileAvatar({
           alt="avatar"
           width="150"
         />
-        <Skeleton circle height={150} width={150} count={1} />
       </button>
 
       {showModal ? (

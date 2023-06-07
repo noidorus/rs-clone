@@ -12,14 +12,11 @@ const rootReducer = combineReducers({
 });
 
 const setupStore = (preloadedState?: PreloadedState<RootState>) => {
-  const store = configureStore({
+  return configureStore({
     reducer: rootReducer,
     preloadedState,
     devTools: process.env.NODE_ENV !== 'production',
   });
-
-  // store.dispatch(listenToAuthChanges());
-  return store;
 };
 
 export type AppStore = ReturnType<typeof setupStore>;

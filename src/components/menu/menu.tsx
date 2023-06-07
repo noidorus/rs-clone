@@ -5,9 +5,11 @@ import LoadPhotoButton from '../loadPhotoButton/loadPhotoButton';
 import * as ROUTES from '../../constants/routes';
 
 import './menu.scss';
-import { FirebaseApp } from '@firebase/app-types';
 import SearchBlock from '../searhBlock/searchBlock';
-import { ThemeContext, themes } from '../../context/theme-context';
+import {
+  ThemeContext,
+  Themes,
+} from '../../context/themeProvider/ThemeProvider';
 import Toggle from '../toggle/toggle';
 
 import { useAppSelector } from '../../hooks/redux.hook';
@@ -19,7 +21,6 @@ interface MenuProps {
 }
 
 export default function Menu({ isMainPage, profileUsername }: MenuProps) {
-  const firebase = useContext(FirebaseContext)?.firebase as FirebaseApp;
   const [searchBlock, setSearchBlock] = useState(false);
   const { loggedUser } = useAppSelector(({ auth }) => auth);
 
@@ -96,10 +97,10 @@ export default function Menu({ isMainPage, profileUsername }: MenuProps) {
             {({ theme, setTheme }) => (
               <Toggle
                 onChange={() => {
-                  if (theme === themes.light) setTheme(themes.dark);
-                  if (theme === themes.dark) setTheme(themes.light);
+                  if (theme === Themes.light) setTheme(Themes.dark);
+                  if (theme === Themes.dark) setTheme(Themes.light);
                 }}
-                value={theme === themes.dark}
+                value={theme === Themes.dark}
               />
             )}
           </ThemeContext.Consumer>

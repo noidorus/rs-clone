@@ -21,8 +21,10 @@ export default function UserHeader({ user }: Props) {
   const [isFollowingProfile, setIsFollowingProfile] = useState(false);
 
   const isLoggedUserProfile = loggedUser
-    ? loggedUser.displayName == username
+    ? loggedUser.username == username
     : false;
+
+  console.log(loggedUser);
 
   const handleToggleFollow = () => {
     setIsFollowingProfile(!isFollowingProfile);

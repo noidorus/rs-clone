@@ -2,7 +2,7 @@ import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ROUTES } from './constants/routes';
 import authListener from './hooks/auth-listener';
-import ThemeProvider from './components/theme';
+import ThemeProvider from './context/themeProvider/ThemeProvider';
 
 const NotFound = lazy(() => import('./pages/page-not-found'));
 const Dashboard = lazy(() => import('./pages/dashboard'));

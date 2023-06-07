@@ -13,6 +13,10 @@ export interface MainState {
   recomendedPhotos: [];
 }
 
+export interface ModalState {
+  ModalChildren: null | React.ElementType;
+}
+
 export interface ProfileState {
   user: IUserProfile | null | undefined;
   followers: string[];

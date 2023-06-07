@@ -14,13 +14,14 @@ const initialState: AuthState = {
   authLoading: false,
 };
 
-const fetchUserCallback = async (userId: string) => {
-  const user = await getUserByUserId(userId);
-  localStorage.setItem('auth-user', JSON.stringify(user));
-  return user;
-};
-
-export const fetchUser = createAsyncThunk('auth/fetchUser', fetchUserCallback);
+export const fetchUser = createAsyncThunk(
+  'auth/fetchUser',
+  async (userId: string) => {
+    const user = await getUserByUserId(userId);
+    localStorage.setItem('auth-user', JSON.stringify(user));
+    return user;
+  }
+);
 
 export const signInWithEmail = createAsyncThunk(
   'auth/signIn',

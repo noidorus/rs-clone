@@ -4,7 +4,7 @@ import UploadImageModal from '../modal/modal';
 
 import { IPhotoDoc } from '../../types/types';
 import PhotosContext from '../../context/photos-context';
-import { useAppSelector } from '../../hooks/redux.hook';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux.hook';
 
 interface Props {
   isMainPage: boolean;
@@ -17,6 +17,7 @@ export default function LoadPhotoButton({
 }: Props) {
   const { loggedUser } = useAppSelector(({ auth }) => auth);
   // const { photos, setPhotos } = useContext(PhotosContext);
+  const dispatch = useAppDispatch();
 
   const [showModal, setShowModal] = useState(false); // потом поменять на false
   const [caption, setCaption] = useState('');
@@ -59,14 +60,14 @@ export default function LoadPhotoButton({
       >
         <span className="main-nav__text">Create</span>
       </a>
-      {showModal ? (
+      {/* {showModal && (
         <UploadImageModal
           setCaption={setCaption}
           setShowModal={setShowModal}
           callback={callback}
           type={'photos'}
         />
-      ) : null}
+      )} */}
     </>
   );
 }

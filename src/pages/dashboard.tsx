@@ -11,6 +11,7 @@ import { PacmanLoader } from 'react-spinners';
 
 import './dashboard.scss';
 import { useAppSelector } from '../hooks/redux.hook';
+import { Modal } from '../components';
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -37,10 +38,12 @@ export default function Dashboard() {
 
   return (
     <PhotosContext.Provider value={{ photos, setPhotos }}>
-      <main className="main-page">
-        <Menu isMainPage={true} />
-        <MainPage user={loggedUser} />
-      </main>
+      <>
+        <main className="main-page">
+          <Menu isMainPage={true} />
+          <MainPage user={loggedUser} />
+        </main>
+      </>
     </PhotosContext.Provider>
   );
 }
