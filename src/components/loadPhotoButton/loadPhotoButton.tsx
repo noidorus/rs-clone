@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { sendPhotoDataToFirestore } from '../../firebase/services';
 import UploadImageModal from '../modal/modal';
 
 import { IPhotoDoc } from '../../types/types';
 import PhotosContext from '../../context/photos-context';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hook';
+import { useModal } from '../providers/ModalProvider';
+import SignInForm from '../forms/SignInForm';
+import { LoadPhotoForm } from '../forms/loadPhotoPhorm/LoadPhotoForm';
 
 interface Props {
   isMainPage: boolean;
@@ -16,8 +19,8 @@ export default function LoadPhotoButton({
   profileUsername,
 }: Props) {
   const { loggedUser } = useAppSelector(({ auth }) => auth);
-  // const { photos, setPhotos } = useContext(PhotosContext);
-  const dispatch = useAppDispatch();
+  const { setModal } = useModal();
+  // const dispatch = useAppDispatch();
 
   const [showModal, setShowModal] = useState(false); // потом поменять на false
   const [caption, setCaption] = useState('');
@@ -56,7 +59,9 @@ export default function LoadPhotoButton({
             ? 'main-nav__link main-nav__link--create main-nav__link--active'
             : 'main-nav__link main-nav__link--create'
         }
-        onClick={() => setShowModal(true)}
+        onClick={() =>
+          setModal(<LoadPhotoForm type="photos" title="Upload Image" />)
+        }
       >
         <span className="main-nav__text">Create</span>
       </a>

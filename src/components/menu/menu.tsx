@@ -1,15 +1,11 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import FirebaseContext from '../../context/firebase-context';
 import LoadPhotoButton from '../loadPhotoButton/loadPhotoButton';
-import * as ROUTES from '../../constants/routes';
+import { ROUTES } from '../../constants/routes';
 
 import './menu.scss';
 import SearchBlock from '../searhBlock/searchBlock';
-import {
-  ThemeContext,
-  Themes,
-} from '../../context/themeProvider/ThemeProvider';
+import { ThemeContext, Themes } from '../providers/ThemeProvider';
 import Toggle from '../toggle/toggle';
 
 import { useAppSelector } from '../../hooks/redux.hook';

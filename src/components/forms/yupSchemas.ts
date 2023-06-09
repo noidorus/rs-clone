@@ -30,10 +30,8 @@ const signUpSchema = Yup.object().shape({
     ),
 });
 
-const signInResolver = yupResolver(signInSchema);
-const signUpResolver = yupResolver(signUpSchema);
+export const signInResolver = yupResolver(signInSchema);
+export const signUpResolver = yupResolver(signUpSchema);
 
-type SignInSchemaType = Yup.InferType<typeof signInSchema>;
-type SignUpSchemaType = Yup.InferType<typeof signUpSchema>;
-
-export { signInResolver, signUpResolver, SignInSchemaType, SignUpSchemaType };
+export type SignInSchemaType = Yup.InferType<typeof signInSchema>;
+export type SignUpSchemaType = Yup.InferType<typeof signUpSchema>;

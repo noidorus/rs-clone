@@ -81,7 +81,7 @@ export default function UploadImageModal({
                 src={'./images/placeholder-image.png'}
               />
             )}
-            {/* <img className='form__image' src={imagePreviewSrc ? imagePreviewSrc : './images/placeholder-image.png'} /> */}
+
             <input
               className="form__file"
               type="file"

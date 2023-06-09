@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from 'react';
+import { PacmanLoader } from 'react-spinners';
+import { useNavigate } from 'react-router-dom';
 
 import Menu from '../components/menu/menu';
 import { ROUTES } from '../constants/routes';
-import { useNavigate } from 'react-router-dom';
+
 import { IPhotoDoc } from '../types/types';
 import MainPage from '../components/dashboard';
 import PhotosContext from '../context/photos-context';
 
-import { PacmanLoader } from 'react-spinners';
+import { useAppSelector } from '../hooks/redux.hook';
+import { useModal } from '../components/providers/ModalProvider';
 
 import './dashboard.scss';
-import { useAppSelector } from '../hooks/redux.hook';
-import { Modal } from '../components';
 
-export default function Dashboard() {
+const Dashboard = () => {
   const navigate = useNavigate();
   const [photos, setPhotos] = useState<IPhotoDoc[]>([]);
   const loggedUser = useAppSelector(({ auth }) => auth.loggedUser);
+
+  const { Modal } = useModal();
 
   useEffect(() => {
     document.title = 'Instagram';
@@ -43,7 +46,11 @@ export default function Dashboard() {
           <Menu isMainPage={true} />
           <MainPage user={loggedUser} />
         </main>
+
+        {Modal}
       </>
     </PhotosContext.Provider>
   );
-}
+};
+
+export default Dashboard;

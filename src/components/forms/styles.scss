@@ -23,9 +23,7 @@
     color: rgb(var(--text-color_300));
   }
 
-  &__error {
-    color: red;
-    margin: 0 4px;
-    align-self: start;
+  .form__error {
+    align-self: flex-start;
   }
 }
