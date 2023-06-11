@@ -17,7 +17,7 @@ function PostHeader({ user, photoData, closeModal }: PostHeaderProps) {
   const { username, fullName, avatarData } = user;
   const avatar = avatarData?.avatarSrc || './images/icons/profile.jpg';
 
-  const loggedUser = useAppSelector(({ auth }) => auth.loggedUser);
+  const loggedUser = useAppSelector(({ user }) => user.loggedUser);
   const { photos, setPhotos } = useContext(PhotosContext);
 
   const isMyPhoto = loggedUser?.displayName == username;

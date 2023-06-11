@@ -1,3 +1,4 @@
+import { loadImageToStorage, deletePhotoFromStorage } from './storage';
 import {
   IComment,
   IPhoto,
@@ -47,7 +48,7 @@ export const createUser = async ({
   fullName,
   email,
   password,
-}: CreateUserProps) => {
+}: CreateUserProps): Promise<void> => {
   const usernameExists = await doesUsernameExist(username);
   if (!usernameExists) {
     try {
@@ -119,7 +120,93 @@ const createUserDocument = async (userData: IUser): Promise<void> => {
   setDoc(userRef, userData);
 };
 
+export const createNewPhoto = async (
+  img: File,
+  caption: string,
+  userId: string
+): Promise<IPhotoDoc> => {
+  try {
+    const { downloadUrl, imagePath } = await loadImageToStorage(img);
+    const imageData = {
+      caption: caption,
+      comments: [],
+      dateCreated: Date.now(),
+      imageSrc: downloadUrl,
+      likes: [],
+      imagePath: imagePath,
+      userId: userId,
+    };
+
+    const photoColl = collection(db, 'photos');
+    const photoRef = doc(photoColl);
+    await setDoc(photoRef, imageData);
+    return { ...imageData, docId: photoRef.id };
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const updateUserAvatar = async (
+  img: File,
+  docId: string,
+  oldAvatarPath?: string
+) => {
+  try {
+    const { downloadUrl, imagePath } = await loadImageToStorage(img);
+
+    if (oldAvatarPath) {
+      await deletePhotoFromStorage(oldAvatarPath);
+    }
+
+    const docRef = doc(db, 'users', docId);
+
+    await updateDoc(docRef, {
+      avatarData: { avatarSrc: downloadUrl, imagePath },
+    });
+
+    return { avatarSrc: downloadUrl, imagePath };
+  } catch (err) {
+    throw err;
+  }
+};
 ////////////
+
+// export async function updateUserAvatar(
+//   url: string,
+//   imagePath: string,
+//   userName: string | null | undefined
+// ): Promise<void> {
+//   if (userName) {
+//     const userColl = collection(db, 'users');
+//     const user = await getUserByUsername(userName);
+
+//     if (user) {
+//       const docRef = doc(userColl, user.docId);
+
+//       const avatarData = {
+//         avatarSrc: url,
+//         imagePath: imagePath,
+//       };
+
+//       await updateDoc(docRef, { avatarData })
+//         .then()
+//         .catch((error) => {
+//           console.log(error);
+//         });
+//     }
+//   }
+// }
+
+// export async function sendPhotoDataToFirestore(
+//   imageData: IPhoto
+// ): Promise<string> {
+//   const photoColl = collection(db, 'photos');
+//   const photoRef = doc(photoColl);
+
+//   await setDoc(photoRef, imageData);
+
+//   return photoRef.id;
+// }
 
 async function updateLoggedUserFollowing(
   isFollowingProfile: boolean,
@@ -213,34 +300,6 @@ export async function getUserByUsername(
   return !!res.length ? res[0] : undefined;
 }
 
-// export function getError(error: MyError): string {
-//   switch (error.code) {
-//     case 'auth/email-already-in-use':
-//       return 'The email address is already in use';
-//     case 'auth/invalid-email':
-//       return 'The email address is not valid.';
-//     case 'auth/operation-not-allowed':
-//       return 'Operation not allowed.';
-//     case 'auth/weak-password':
-//       return 'The password is too weak.';
-//     case 'auth/user-not-found':
-//       return 'User not found!';
-//     default:
-//       return error.message;
-//   }
-// }
-
-export async function sendPhotoDataToFirestore(
-  imageData: IPhoto
-): Promise<string> {
-  const photoColl = collection(db, 'photos');
-  const photoRef = doc(photoColl);
-
-  await setDoc(photoRef, imageData);
-
-  return photoRef.id;
-}
-
 export async function getPhotosByUserId(userId: string): Promise<IPhotoDoc[]> {
   const photosQuery = await getQuerySnapshot('photos', 'userId', userId);
 
@@ -251,32 +310,6 @@ export async function getPhotosByUserId(userId: string): Promise<IPhotoDoc[]> {
       docId: photo.id,
     };
   });
-}
-
-export async function updateUserAvatar(
-  url: string,
-  imagePath: string,
-  userName: string | null | undefined
-): Promise<void> {
-  if (userName) {
-    const userColl = collection(db, 'users');
-    const user = await getUserByUsername(userName);
-
-    if (user) {
-      const docRef = doc(userColl, user.docId);
-
-      const avatarData = {
-        avatarSrc: url,
-        imagePath: imagePath,
-      };
-
-      await updateDoc(docRef, { avatarData })
-        .then()
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  }
 }
 
 export async function updateUserData(

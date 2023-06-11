@@ -15,7 +15,7 @@ const root = ReactDOM.createRoot(
 
 const storageData = localStorage.getItem('auth-user') || 'null';
 const preloadedState = {
-  auth: {
+  user: {
     loggedUser: JSON.parse(storageData),
     authError: null,
     authLoading: false,

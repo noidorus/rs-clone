@@ -1,12 +1,13 @@
 import {
   createUser,
   logInWithEmailAndPassword,
+  updateUserAvatar,
 } from './../../firebase/services';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getUserByUserId } from '../../firebase/services';
 import { getAuthError } from '../../helpers/helpers';
 import { AuthState, Credentials } from './types';
-import { CreateUserProps } from '../../firebase/types';
+import { CreateUserProps, UpdateAvatarProps } from '../../firebase/types';
 
 const initialState: AuthState = {
   loggedUser: null,
@@ -23,8 +24,20 @@ export const fetchUser = createAsyncThunk(
   }
 );
 
+export const updateAvatar = createAsyncThunk(
+  'user/updateAvatar',
+  async ({ img, docId, oldAvatarPath }: UpdateAvatarProps) => {
+    try {
+      const data = await updateUserAvatar(img, docId, oldAvatarPath);
+      return data;
+    } catch (err) {
+      throw err;
+    }
+  }
+);
+
 export const signInWithEmail = createAsyncThunk(
-  'auth/signIn',
+  'user/signIn',
   async (credentials: Credentials, { rejectWithValue }) => {
     try {
       await logInWithEmailAndPassword(credentials.email, credentials.password);
@@ -37,7 +50,7 @@ export const signInWithEmail = createAsyncThunk(
 );
 
 export const registerWithEmail = createAsyncThunk(
-  'auth/signUp',
+  'user/signUp',
   async (data: CreateUserProps, { rejectWithValue }) => {
     try {
       await createUser(data);
@@ -50,7 +63,7 @@ export const registerWithEmail = createAsyncThunk(
 );
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: 'user',
   initialState,
   reducers: {
     setUser: (state, action) => {
@@ -86,6 +99,21 @@ const authSlice = createSlice({
       .addCase(registerWithEmail.rejected, (state, action) => {
         state.authLoading = false;
         state.authError = action.payload as string;
+      });
+
+    builder
+      .addCase(updateAvatar.pending, (state) => {
+        state.authLoading = true;
+      })
+      .addCase(updateAvatar.fulfilled, (state, { payload }) => {
+        if (state.loggedUser) {
+          state.loggedUser = { ...state.loggedUser, avatarData: payload };
+        }
+
+        state.authLoading = false;
+      })
+      .addCase(updateAvatar.rejected, (state) => {
+        state.authLoading = false;
       });
   },
 });

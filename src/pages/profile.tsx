@@ -10,6 +10,7 @@ import PhotosContext from '../context/photos-context';
 
 import { useAppDispatch, useAppSelector } from '../hooks/redux.hook';
 import { fetchUser } from '../redux/slices/profileSlice';
+import { useModal } from '../components/providers/ModalProvider';
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -17,8 +18,9 @@ export default function Profile() {
   const [photos, setPhotos] = useState<IPhotoDoc[]>([]);
 
   const user = useAppSelector(({ profile }) => profile.user);
-  const loggedUser = useAppSelector(({ auth }) => auth.loggedUser);
+  const loggedUser = useAppSelector(({ user }) => user.loggedUser);
   const dispatch = useAppDispatch();
+  const { Modal } = useModal();
 
   useEffect(() => {
     document.title = `Instagram - ${username}`;
@@ -41,8 +43,9 @@ export default function Profile() {
   return (
     <PhotosContext.Provider value={{ photos, setPhotos }}>
       <main className="main-page">
-        <Menu isMainPage={false} profileUsername={username} />
+        <Menu page="profile" />
         {user && <UserProfile user={user} />}
+        {Modal}
       </main>
     </PhotosContext.Provider>
   );

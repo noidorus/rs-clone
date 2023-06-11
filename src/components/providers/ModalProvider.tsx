@@ -21,8 +21,7 @@ const ModalProvider = ({ children }: ModalProviderProps) => {
   const [Modal, setActiveModal] = useState<JSX.Element | null>(null);
 
   const setModal = (children: JSX.Element) => {
-    const { title }: { title?: string } = children.props;
-    const content = <ModalLayout title={title}>{children}</ModalLayout>;
+    const content = <ModalLayout>{children}</ModalLayout>;
     setActiveModal(content);
   };
 

@@ -15,7 +15,6 @@ export default function MainPage({ user }: MainPageProps) {
   const { photos, photosLoadingStatus } = useAppSelector(
     ({ dashboard }) => dashboard
   );
-  // const { user } = useAppSelector(({ auth }) => auth);
 
   const dispatch = useAppDispatch();
 

@@ -11,6 +11,7 @@ export interface MainState {
   photos: IPhotoDoc[];
   photosLoadingStatus: Status;
   recomendedPhotos: [];
+  uploadLoading: boolean;
 }
 
 export interface ModalState {
@@ -19,10 +20,10 @@ export interface ModalState {
 
 export interface ProfileState {
   user: IUserProfile | null | undefined;
-  followers: string[];
   isFollowingProfile: boolean;
   photos: IPhotoDoc[];
   photosLoadingStatus: Status;
+  uploadLoading: boolean;
 }
 
 export interface AuthState {
@@ -34,4 +35,11 @@ export interface AuthState {
 export interface Credentials {
   email: string;
   password: string;
+}
+
+export interface UploadPhotoProps {
+  img: File;
+  caption: string;
+  userId: string;
+  update?: boolean;
 }

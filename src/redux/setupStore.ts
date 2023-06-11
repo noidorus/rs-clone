@@ -3,12 +3,12 @@ import type { PreloadedState } from '@reduxjs/toolkit';
 
 import dashboard from './slices/mainPageSlice';
 import profile from './slices/profileSlice';
-import auth from './slices/authSlice';
+import user from './slices/authSlice';
 
 const rootReducer = combineReducers({
   dashboard,
   profile,
-  auth,
+  user,
 });
 
 const setupStore = (preloadedState?: PreloadedState<RootState>) => {

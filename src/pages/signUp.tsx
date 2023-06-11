@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { PacmanLoader } from 'react-spinners';
 
 import AuthLayout from '../components/authLayout/authLayout';
-import SignUpForm from '../components/forms/SignUpForm';
+import SignUpForm from '../components/forms/authForms/SignUpForm';
 import { ROUTES } from '../constants/routes';
 import { useAppSelector } from '../hooks/redux.hook';
 
 const SignUpPage = () => {
-  const { loggedUser } = useAppSelector(({ auth }) => auth);
+  const { loggedUser } = useAppSelector(({ user }) => user);
   const navigate = useNavigate();
 
   useEffect(() => {

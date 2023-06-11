@@ -1,13 +1,13 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { ROUTES } from '../../constants/routes';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux.hook';
-import { signInWithEmail } from '../../redux/slices/authSlice';
+import { ROUTES } from '../../../constants/routes';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux.hook';
+import { signInWithEmail } from '../../../redux/slices/authSlice';
 import FormError from '../formError';
 
 import './styles.scss';
-import { SignInSchemaType, signInResolver } from './yupSchemas';
+import { SignInSchemaType, signInResolver } from '../yupSchemas';
 
 const SignInForm = () => {
   const {

@@ -17,7 +17,7 @@ import './dashboard.scss';
 const Dashboard = () => {
   const navigate = useNavigate();
   const [photos, setPhotos] = useState<IPhotoDoc[]>([]);
-  const loggedUser = useAppSelector(({ auth }) => auth.loggedUser);
+  const loggedUser = useAppSelector(({ user }) => user.loggedUser);
 
   const { Modal } = useModal();
 
@@ -41,14 +41,11 @@ const Dashboard = () => {
 
   return (
     <PhotosContext.Provider value={{ photos, setPhotos }}>
-      <>
-        <main className="main-page">
-          <Menu isMainPage={true} />
-          <MainPage user={loggedUser} />
-        </main>
-
+      <main className="main-page">
+        <Menu page="main" />
+        <MainPage user={loggedUser} />
         {Modal}
-      </>
+      </main>
     </PhotosContext.Provider>
   );
 };

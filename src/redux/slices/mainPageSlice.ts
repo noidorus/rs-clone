@@ -1,7 +1,8 @@
+import { createNewPhoto } from './../../firebase/services';
 import { IPhotoDoc } from './../../types/types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getPhotosByUserId } from '../../firebase/services';
-import { MainState, Status } from './types';
+import { MainState, Status, UploadPhotoProps } from './types';
 
 export const fetchPhotos = createAsyncThunk(
   'photos/fetchPhotos',
@@ -18,10 +19,28 @@ export const fetchPhotos = createAsyncThunk(
   }
 );
 
+export const uploadPhoto = createAsyncThunk(
+  'photos/uploadPhotoWithUpdate',
+  async ({ img, caption, userId, update = true }: UploadPhotoProps) => {
+    try {
+      const photo = await createNewPhoto(img, caption, userId);
+
+      if (update) {
+        return photo;
+      }
+
+      return null;
+    } catch (err) {
+      throw err;
+    }
+  }
+);
+
 const initialState: MainState = {
   photos: [],
   recomendedPhotos: [],
   photosLoadingStatus: Status.IDLE,
+  uploadLoading: false,
 };
 
 const mainPageSlice = createSlice({
@@ -39,6 +58,20 @@ const mainPageSlice = createSlice({
       })
       .addCase(fetchPhotos.rejected, (state) => {
         state.photosLoadingStatus = Status.ERROR;
+      });
+
+    builder
+      .addCase(uploadPhoto.pending, (state) => {
+        state.uploadLoading = true;
+      })
+      .addCase(uploadPhoto.fulfilled, (state, { payload }) => {
+        state.uploadLoading = false;
+        if (payload) {
+          state.photos = [payload, ...state.photos];
+        }
+      })
+      .addCase(uploadPhoto.rejected, (state) => {
+        state.uploadLoading = false;
       });
   },
 });

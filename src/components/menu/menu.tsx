@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import LoadPhotoButton from '../loadPhotoButton/loadPhotoButton';
 import { ROUTES } from '../../constants/routes';
 
 import './menu.scss';
@@ -10,15 +9,20 @@ import Toggle from '../toggle/toggle';
 
 import { useAppSelector } from '../../hooks/redux.hook';
 import { logOut } from '../../firebase/services';
+import { IUserProfile } from '../../types/types';
+import { useModal } from '../providers/ModalProvider';
+import { UploadPhotoForm } from '../modals/uploadPhotoModal/UploadPhotoForm';
 
 interface MenuProps {
-  isMainPage: boolean;
-  profileUsername?: string;
+  page: 'main' | 'profile';
 }
 
-export default function Menu({ isMainPage, profileUsername }: MenuProps) {
+export default function Menu({ page }: MenuProps) {
   const [searchBlock, setSearchBlock] = useState(false);
-  const { loggedUser } = useAppSelector(({ auth }) => auth);
+  const loggedUser = useAppSelector(
+    ({ user }) => user.loggedUser
+  ) as IUserProfile;
+  const { setModal } = useModal();
 
   function openSearchBlock(): void {
     setSearchBlock(true);
@@ -30,6 +34,12 @@ export default function Menu({ isMainPage, profileUsername }: MenuProps) {
 
   const handleSignOut = () => {
     logOut();
+  };
+
+  const openModal = (type: 'photo') => {
+    if (type === 'photo') {
+      setModal(<UploadPhotoForm page={page} />);
+    }
   };
 
   return (
@@ -47,7 +57,7 @@ export default function Menu({ isMainPage, profileUsername }: MenuProps) {
         <li className="main-nav__item">
           <Link
             className={
-              isMainPage && !searchBlock
+              page === 'main' && !searchBlock
                 ? 'main-nav__link main-nav__link--home main-nav__link--active'
                 : 'main-nav__link main-nav__link--home'
             }
@@ -69,24 +79,24 @@ export default function Menu({ isMainPage, profileUsername }: MenuProps) {
           </a>
         </li>
         <li className="main-nav__item">
-          <LoadPhotoButton
-            isMainPage={isMainPage}
-            profileUsername={profileUsername}
-          />
+          <a
+            className={'main-nav__link main-nav__link--create'}
+            onClick={() => openModal('photo')}
+          >
+            <span className="main-nav__text">Create</span>
+          </a>
         </li>
         <li className="main-nav__item">
-          {loggedUser ? (
-            <Link
-              className={
-                isMainPage
-                  ? 'main-nav__link main-nav__link--profile'
-                  : 'main-nav__link main-nav__link--profile main-nav__link--active'
-              }
-              to={`/${loggedUser.username}`}
-            >
-              <span className="main-nav__text">Profile</span>
-            </Link>
-          ) : null}
+          <Link
+            className={
+              page === 'main'
+                ? 'main-nav__link main-nav__link--profile'
+                : 'main-nav__link main-nav__link--profile main-nav__link--active'
+            }
+            to={`/${loggedUser.username}`}
+          >
+            <span className="main-nav__text">Profile</span>
+          </Link>
         </li>
         <li className="main-nav__item main-nav__item--theme">
           <ThemeContext.Consumer>

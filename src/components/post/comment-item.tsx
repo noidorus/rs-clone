@@ -23,7 +23,7 @@ export default function CommentItem({
   const prettyDate = getRelativeTimeString(date, 'en');
   const commentUser = getUserDataHook(userId);
 
-  const loggedUser = useAppSelector(({ auth }) => auth.loggedUser);
+  const loggedUser = useAppSelector(({ user }) => user.loggedUser);
   const [user, setUser] = useState<IUserProfile | null>(commentUser);
   const { setCommentsArr } = useContext(CommentsContext);
 

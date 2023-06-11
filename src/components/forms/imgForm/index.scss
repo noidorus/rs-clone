@@ -1,36 +1,20 @@
 .photo-form {
-  max-width: 855px;
-  min-width: 250px;
-  height: 600px;
-  // min-height: 391px;
-  // max-height: 898px;
   position: relative;
-
-  // display: flex;
-  // flex-direction: column;
-  // align-items: center;
-  // gap: 4px;
-
-  @media screen and (max-width: 770px) {
-    height: 700px;
-  }
+  width: 100%;
 
   &__image {
     width: 100%;
-    height: 100%;
+    height: 450px;
     object-fit: cover;
 
     &-wrapper {
       position: relative;
       display: flex;
       align-items: center;
-      justify-content: center;
       flex-direction: column;
-      overflow: hidden;
       gap: 8px;
-      margin: 0 auto;
-      width: 80%;
-      height: 80%;
+      min-height: 480px;
+      max-height: 525px;
     }
   }
 
@@ -64,7 +48,17 @@
     color: rgb(var(--text-color_500));
   }
 
+  .button {
+    position: relative;
+  }
+
   .form__error {
     text-align: center;
+  }
+
+  &__title {
+    font-size: 22px;
+    text-align: center;
+    line-height: 130%;
   }
 }

@@ -13,7 +13,7 @@ interface LikeProps {
 export default function Like({ likes, docId }: LikeProps) {
   const [likesCount, setLikesCount] = useState(likes.length);
   const [isLikedPhoto, setIsLikedPhoto] = useState(false);
-  const loggedUser = useAppSelector(({ auth }) => auth.loggedUser);
+  const loggedUser = useAppSelector(({ user }) => user.loggedUser);
 
   const handleToggleLike = (): void => {
     setIsLikedPhoto(!isLikedPhoto);

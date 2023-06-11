@@ -1,0 +1,41 @@
+.edit {
+  &__forms {
+    display: flex;
+    width: 850px;
+    // border-top: 2px solid gray;
+    // flex-direction: column;
+    // align-items: center;
+    // gap: 12px;
+  }
+
+  &__controls {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    font-size: 18px;
+    line-height: 300%;
+    font-weight: 600;
+    list-style: none;
+    border-right: 2px solid #a1a1a1;
+
+    width: 200px;
+    padding: 0;
+    padding-top: 22px;
+    margin: 0;
+
+    .controls__item {
+      padding-left: 10px;
+      border-left: 4px solid var(--bg-color_200);
+      transition: border 0.35s linear;
+
+      &:hover {
+        border-left: 4px solid #a1a1a1;
+      }
+
+      &--activ,
+      &--activ:hover {
+        border-left: 4px solid blue;
+      }
+    }
+  }
+}

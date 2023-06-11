@@ -6,10 +6,9 @@ import './index.scss';
 
 interface IProps {
   children: JSX.Element;
-  title?: string;
 }
 
-const ModalLayout = ({ children, title }: IProps) => {
+const ModalLayout = ({ children }: IProps) => {
   const { closeModal } = useModal();
 
   const handleCloseModal = (e: MouseEvent) => {
@@ -25,9 +24,9 @@ const ModalLayout = ({ children, title }: IProps) => {
     <div className="modal" aria-label="modal" onClick={handleCloseModal}>
       <div className="modal-inner">
         <CloseIcon closeModal={handleCloseModal} />
-        {title && <h3 className="modal-title">{title}</h3>}
         {children}
       </div>
+      <div className="modal-shadow" />
     </div>
   );
 };

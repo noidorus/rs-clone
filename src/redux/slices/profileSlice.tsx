@@ -1,6 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getPhotosByUserId, getUserByUsername } from '../../firebase/services';
-import { ProfileState, Status } from './types';
+import {
+  createNewPhoto,
+  getPhotosByUserId,
+  getUserByUsername,
+} from '../../firebase/services';
+import { ProfileState, Status, UploadPhotoProps } from './types';
 
 export const fetchProfilePhotos = createAsyncThunk(
   'profile/fetchPhotos',
@@ -11,12 +15,17 @@ export const fetchProfilePhotos = createAsyncThunk(
   }
 );
 
-// export const checkFollowing = createAsyncThunk(
-//   'profile/checkFollowing',
-//   async () => {
-//     // const;
-//   }
-// );
+export const uploadProfilePhoto = createAsyncThunk(
+  'profile/uploadPhoto',
+  async ({ img, caption, userId, update = true }: UploadPhotoProps) => {
+    try {
+      const photo = await createNewPhoto(img, caption, userId);
+      return photo;
+    } catch (err) {
+      throw err;
+    }
+  }
+);
 
 export const fetchUser = createAsyncThunk(
   'profile/fetchUser',
@@ -28,12 +37,12 @@ export const fetchUser = createAsyncThunk(
 const initialState: ProfileState = {
   user: null,
   photos: [],
-  followers: [],
   photosLoadingStatus: Status.IDLE,
   isFollowingProfile: false,
+  uploadLoading: false,
 };
 
-const mainPageSlice = createSlice({
+const profileSlice = createSlice({
   name: 'photos',
   initialState,
   reducers: {
@@ -52,24 +61,25 @@ const mainPageSlice = createSlice({
         state.photosLoadingStatus = Status.ERROR;
       });
 
+    builder.addCase(fetchUser.fulfilled, (state, { payload }) => {
+      state.user = payload;
+    });
+
     builder
-      .addCase(fetchUser.pending, (state) => {
-        // state.photosLoadingStatus = Status.LOADING;
+      .addCase(uploadProfilePhoto.pending, (state) => {
+        state.uploadLoading = true;
       })
-      .addCase(fetchUser.fulfilled, (state, { payload }) => {
-        // state.photosLoadingStatus = Status.IDLE;
-        state.user = payload;
-        if (payload) {
-          state.followers = payload.followers;
-        }
+      .addCase(uploadProfilePhoto.fulfilled, (state, { payload }) => {
+        state.uploadLoading = true;
+        state.photos = [payload, ...state.photos];
       })
-      .addCase(fetchUser.rejected, (state) => {
-        // state.photosLoadingStatus = Status.ERROR;
+      .addCase(uploadProfilePhoto.rejected, (state) => {
+        state.uploadLoading = false;
       });
   },
 });
 
-const { actions, reducer } = mainPageSlice;
+const { actions, reducer } = profileSlice;
 
 export default reducer;
 

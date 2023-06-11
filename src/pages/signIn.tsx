@@ -2,12 +2,12 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PacmanLoader } from 'react-spinners';
 import AuthLayout from '../components/authLayout/authLayout';
-import SignInForm from '../components/forms/SignInForm';
+import SignInForm from '../components/forms/authForms/SignInForm';
 import { ROUTES } from '../constants/routes';
 import { useAppSelector } from '../hooks/redux.hook';
 
 const SignInPage = () => {
-  const { loggedUser } = useAppSelector(({ auth }) => auth);
+  const { loggedUser } = useAppSelector(({ user }) => user);
   const navigate = useNavigate();
 
   useEffect(() => {
