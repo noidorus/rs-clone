@@ -17,7 +17,9 @@ export default function UserHeader({ user }: Props) {
   const { username, avatarData, userId, docId, following } = user;
   const [isFollowingProfile, setIsFollowingProfile] = useState(false);
 
-  const photosCount = useAppSelector(({ profile }) => profile.photos.length);
+  const photosCount = useAppSelector(
+    ({ photos }) => photos.profilePhotos.length
+  );
   const loggedUser = useAppSelector(({ user }) => user.loggedUser);
   const { setModal } = useModal();
 

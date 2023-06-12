@@ -9,9 +9,9 @@ export enum Status {
 
 export interface MainState {
   photos: IPhotoDoc[];
+  profilePhotos: IPhotoDoc[];
   photosLoadingStatus: Status;
-  recomendedPhotos: [];
-  uploadLoading: boolean;
+  uploading: boolean;
 }
 
 export interface ModalState {
@@ -21,7 +21,6 @@ export interface ModalState {
 export interface ProfileState {
   user: IUserProfile | null | undefined;
   isFollowingProfile: boolean;
-  photos: IPhotoDoc[];
   photosLoadingStatus: Status;
   uploadLoading: boolean;
 }
@@ -29,7 +28,7 @@ export interface ProfileState {
 export interface AuthState {
   loggedUser: IUserProfile | null;
   authError: string | null;
-  authLoading: boolean;
+  loading: boolean;
 }
 
 export interface Credentials {

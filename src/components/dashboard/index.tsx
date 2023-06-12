@@ -13,7 +13,7 @@ interface MainPageProps {
 
 export default function MainPage({ user }: MainPageProps) {
   const { photos, photosLoadingStatus } = useAppSelector(
-    ({ dashboard }) => dashboard
+    ({ photos }) => photos
   );
 
   const dispatch = useAppDispatch();
@@ -21,7 +21,7 @@ export default function MainPage({ user }: MainPageProps) {
   useEffect(() => {
     const usersIds = [...user.following, user.userId];
     dispatch(fetchPhotos(usersIds));
-  }, [user]);
+  }, []);
 
   return (
     <div className="dashboard">

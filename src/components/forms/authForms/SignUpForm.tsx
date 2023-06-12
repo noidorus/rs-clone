@@ -16,7 +16,7 @@ const SignUpForm = () => {
     formState: { errors },
   } = useForm<SignUpSchemaType>({ resolver: signUpResolver });
   const dispatch = useAppDispatch();
-  const { authError, authLoading } = useAppSelector(({ auth }) => auth);
+  const { authError, loading } = useAppSelector(({ user }) => user);
   const navigate = useNavigate();
 
   const onSubmit = handleSubmit(async (data) => {

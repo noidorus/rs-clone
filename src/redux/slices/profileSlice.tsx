@@ -3,24 +3,29 @@ import {
   createNewPhoto,
   getPhotosByUserId,
   getUserByUsername,
+  updateUserAvatar,
 } from '../../firebase/services';
+import { UpdateAvatarProps } from '../../firebase/types';
 import { ProfileState, Status, UploadPhotoProps } from './types';
 
-export const fetchProfilePhotos = createAsyncThunk(
-  'profile/fetchPhotos',
-  async (userId: string) => {
-    const photos = await getPhotosByUserId(userId);
-    const sortedPhotos = photos.sort((a, b) => b.dateCreated - a.dateCreated);
-    return sortedPhotos;
-  }
-);
+// export const uploadProfilePhoto = createAsyncThunk(
+//   'profile/uploadPhoto',
+//   async ({ img, caption, userId, update = true }: UploadPhotoProps) => {
+//     try {
+//       const photo = await createNewPhoto(img, caption, userId);
+//       return photo;
+//     } catch (err) {
+//       throw err;
+//     }
+//   }
+// );
 
-export const uploadProfilePhoto = createAsyncThunk(
-  'profile/uploadPhoto',
-  async ({ img, caption, userId, update = true }: UploadPhotoProps) => {
+export const updateAvatar = createAsyncThunk(
+  'user/updateAvatar',
+  async ({ img, docId, oldAvatarPath }: UpdateAvatarProps) => {
     try {
-      const photo = await createNewPhoto(img, caption, userId);
-      return photo;
+      const data = await updateUserAvatar(img, docId, oldAvatarPath);
+      return data;
     } catch (err) {
       throw err;
     }
@@ -36,7 +41,6 @@ export const fetchUser = createAsyncThunk(
 
 const initialState: ProfileState = {
   user: null,
-  photos: [],
   photosLoadingStatus: Status.IDLE,
   isFollowingProfile: false,
   uploadLoading: false,
@@ -49,31 +53,46 @@ const profileSlice = createSlice({
     onToggleFollow: (state, payload) => {},
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(fetchProfilePhotos.pending, (state) => {
-        state.photosLoadingStatus = Status.LOADING;
-      })
-      .addCase(fetchProfilePhotos.fulfilled, (state, { payload }) => {
-        state.photosLoadingStatus = Status.IDLE;
-        state.photos = payload;
-      })
-      .addCase(fetchProfilePhotos.rejected, (state) => {
-        state.photosLoadingStatus = Status.ERROR;
-      });
+    // builder
+    //   .addCase(fetchProfilePhotos.pending, (state) => {
+    //     state.photosLoadingStatus = Status.LOADING;
+    //   })
+    //   .addCase(fetchProfilePhotos.fulfilled, (state, { payload }) => {
+    //     state.photosLoadingStatus = Status.IDLE;
+    //     state.photos = payload;
+    //   })
+    //   .addCase(fetchProfilePhotos.rejected, (state) => {
+    //     state.photosLoadingStatus = Status.ERROR;
+    //   });
 
     builder.addCase(fetchUser.fulfilled, (state, { payload }) => {
       state.user = payload;
     });
 
+    // builder
+    //   .addCase(uploadProfilePhoto.pending, (state) => {
+    //     state.uploadLoading = true;
+    //   })
+    //   .addCase(uploadProfilePhoto.fulfilled, (state, { payload }) => {
+    //     state.uploadLoading = true;
+    //     state.photos = [payload, ...state.photos];
+    //   })
+    //   .addCase(uploadProfilePhoto.rejected, (state) => {
+    //     state.uploadLoading = false;
+    //   });
+
     builder
-      .addCase(uploadProfilePhoto.pending, (state) => {
+      .addCase(updateAvatar.pending, (state) => {
         state.uploadLoading = true;
       })
-      .addCase(uploadProfilePhoto.fulfilled, (state, { payload }) => {
-        state.uploadLoading = true;
-        state.photos = [payload, ...state.photos];
+      .addCase(updateAvatar.fulfilled, (state, { payload }) => {
+        if (state.user) {
+          state.user = { ...state.user, avatarData: payload };
+        }
+
+        state.uploadLoading = false;
       })
-      .addCase(uploadProfilePhoto.rejected, (state) => {
+      .addCase(updateAvatar.rejected, (state) => {
         state.uploadLoading = false;
       });
   },

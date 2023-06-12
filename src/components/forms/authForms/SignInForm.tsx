@@ -16,7 +16,7 @@ const SignInForm = () => {
     formState: { errors },
   } = useForm<SignInSchemaType>({ resolver: signInResolver });
   const dispatch = useAppDispatch();
-  const { authError, authLoading } = useAppSelector(({ auth }) => auth);
+  const { authError, loading } = useAppSelector(({ user }) => user);
   const navigate = useNavigate();
 
   const onSubmit = handleSubmit(async ({ email, password }) => {

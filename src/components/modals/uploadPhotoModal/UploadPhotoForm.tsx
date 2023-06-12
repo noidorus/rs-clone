@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { PacmanLoader } from 'react-spinners';
 
+import {
+  uploadPhoto,
+  uploadProfilePhoto,
+} from '../../../redux/slices/mainPageSlice';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux.hook';
-import { uploadPhoto } from '../../../redux/slices/mainPageSlice';
-import { uploadProfilePhoto } from '../../../redux/slices/profileSlice';
 import { IUserProfile } from '../../../types/types';
 import { useModal } from '../../providers/ModalProvider';
 
@@ -26,12 +28,7 @@ const UploadPhotoForm = ({ page }: Props) => {
     ({ profile }) => profile.user?.username
   );
 
-  const uploadLoading = useAppSelector((state) => {
-    const loading1 = state.dashboard.uploadLoading;
-    const loading2 = state.profile.uploadLoading;
-
-    return loading1 || loading2;
-  });
+  const { uploading } = useAppSelector((state) => state.photos);
 
   const submitCallback = async (img: File) => {
     if (page === 'profile' && profileUsername === username) {
@@ -56,7 +53,7 @@ const UploadPhotoForm = ({ page }: Props) => {
           />
         }
       </ImageFormView>
-      {uploadLoading && (
+      {uploading && (
         <>
           <div className="spinner">
             <PacmanLoader color="blue" size={45} />

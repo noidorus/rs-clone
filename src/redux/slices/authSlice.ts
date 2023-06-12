@@ -1,18 +1,17 @@
 import {
   createUser,
   logInWithEmailAndPassword,
-  updateUserAvatar,
 } from './../../firebase/services';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getUserByUserId } from '../../firebase/services';
 import { getAuthError } from '../../helpers/helpers';
 import { AuthState, Credentials } from './types';
-import { CreateUserProps, UpdateAvatarProps } from '../../firebase/types';
+import { CreateUserProps } from '../../firebase/types';
 
 const initialState: AuthState = {
   loggedUser: null,
   authError: null,
-  authLoading: false,
+  loading: false,
 };
 
 export const fetchUser = createAsyncThunk(
@@ -21,18 +20,6 @@ export const fetchUser = createAsyncThunk(
     const user = await getUserByUserId(userId);
     localStorage.setItem('auth-user', JSON.stringify(user));
     return user;
-  }
-);
-
-export const updateAvatar = createAsyncThunk(
-  'user/updateAvatar',
-  async ({ img, docId, oldAvatarPath }: UpdateAvatarProps) => {
-    try {
-      const data = await updateUserAvatar(img, docId, oldAvatarPath);
-      return data;
-    } catch (err) {
-      throw err;
-    }
   }
 );
 
@@ -77,43 +64,28 @@ const authSlice = createSlice({
 
     builder
       .addCase(signInWithEmail.pending, (state) => {
-        state.authLoading = true;
+        state.loading = true;
       })
       .addCase(signInWithEmail.fulfilled, (state) => {
-        state.authLoading = false;
+        state.loading = false;
         state.authError = null;
       })
       .addCase(signInWithEmail.rejected, (state, action) => {
-        state.authLoading = false;
+        state.loading = false;
         state.authError = action.payload as string;
       });
 
     builder
       .addCase(registerWithEmail.pending, (state) => {
-        state.authLoading = true;
+        state.loading = true;
       })
       .addCase(registerWithEmail.fulfilled, (state) => {
-        state.authLoading = false;
+        state.loading = false;
         state.authError = null;
       })
       .addCase(registerWithEmail.rejected, (state, action) => {
-        state.authLoading = false;
+        state.loading = false;
         state.authError = action.payload as string;
-      });
-
-    builder
-      .addCase(updateAvatar.pending, (state) => {
-        state.authLoading = true;
-      })
-      .addCase(updateAvatar.fulfilled, (state, { payload }) => {
-        if (state.loggedUser) {
-          state.loggedUser = { ...state.loggedUser, avatarData: payload };
-        }
-
-        state.authLoading = false;
-      })
-      .addCase(updateAvatar.rejected, (state) => {
-        state.authLoading = false;
       });
   },
 });

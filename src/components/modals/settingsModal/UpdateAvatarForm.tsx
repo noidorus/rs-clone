@@ -6,13 +6,13 @@ import { IUserProfile } from '../../../types/types';
 import { useModal } from '../../providers/ModalProvider';
 
 import { ImageFormView } from '../../forms/imgForm/ImgFormView';
-import { updateAvatar } from '../../../redux/slices/authSlice';
+import { updateAvatar } from '../../../redux/slices/profileSlice';
 
 const UpdateAvatarForm = () => {
   const { closeModal } = useModal();
   const dispatch = useAppDispatch();
   const { docId, avatarData } = useAppSelector(
-    ({ user }) => user.loggedUser
+    ({ profile }) => profile.user
   ) as IUserProfile;
 
   const { uploadLoading } = useAppSelector(({ profile }) => profile);

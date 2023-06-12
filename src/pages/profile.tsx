@@ -6,7 +6,6 @@ import { IPhotoDoc } from '../types/types';
 import Menu from '../components/menu/menu';
 import UserProfile from '../components/userProfile';
 import './profile.scss';
-import PhotosContext from '../context/photos-context';
 
 import { useAppDispatch, useAppSelector } from '../hooks/redux.hook';
 import { fetchUser } from '../redux/slices/profileSlice';
@@ -15,7 +14,6 @@ import { useModal } from '../components/providers/ModalProvider';
 export default function Profile() {
   const navigate = useNavigate();
   const { username } = useParams(); // Get username from link /p/:username
-  const [photos, setPhotos] = useState<IPhotoDoc[]>([]);
 
   const user = useAppSelector(({ profile }) => profile.user);
   const loggedUser = useAppSelector(({ user }) => user.loggedUser);
@@ -41,12 +39,10 @@ export default function Profile() {
   }, [user]);
 
   return (
-    <PhotosContext.Provider value={{ photos, setPhotos }}>
-      <main className="main-page">
-        <Menu page="profile" />
-        {user && <UserProfile user={user} />}
-        {Modal}
-      </main>
-    </PhotosContext.Provider>
+    <main className="main-page">
+      <Menu page="profile" />
+      {user && <UserProfile user={user} />}
+      {Modal}
+    </main>
   );
 }

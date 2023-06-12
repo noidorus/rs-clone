@@ -7,7 +7,6 @@ import { ROUTES } from '../constants/routes';
 
 import { IPhotoDoc } from '../types/types';
 import MainPage from '../components/dashboard';
-import PhotosContext from '../context/photos-context';
 
 import { useAppSelector } from '../hooks/redux.hook';
 import { useModal } from '../components/providers/ModalProvider';
@@ -40,13 +39,11 @@ const Dashboard = () => {
   }
 
   return (
-    <PhotosContext.Provider value={{ photos, setPhotos }}>
       <main className="main-page">
         <Menu page="main" />
         <MainPage user={loggedUser} />
         {Modal}
       </main>
-    </PhotosContext.Provider>
   );
 };
 

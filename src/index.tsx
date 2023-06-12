@@ -18,7 +18,7 @@ const preloadedState = {
   user: {
     loggedUser: JSON.parse(storageData),
     authError: null,
-    authLoading: false,
+    loading: false,
   },
 };
 

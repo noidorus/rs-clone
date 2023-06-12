@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import PhotosContext from '../../context/photos-context';
 import { deletePhotoFromFirestore } from '../../firebase/services';
 import { deletePhotoFromStorage } from '../../firebase/storage';
 import { useAppSelector } from '../../hooks/redux.hook';
@@ -18,7 +17,6 @@ function PostHeader({ user, photoData, closeModal }: PostHeaderProps) {
   const avatar = avatarData?.avatarSrc || './images/icons/profile.jpg';
 
   const loggedUser = useAppSelector(({ user }) => user.loggedUser);
-  const { photos, setPhotos } = useContext(PhotosContext);
 
   const isMyPhoto = loggedUser?.displayName == username;
 
@@ -26,17 +24,17 @@ function PostHeader({ user, photoData, closeModal }: PostHeaderProps) {
     if (photoData) {
       const storagePath = photoData.imagePath;
       const docId = photoData.docId;
-      const newPhotos = photos.filter((elem) => elem.docId !== docId);
+      // const newPhotos = photos.filter((elem) => elem.docId !== docId);
 
-      try {
-        await deletePhotoFromStorage(storagePath);
-        await deletePhotoFromFirestore(docId);
+      // try {
+      //   await deletePhotoFromStorage(storagePath);
+      //   await deletePhotoFromFirestore(docId);
 
-        setPhotos(newPhotos);
-        closeModal ? closeModal() : null;
-      } catch (e) {
-        console.log(e);
-      }
+      //   setPhotos(newPhotos);
+      //   closeModal ? closeModal() : null;
+      // } catch (e) {
+      //   console.log(e);
+      // }
     }
   };
 

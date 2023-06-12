@@ -1,12 +1,12 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import type { PreloadedState } from '@reduxjs/toolkit';
 
-import dashboard from './slices/mainPageSlice';
+import photos from './slices/mainPageSlice';
 import profile from './slices/profileSlice';
 import user from './slices/authSlice';
 
 const rootReducer = combineReducers({
-  dashboard,
+  photos,
   profile,
   user,
 });
