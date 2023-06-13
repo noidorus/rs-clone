@@ -1,5 +1,5 @@
-import { createNewPhoto } from './../../firebase/services';
-import { IPhotoDoc } from './../../types/types';
+import { createNewPhoto } from '../../firebase/services';
+import { IPhotoDoc } from '../../types/types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getPhotosByUserId } from '../../firebase/services';
 import { MainState, Status, UploadPhotoProps } from './types';
@@ -25,11 +25,7 @@ const uploadNewPhoto = async ({
   try {
     const photo = await createNewPhoto(img, caption, userId);
 
-    if (update) {
-      return photo;
-    }
-
-    return null;
+    return update ? photo : null;
   } catch (err) {
     throw err;
   }
@@ -39,7 +35,6 @@ export const fetchPhotos = createAsyncThunk(
   'photos/fetchPhotos',
   fetchPhotosByUserId
 );
-
 export const fetchProfilePhotos = createAsyncThunk(
   'photos/fetchProfilePhotos',
   fetchPhotosByUserId
@@ -49,7 +44,6 @@ export const uploadProfilePhoto = createAsyncThunk(
   'profile/uploadProfilePhoto',
   uploadNewPhoto
 );
-
 export const uploadPhoto = createAsyncThunk(
   'photos/uploadPhoto',
   uploadNewPhoto
@@ -65,7 +59,14 @@ const initialState: MainState = {
 const mainPageSlice = createSlice({
   name: 'photos',
   initialState,
-  reducers: {},
+  reducers: {
+    clearPhotosState: (state) => {
+      state.photos = [];
+      state.profilePhotos = [];
+      state.photosLoadingStatus = Status.IDLE;
+      state.uploading = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchPhotos.pending, (state) => {
@@ -125,4 +126,4 @@ const { actions, reducer } = mainPageSlice;
 
 export default reducer;
 
-export const {} = actions;
+export const { clearPhotosState } = actions;

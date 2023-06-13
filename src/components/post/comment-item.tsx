@@ -23,14 +23,14 @@ export default function CommentItem({
   const prettyDate = getRelativeTimeString(date, 'en');
   const commentUser = getUserDataHook(userId);
 
-  const loggedUser = useAppSelector(({ user }) => user.loggedUser);
+  const { loggedUser } = useAppSelector(({ userCenter }) => userCenter);
   const [user, setUser] = useState<IUserProfile | null>(commentUser);
   const { setCommentsArr } = useContext(CommentsContext);
 
   const checkCanDelete = () => {
-    if (photoUserId == loggedUser?.uid) {
+    if (photoUserId == loggedUser?.userId) {
       return true;
-    } else if (userId == loggedUser?.uid) {
+    } else if (userId == loggedUser?.userId) {
       return true;
     } else {
       return false;

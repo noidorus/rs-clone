@@ -14,19 +14,20 @@ export interface MainState {
   uploading: boolean;
 }
 
+export interface ProfileState {
+  loggedUser: IUserProfile | null;
+  profile: IUserProfile | null | undefined;
+  isFollowingProfile: boolean;
+  uploadLoading: boolean;
+  err: null | string;
+}
+
 export interface ModalState {
   ModalChildren: null | React.ElementType;
 }
 
-export interface ProfileState {
-  user: IUserProfile | null | undefined;
-  isFollowingProfile: boolean;
-  photosLoadingStatus: Status;
-  uploadLoading: boolean;
-}
-
 export interface AuthState {
-  loggedUser: IUserProfile | null;
+  userId: string | null;
   authError: string | null;
   loading: boolean;
 }
@@ -41,4 +42,15 @@ export interface UploadPhotoProps {
   caption: string;
   userId: string;
   update?: boolean;
+}
+
+export interface FetchUserProps {
+  key: 'username' | 'userId';
+  value: string;
+}
+
+export interface UpdateUserInfoProps {
+  username: string;
+  fullName: string;
+  docId: string;
 }

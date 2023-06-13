@@ -10,27 +10,19 @@ import { useAppDispatch, useAppSelector } from '../hooks/redux.hook';
 import { fetchProfile } from '../redux/slices/userCenter';
 import { useModal } from '../components/providers/ModalProvider';
 import { PacmanLoader } from 'react-spinners';
+import { ProfileSettings } from '../components/settings';
 
 export default function Profile() {
   const navigate = useNavigate();
-  const { username } = useParams(); // Get username from link /:username
 
-  const { profile, loggedUser } = useAppSelector(
-    ({ userCenter }) => userCenter
-  );
+  const { loggedUser } = useAppSelector(({ userCenter }) => userCenter);
   const { userId } = useAppSelector(({ auth }) => auth);
   const dispatch = useAppDispatch();
   const { Modal } = useModal();
 
   useEffect(() => {
-    document.title = `Instagram - ${username}`;
-    dispatch(
-      fetchProfile({
-        key: 'username',
-        value: username?.toLowerCase() as string,
-      })
-    );
-  }, [username]);
+    document.title = `Instagram - settings`;
+  }, []);
 
   useEffect(() => {
     if (userId === null) {
@@ -38,11 +30,7 @@ export default function Profile() {
     }
   }, [userId]);
 
-  useEffect(() => {
-    if (profile === undefined) navigate(ROUTES.NOT_FOUND);
-  }, [profile]);
-
-  if (!loggedUser || !profile || !username) {
+  if (!loggedUser || !userId) {
     return (
       <div className="spinner">
         <PacmanLoader color="blue" size={45} />
@@ -53,7 +41,8 @@ export default function Profile() {
   return (
     <main className="main-page">
       <Menu page="profile" loggedUser={loggedUser} />
-      <UserProfile user={profile} />
+      <ProfileSettings user={loggedUser} />
+      {/* <UserProfile user={profile} /> */}
       {Modal}
     </main>
   );

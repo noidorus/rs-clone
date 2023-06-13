@@ -37,7 +37,7 @@ export const logInWithEmailAndPassword = async (
 
 export const logOut = async () => {
   try {
-    await auth.signOut();
+    return await auth.signOut();
   } catch (err) {
     throw err;
   }
@@ -169,44 +169,24 @@ export const updateUserAvatar = async (
     throw err;
   }
 };
+
+export const updateUserData = async (
+  newUsername: string,
+  newFullname: string,
+  docId: string
+): Promise<void> => {
+  const userColl = collection(db, 'users');
+  const docRef = doc(userColl, docId);
+
+  await updateDoc(docRef, {
+    username: newUsername,
+    fullName: newFullname,
+  }).catch((err) => {
+    throw err;
+  });
+};
+
 ////////////
-
-// export async function updateUserAvatar(
-//   url: string,
-//   imagePath: string,
-//   userName: string | null | undefined
-// ): Promise<void> {
-//   if (userName) {
-//     const userColl = collection(db, 'users');
-//     const user = await getUserByUsername(userName);
-
-//     if (user) {
-//       const docRef = doc(userColl, user.docId);
-
-//       const avatarData = {
-//         avatarSrc: url,
-//         imagePath: imagePath,
-//       };
-
-//       await updateDoc(docRef, { avatarData })
-//         .then()
-//         .catch((error) => {
-//           console.log(error);
-//         });
-//     }
-//   }
-// }
-
-// export async function sendPhotoDataToFirestore(
-//   imageData: IPhoto
-// ): Promise<string> {
-//   const photoColl = collection(db, 'photos');
-//   const photoRef = doc(photoColl);
-
-//   await setDoc(photoRef, imageData);
-
-//   return photoRef.id;
-// }
 
 async function updateLoggedUserFollowing(
   isFollowingProfile: boolean,
@@ -270,7 +250,6 @@ export async function getUserByUserId(userId: string): Promise<IUserProfile> {
       docId: item.id,
     };
   });
-
   return res;
 }
 
@@ -310,22 +289,6 @@ export async function getPhotosByUserId(userId: string): Promise<IPhotoDoc[]> {
       docId: photo.id,
     };
   });
-}
-
-export async function updateUserData(
-  newUsername: string,
-  newFullname: string,
-  docId: string | undefined
-): Promise<void> {
-  if (docId) {
-    const userColl = collection(db, 'users');
-    const docRef = doc(userColl, docId);
-
-    updateDoc(docRef, {
-      username: newUsername,
-      fullName: newFullname,
-    }).catch((err) => console.log(err));
-  }
 }
 
 export async function toggleLike(

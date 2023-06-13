@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { PacmanLoader } from 'react-spinners';
 
-import {
-  uploadPhoto,
-  uploadProfilePhoto,
-} from '../../../redux/slices/mainPageSlice';
+import { uploadPhoto, uploadProfilePhoto } from '../../../redux/slices/photos';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux.hook';
 import { IUserProfile } from '../../../types/types';
 import { useModal } from '../../providers/ModalProvider';
@@ -17,15 +14,15 @@ interface Props {
   page: 'main' | 'profile';
 }
 
-const UploadPhotoForm = ({ page }: Props) => {
+const UploadPhotoModal = ({ page }: Props) => {
   const [caption, setCaption] = useState('');
   const { closeModal } = useModal();
   const dispatch = useAppDispatch();
   const { username, userId } = useAppSelector(
-    ({ user }) => user.loggedUser
+    ({ userCenter }) => userCenter.loggedUser
   ) as IUserProfile;
   const profileUsername = useAppSelector(
-    ({ profile }) => profile.user?.username
+    ({ userCenter }) => userCenter.profile?.username
   );
 
   const { uploading } = useAppSelector((state) => state.photos);
@@ -65,4 +62,4 @@ const UploadPhotoForm = ({ page }: Props) => {
   );
 };
 
-export { UploadPhotoForm };
+export { UploadPhotoModal };

@@ -6,7 +6,7 @@ import { IUserProfile } from '../../types/types';
 import './index.scss';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hook';
-import { fetchProfilePhotos } from '../../redux/slices/mainPageSlice';
+import { fetchProfilePhotos } from '../../redux/slices/photos';
 
 interface UserPageProps {
   user: IUserProfile;
@@ -17,8 +17,9 @@ export default function UserProfile({ user }: UserPageProps) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    console.log('Fetched!');
     dispatch(fetchProfilePhotos([user.userId]));
-  }, [user]);
+  }, [user.userId, user.username]);
 
   return (
     <div className="profile">

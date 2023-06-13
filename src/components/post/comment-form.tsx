@@ -13,7 +13,7 @@ interface CommentsProps {
 export default function CommentForm({ docId }: CommentsProps) {
   const { setCommentsArr } = useContext(CommentsContext);
   const [newComment, setNewComment] = useState('');
-  const loggedUser = useAppSelector(({ user }) => user.loggedUser);
+  const { loggedUser } = useAppSelector(({ userCenter }) => userCenter);
 
   const submitComment = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
@@ -21,7 +21,7 @@ export default function CommentForm({ docId }: CommentsProps) {
       const commentData = {
         comment: newComment,
         date: Date.now(),
-        userId: loggedUser.uid,
+        userId: loggedUser.userId,
       };
 
       if (newComment.length > 0) {

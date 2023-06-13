@@ -1,3 +1,4 @@
+import { doesUsernameExist } from './../../firebase/services';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -11,6 +12,17 @@ const signInSchema = Yup.object().shape({
       'Write correct email!'
     ),
   password: Yup.string().required(required),
+});
+
+const updateInfoSchema = Yup.object().shape({
+  username: Yup.string()
+    .required(required)
+    .min(5, 'Min length 5')
+    .test('checkDuplUsername', 'Username exist', async (value) => {
+      const usernameExist = await doesUsernameExist(value);
+      return usernameExist ? false : true;
+    }),
+  fullName: Yup.string().required(required).min(3, 'Min length 3'),
 });
 
 const signUpSchema = Yup.object().shape({
@@ -32,6 +44,8 @@ const signUpSchema = Yup.object().shape({
 
 export const signInResolver = yupResolver(signInSchema);
 export const signUpResolver = yupResolver(signUpSchema);
+export const updateInfoResolver = yupResolver(updateInfoSchema);
 
 export type SignInSchemaType = Yup.InferType<typeof signInSchema>;
 export type SignUpSchemaType = Yup.InferType<typeof signUpSchema>;
+export type UpdateInfoSchemaType = Yup.InferType<typeof updateInfoSchema>;

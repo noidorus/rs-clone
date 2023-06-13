@@ -8,20 +8,23 @@ import { ROUTES } from '../constants/routes';
 import { useAppSelector } from '../hooks/redux.hook';
 
 const SignUpPage = () => {
-  const { loggedUser } = useAppSelector(({ user }) => user);
+  const { userId } = useAppSelector(({ auth }) => auth);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (loggedUser) {
+    if (userId) {
       navigate(ROUTES.DASHBOARD);
     }
-  }, [loggedUser]);
+  }, [userId]);
 
-  if (loggedUser) {
-    <div className="spinner">
-      <PacmanLoader color="blue" size={45} />
-    </div>;
+  if (userId) {
+    return (
+      <div className="spinner">
+        <PacmanLoader color="blue" size={45} />
+      </div>
+    );
   }
+
   const layoutProps = {
     route: ROUTES.SIGN_IN,
     text: `Have an account? `,

@@ -16,9 +16,9 @@ function PostHeader({ user, photoData, closeModal }: PostHeaderProps) {
   const { username, fullName, avatarData } = user;
   const avatar = avatarData?.avatarSrc || './images/icons/profile.jpg';
 
-  const loggedUser = useAppSelector(({ user }) => user.loggedUser);
+  const { loggedUser } = useAppSelector(({ userCenter }) => userCenter);
 
-  const isMyPhoto = loggedUser?.displayName == username;
+  const isMyPhoto = loggedUser?.username == username;
 
   const handleDeletePhoto = async (): Promise<void> => {
     if (photoData) {

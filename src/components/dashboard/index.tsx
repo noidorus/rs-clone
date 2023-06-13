@@ -3,7 +3,7 @@ import Timeline from '../timeline/timeline';
 
 import './index.scss';
 import { Recomendation } from './recomendation';
-import { fetchPhotos } from '../../redux/slices/mainPageSlice';
+import { fetchPhotos } from '../../redux/slices/photos';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hook';
 import { IUserProfile } from '../../types/types';
 

@@ -6,23 +6,24 @@ import './menu.scss';
 import SearchBlock from '../searhBlock/searchBlock';
 import { ThemeContext, Themes } from '../providers/ThemeProvider';
 import Toggle from '../toggle/toggle';
-
-import { useAppSelector } from '../../hooks/redux.hook';
-import { logOut } from '../../firebase/services';
+clearUserCenterState;
 import { IUserProfile } from '../../types/types';
 import { useModal } from '../providers/ModalProvider';
-import { UploadPhotoForm } from '../modals/uploadPhotoModal/UploadPhotoForm';
+import { UploadPhotoModal } from '../modals/uploadPhotoModal/UploadPhotoModal';
+import { useAppDispatch } from '../../hooks/redux.hook';
+import { signOut } from '../../redux/slices/auth';
+import { clearUserCenterState } from '../../redux/slices/userCenter';
+import { clearPhotosState } from '../../redux/slices/photos';
 
 interface MenuProps {
   page: 'main' | 'profile';
+  loggedUser: IUserProfile;
 }
 
-export default function Menu({ page }: MenuProps) {
+export default function Menu({ page, loggedUser }: MenuProps) {
   const [searchBlock, setSearchBlock] = useState(false);
-  const loggedUser = useAppSelector(
-    ({ user }) => user.loggedUser
-  ) as IUserProfile;
   const { setModal } = useModal();
+  const dispatch = useAppDispatch();
 
   function openSearchBlock(): void {
     setSearchBlock(true);
@@ -32,13 +33,15 @@ export default function Menu({ page }: MenuProps) {
     setSearchBlock(false);
   }
 
-  const handleSignOut = () => {
-    logOut();
+  const handleSignOut = async () => {
+    await dispatch(signOut());
+    dispatch(clearUserCenterState());
+    dispatch(clearPhotosState());
   };
 
   const openModal = (type: 'photo') => {
     if (type === 'photo') {
-      setModal(<UploadPhotoForm page={page} />);
+      setModal(<UploadPhotoModal page={page} />);
     }
   };
 

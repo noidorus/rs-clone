@@ -15,8 +15,8 @@ import './dashboard.scss';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [photos, setPhotos] = useState<IPhotoDoc[]>([]);
-  const loggedUser = useAppSelector(({ user }) => user.loggedUser);
+  const { loggedUser } = useAppSelector(({ userCenter }) => userCenter);
+  const { userId } = useAppSelector(({ auth }) => auth);
 
   const { Modal } = useModal();
 
@@ -25,12 +25,12 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    if (loggedUser === null) {
+    if (userId === null) {
       navigate(ROUTES.SIGN_IN);
     }
-  }, [loggedUser]);
+  }, [userId]);
 
-  if (!loggedUser) {
+  if (!loggedUser || !userId) {
     return (
       <div className="spinner">
         <PacmanLoader color="blue" size={45} />
@@ -39,11 +39,11 @@ const Dashboard = () => {
   }
 
   return (
-      <main className="main-page">
-        <Menu page="main" />
-        <MainPage user={loggedUser} />
-        {Modal}
-      </main>
+    <main className="main-page">
+      <Menu loggedUser={loggedUser} page="main" />
+      <MainPage user={loggedUser} />
+      {Modal}
+    </main>
   );
 };
 

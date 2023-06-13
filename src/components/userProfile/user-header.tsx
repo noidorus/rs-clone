@@ -6,7 +6,7 @@ import { FollowersList } from './folowers-list';
 import { useAppSelector } from '../../hooks/redux.hook';
 import './user-header.scss';
 import { useModal } from '../providers/ModalProvider';
-import { ProfileSettings } from '../modals/settingsModal';
+import { ProfileSettings } from '../settings';
 
 interface Props {
   user: IUserProfile;
@@ -20,7 +20,7 @@ export default function UserHeader({ user }: Props) {
   const photosCount = useAppSelector(
     ({ photos }) => photos.profilePhotos.length
   );
-  const loggedUser = useAppSelector(({ user }) => user.loggedUser);
+  const { loggedUser } = useAppSelector(({ userCenter }) => userCenter);
   const { setModal } = useModal();
 
   const isLoggedUserProfile = loggedUser
@@ -43,7 +43,7 @@ export default function UserHeader({ user }: Props) {
   };
 
   const openModal = () => {
-    setModal(<ProfileSettings />);
+    setModal(<ProfileSettings user={user} />);
   };
 
   useEffect(() => {
