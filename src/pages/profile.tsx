@@ -3,8 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import * as ROUTES from '../constants/routes';
 import Menu from '../components/menu/menu';
-import UserProfile from '../components/userProfile';
-import './profile.scss';
+import UserProfile from '../components/pagesView/userProfile';
+import './main.scss';
 
 import { useAppDispatch, useAppSelector } from '../hooks/redux.hook';
 import { fetchProfile } from '../redux/slices/userCenter';
@@ -51,7 +51,7 @@ export default function Profile() {
   }
 
   return (
-    <main className="main-page">
+    <main className="main">
       <Menu page="profile" loggedUser={loggedUser} />
       <UserProfile user={profile} />
       {Modal}

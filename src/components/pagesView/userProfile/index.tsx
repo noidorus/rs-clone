@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
 import UserHeader from './user-header';
-import Timeline from '../timeline/timeline';
-import { IUserProfile } from '../../types/types';
+import Timeline from '../../timeline/timeline';
+import { IUserProfile } from '../../../types/types';
 
 import './index.scss';
 
-import { useAppDispatch, useAppSelector } from '../../hooks/redux.hook';
-import { fetchProfilePhotos } from '../../redux/slices/photos';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux.hook';
+import { fetchProfilePhotos } from '../../../redux/slices/photos';
 
 interface UserPageProps {
   user: IUserProfile;

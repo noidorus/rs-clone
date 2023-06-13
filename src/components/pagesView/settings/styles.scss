@@ -1,10 +1,27 @@
-.edit {
-  &__forms {
-    display: flex;
-    width: 850px;
+.settings {
+  padding: 0 20px;
+
+  @media screen and (max-width: 770px) {
+    padding: 0 10px;
   }
 
-  &__controls {
+  &__title {
+    font-size: 32px;
+    align-self: flex-start;
+    line-height: 130%;
+  }
+
+  &__forms {
+    border: 2px solid rgb(var(--secondary-bg_700));
+    display: flex;
+    width: 100%;
+    min-width: 320px;
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  &__list {
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -12,16 +29,16 @@
     line-height: 300%;
     font-weight: 600;
     list-style: none;
-    border-right: 2px solid #a1a1a1;
+    border-right: 2px solid rgb(var(--secondary-bg_700));
 
     width: 200px;
     padding: 0;
     padding-top: 22px;
     margin: 0;
 
-    .controls__item {
+    .list__item {
       padding-left: 10px;
-      border-left: 4px solid var(--bg-color_200);
+      border-left: 4px solid var(--bg-color_500);
       transition: border 0.35s linear;
 
       &:hover {

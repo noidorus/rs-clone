@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import Timeline from '../timeline/timeline';
+import Timeline from '../../timeline/timeline';
 
 import './index.scss';
 import { Recomendation } from './recomendation';
-import { fetchPhotos } from '../../redux/slices/photos';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux.hook';
-import { IUserProfile } from '../../types/types';
+import { fetchPhotos } from '../../../redux/slices/photos';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux.hook';
+import { IUserProfile } from '../../../types/types';
 
 interface MainPageProps {
   user: IUserProfile;

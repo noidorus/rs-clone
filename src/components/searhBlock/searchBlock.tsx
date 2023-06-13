@@ -1,25 +1,25 @@
-import React, { useEffect, useRef, useState } from "react";
-import { setDataUsers } from "../../firebase/services";
-import { useOnClickOutside } from "../../hooks/useOnClickOutside";
-import { IUserProfile } from "../../types/types";
-import { Search } from "../search/search";
-import { PreviewUser } from "../userProfile/preview-user";
+import React, { useEffect, useRef, useState } from 'react';
+import { setDataUsers } from '../../firebase/services';
+import { useOnClickOutside } from '../../hooks/useOnClickOutside';
+import { IUserProfile } from '../../types/types';
+import { Search } from '../search/search';
+import { PreviewUser } from '../pagesView/userProfile/preview-user';
 import './searchBlock.scss';
 
 function filteredUsers(users: IUserProfile[], value: string) {
   const filteredUsers = value
     ? users.filter(
-      (user) =>
-        user.username.toUpperCase().includes(value.toUpperCase()) ||
-        user.fullName.toUpperCase().includes(value.toUpperCase())
-    )
+        (user) =>
+          user.username.toUpperCase().includes(value.toUpperCase()) ||
+          user.fullName.toUpperCase().includes(value.toUpperCase())
+      )
     : [];
   return filteredUsers;
 }
 
 export type propsCloseSearchBlock = {
   closeSearchBlock: () => void;
-}
+};
 
 function SearchBlock(props: propsCloseSearchBlock) {
   const [value, setValue] = useState('');
@@ -30,7 +30,6 @@ function SearchBlock(props: propsCloseSearchBlock) {
   );
   const searchRef = useRef<HTMLDivElement>(null);
   useOnClickOutside(searchRef, props.closeSearchBlock);
-
 
   useEffect(() => {
     setStatus('loading');
@@ -67,22 +66,32 @@ function SearchBlock(props: propsCloseSearchBlock) {
         />
       </header>
       <div className="search__inner">
-        {status === 'success' && (<ul className="search__results results">{usersVisble.map((user, index) => {
-          return (
-            <li className="results__item" key={index} onClick={props.closeSearchBlock}>
-              <PreviewUser
-                key={user.userId}
-                name={user.username}
-                avatar={user.avatarData?.avatarSrc || './images/icons/profile.jpg'}
-              />
-            </li>
-          )
-        })}
-        </ul>)
-        }
-        {!usersVisble.length && (<div className="search__empty">No recent searches.</div>)}
-        {status === 'loading' && (<div>loading</div>)}
-        {status === 'error' && (<div>WTF?</div>)}
+        {status === 'success' && (
+          <ul className="search__results results">
+            {usersVisble.map((user, index) => {
+              return (
+                <li
+                  className="results__item"
+                  key={index}
+                  onClick={props.closeSearchBlock}
+                >
+                  <PreviewUser
+                    key={user.userId}
+                    name={user.username}
+                    avatar={
+                      user.avatarData?.avatarSrc || './images/icons/profile.jpg'
+                    }
+                  />
+                </li>
+              );
+            })}
+          </ul>
+        )}
+        {!usersVisble.length && (
+          <div className="search__empty">No recent searches.</div>
+        )}
+        {status === 'loading' && <div>loading</div>}
+        {status === 'error' && <div>WTF?</div>}
       </div>
     </div>
   );

@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { PacmanLoader } from 'react-spinners';
 import { useNavigate } from 'react-router-dom';
 
 import Menu from '../components/menu/menu';
 import { ROUTES } from '../constants/routes';
-
-import { IPhotoDoc } from '../types/types';
-import MainPage from '../components/dashboard';
+import MainPage from '../components/pagesView/dashboard';
 
 import { useAppSelector } from '../hooks/redux.hook';
 import { useModal } from '../components/providers/ModalProvider';
 
-import './dashboard.scss';
+import './main.scss';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -39,7 +37,7 @@ const Dashboard = () => {
   }
 
   return (
-    <main className="main-page">
+    <main className="main">
       <Menu loggedUser={loggedUser} page="main" />
       <MainPage user={loggedUser} />
       {Modal}

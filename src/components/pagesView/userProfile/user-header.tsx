@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { IUserProfile } from '../../types/types';
-import { isFollowingUserProfile, toggleFollow } from '../../firebase/services';
+import { IUserProfile } from '../../../types/types';
+import {
+  isFollowingUserProfile,
+  toggleFollow,
+} from '../../../firebase/services';
 
 import { FollowersList } from './folowers-list';
-import { useAppSelector } from '../../hooks/redux.hook';
+import { useAppSelector } from '../../../hooks/redux.hook';
 import './user-header.scss';
-import { useModal } from '../providers/ModalProvider';
+import { useModal } from '../../providers/ModalProvider';
 import { ProfileSettings } from '../settings';
 
 interface Props {

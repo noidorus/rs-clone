@@ -1,16 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import * as ROUTES from '../constants/routes';
 import Menu from '../components/menu/menu';
-import UserProfile from '../components/userProfile';
-import './profile.scss';
+import './main.scss';
 
 import { useAppDispatch, useAppSelector } from '../hooks/redux.hook';
-import { fetchProfile } from '../redux/slices/userCenter';
-import { useModal } from '../components/providers/ModalProvider';
 import { PacmanLoader } from 'react-spinners';
-import { ProfileSettings } from '../components/settings';
+import { ProfileSettings } from '../components/pagesView/settings';
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -18,7 +15,6 @@ export default function Profile() {
   const { loggedUser } = useAppSelector(({ userCenter }) => userCenter);
   const { userId } = useAppSelector(({ auth }) => auth);
   const dispatch = useAppDispatch();
-  const { Modal } = useModal();
 
   useEffect(() => {
     document.title = `Instagram - settings`;
@@ -39,11 +35,10 @@ export default function Profile() {
   }
 
   return (
-    <main className="main-page">
+    <main className="main main-settings">
       <Menu page="profile" loggedUser={loggedUser} />
+
       <ProfileSettings user={loggedUser} />
-      {/* <UserProfile user={profile} /> */}
-      {Modal}
     </main>
   );
 }

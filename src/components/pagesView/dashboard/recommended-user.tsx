@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { toggleFollow } from '../../firebase/services';
-import { IUserProfile } from '../../types/types';
+import { toggleFollow } from '../../../firebase/services';
+import { IUserProfile } from '../../../types/types';
 import { PreviewUser } from '../userProfile/preview-user';
 import { Modal } from './modal';
 
