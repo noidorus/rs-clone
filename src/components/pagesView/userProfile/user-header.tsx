@@ -8,8 +8,8 @@ import {
 import { FollowersList } from './folowers-list';
 import { useAppSelector } from '../../../hooks/redux.hook';
 import './user-header.scss';
-import { useModal } from '../../providers/ModalProvider';
-import { ProfileSettings } from '../settings';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../../../constants/routes';
 
 interface Props {
   user: IUserProfile;
@@ -19,12 +19,10 @@ export default function UserHeader({ user }: Props) {
   const [followersCount, setFollowersCount] = useState(user.followers.length);
   const { username, avatarData, userId, docId, following } = user;
   const [isFollowingProfile, setIsFollowingProfile] = useState(false);
+  const navigate = useNavigate();
 
-  const photosCount = useAppSelector(
-    ({ photos }) => photos.profilePhotos.length
-  );
-  const { loggedUser } = useAppSelector(({ userCenter }) => userCenter);
-  const { setModal } = useModal();
+  const photosCount = useAppSelector(({ profile }) => profile.photos.length);
+  const { loggedUser } = useAppSelector(({ userInfo }) => userInfo);
 
   const isLoggedUserProfile = loggedUser
     ? loggedUser.username == username
@@ -43,10 +41,6 @@ export default function UserHeader({ user }: Props) {
       loggedUser?.userId,
       loggedUser?.docId
     );
-  };
-
-  const openModal = () => {
-    setModal(<ProfileSettings user={user} />);
   };
 
   useEffect(() => {
@@ -78,7 +72,10 @@ export default function UserHeader({ user }: Props) {
         <header className="info__header">
           <h4 className="info__title">{username}</h4>
           {isLoggedUserProfile ? (
-            <button className="button" onClick={openModal}>
+            <button
+              className="button"
+              onClick={() => navigate(ROUTES.SETTINGS)}
+            >
               Edit profile
             </button>
           ) : (

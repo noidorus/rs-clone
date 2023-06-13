@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { PacmanLoader } from 'react-spinners';
 
-import { uploadPhoto, uploadProfilePhoto } from '../../../redux/slices/photos';
+import { uploadPhoto } from '../../../redux/slices/dashboardSlice';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux.hook';
 import { IUserProfile } from '../../../types/types';
 import { useModal } from '../../providers/ModalProvider';
@@ -9,9 +8,11 @@ import { useModal } from '../../providers/ModalProvider';
 import { ImageFormView } from '../../forms/imgForm/ImgFormView';
 
 import './styles.scss';
+import PacmanSpinner from '../../spinner/spinner';
+import { uploadProfilePhoto } from '../../../redux/slices/profileSlice';
 
 interface Props {
-  page: 'main' | 'profile';
+  page: 'main' | 'profile' | 'settings';
 }
 
 const UploadPhotoModal = ({ page }: Props) => {
@@ -19,13 +20,15 @@ const UploadPhotoModal = ({ page }: Props) => {
   const { closeModal } = useModal();
   const dispatch = useAppDispatch();
   const { username, userId } = useAppSelector(
-    ({ userCenter }) => userCenter.loggedUser
+    ({ userInfo }) => userInfo.loggedUser
   ) as IUserProfile;
   const profileUsername = useAppSelector(
-    ({ userCenter }) => userCenter.profile?.username
+    ({ profile }) => profile.user?.username
   );
 
-  const { uploading } = useAppSelector((state) => state.photos);
+  const loading = useAppSelector(
+    ({ dashboard, profile }) => dashboard.uploading || profile.loading
+  );
 
   const submitCallback = async (img: File) => {
     if (page === 'profile' && profileUsername === username) {
@@ -33,7 +36,9 @@ const UploadPhotoModal = ({ page }: Props) => {
     } else if (page === 'main') {
       await dispatch(uploadPhoto({ img, caption, userId }));
     } else {
-      await dispatch(uploadPhoto({ img, caption, userId, update: false }));
+      await dispatch(
+        uploadProfilePhoto({ img, caption, userId, update: false })
+      );
     }
     closeModal();
   };
@@ -50,14 +55,8 @@ const UploadPhotoModal = ({ page }: Props) => {
           />
         }
       </ImageFormView>
-      {uploading && (
-        <>
-          <div className="spinner">
-            <PacmanLoader color="blue" size={45} />
-          </div>
-          <div className="shadow" />
-        </>
-      )}
+
+      <PacmanSpinner loading={loading} />
     </div>
   );
 };

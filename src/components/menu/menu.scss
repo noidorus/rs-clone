@@ -14,7 +14,7 @@
 
   @media screen and (min-width: 1920px) {
     width: 335px;
-  } 
+  }
 
   @media screen and (max-width: 1263px) {
     width: 72px;
@@ -47,7 +47,8 @@
   }
 
   @media screen and (max-width: 767px) {
-    &, &.main-nav--compact {
+    &,
+    &.main-nav--compact {
       bottom: 0;
       width: 100vw;
       height: 49px;
@@ -301,10 +302,29 @@
 }
 
 .main-nav__link--profile {
-  &::before {
+  position: relative;
+  .profile-icon {
+    position: absolute;
     border-radius: 50%;
-    background-image: url('../../../public/images/icons/profile.jpg');
-    background-size: contain;
+    object-fit: cover;
+    width: 32px;
+    height: 32px;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+  }
+}
+.main-nav__link--settings {
+  &::before {
+    background-image: url('../../../public/images/icons/settings.svg');
+  }
+
+  &.main-nav__link--active {
+    &::before {
+      background-image: url('../../../public/images/icons/settings-fill.svg');
+    }
   }
 }
 

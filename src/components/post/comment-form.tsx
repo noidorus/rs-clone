@@ -13,7 +13,7 @@ interface CommentsProps {
 export default function CommentForm({ docId }: CommentsProps) {
   const { setCommentsArr } = useContext(CommentsContext);
   const [newComment, setNewComment] = useState('');
-  const { loggedUser } = useAppSelector(({ userCenter }) => userCenter);
+  const { loggedUser } = useAppSelector(({ userInfo }) => userInfo);
 
   const submitComment = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();

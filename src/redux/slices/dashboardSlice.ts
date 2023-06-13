@@ -16,37 +16,20 @@ const fetchPhotosByUserId = async (usersIds: string[]) => {
   return sortedPhotos;
 };
 
-const uploadNewPhoto = async ({
-  img,
-  caption,
-  userId,
-  update = true,
-}: UploadPhotoProps) => {
-  try {
-    const photo = await createNewPhoto(img, caption, userId);
-
-    return update ? photo : null;
-  } catch (err) {
-    throw err;
-  }
-};
-
 export const fetchPhotos = createAsyncThunk(
   'photos/fetchPhotos',
   fetchPhotosByUserId
 );
-export const fetchProfilePhotos = createAsyncThunk(
-  'photos/fetchProfilePhotos',
-  fetchPhotosByUserId
-);
 
-export const uploadProfilePhoto = createAsyncThunk(
-  'profile/uploadProfilePhoto',
-  uploadNewPhoto
-);
 export const uploadPhoto = createAsyncThunk(
   'photos/uploadPhoto',
-  uploadNewPhoto
+  async ({ img, caption, userId }: UploadPhotoProps) => {
+    try {
+      return await createNewPhoto(img, caption, userId);
+    } catch (err) {
+      throw err;
+    }
+  }
 );
 
 const initialState: MainState = {
@@ -81,18 +64,6 @@ const mainPageSlice = createSlice({
       });
 
     builder
-      .addCase(fetchProfilePhotos.pending, (state) => {
-        state.photosLoadingStatus = Status.LOADING;
-      })
-      .addCase(fetchProfilePhotos.fulfilled, (state, { payload }) => {
-        state.photosLoadingStatus = Status.IDLE;
-        state.profilePhotos = payload;
-      })
-      .addCase(fetchProfilePhotos.rejected, (state) => {
-        state.photosLoadingStatus = Status.ERROR;
-      });
-
-    builder
       .addCase(uploadPhoto.pending, (state) => {
         state.uploading = true;
       })
@@ -103,20 +74,6 @@ const mainPageSlice = createSlice({
         }
       })
       .addCase(uploadPhoto.rejected, (state) => {
-        state.uploading = false;
-      });
-
-    builder
-      .addCase(uploadProfilePhoto.pending, (state) => {
-        state.uploading = true;
-      })
-      .addCase(uploadProfilePhoto.fulfilled, (state, { payload }) => {
-        state.uploading = false;
-        if (payload) {
-          state.profilePhotos = [payload, ...state.profilePhotos];
-        }
-      })
-      .addCase(uploadProfilePhoto.rejected, (state) => {
         state.uploading = false;
       });
   },

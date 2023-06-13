@@ -1,32 +1,29 @@
 import { User } from 'firebase/auth';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 
 import FirebaseContext, {
   FirebaseContextProps,
 } from '../context/firebase-context';
-import { useAppDispatch, useAppSelector } from '../hooks/redux.hook';
-import { setUser } from '../redux/slices/auth';
+import { useAppDispatch } from '../hooks/redux.hook';
+import { fetchUserByUserId, signOut } from '../redux/slices/userInfo';
 
 const authListener = () => {
   const { auth } = useContext(FirebaseContext) as FirebaseContextProps;
+
   const dispatch = useAppDispatch();
-  const { userId } = useAppSelector(({ auth }) => auth);
 
   useEffect(() => {
     const listener = auth.onAuthStateChanged(async (user: User | null) => {
       if (user) {
-        localStorage.setItem('auth-user', JSON.stringify(user.uid));
-        dispatch(setUser(user.uid));
+        dispatch(fetchUserByUserId(user.uid));
       } else {
         localStorage.removeItem('auth-user');
-        dispatch(setUser(user));
+        dispatch(signOut());
       }
     });
 
     return () => listener();
   }, [auth]);
-
-  return { userId };
 };
 
 export default authListener;

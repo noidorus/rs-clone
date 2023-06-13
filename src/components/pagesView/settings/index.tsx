@@ -2,19 +2,16 @@ import React, { useState } from 'react';
 
 import UpdateInfoForm from '../../forms/updateInfoForm/UpdateInfoForm';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux.hook';
-import { PacmanLoader } from 'react-spinners';
 import { ImageFormView } from '../../forms/imgForm/ImgFormView';
-import { updateAvatar } from '../../../redux/slices/userCenter';
-import { useModal } from '../../providers/ModalProvider';
+import { updateAvatar } from '../../../redux/slices/userInfo';
 import type { Props } from './props';
 
 import './styles.scss';
+import PacmanSpinner from '../../spinner/spinner';
 
 const ProfileSettings = ({ user }: Props) => {
   const [form, setForm] = useState<'avatar' | 'info'>('avatar');
-  const { uploadLoading } = useAppSelector(({ userCenter }) => userCenter);
-
-  const { closeModal } = useModal();
+  const { loading } = useAppSelector(({ userInfo }) => userInfo);
   const dispatch = useAppDispatch();
 
   const submitCallback = async (img: File) => {
@@ -26,9 +23,7 @@ const ProfileSettings = ({ user }: Props) => {
         docId,
         oldAvatarPath: avatarData?.imagePath,
       })
-    ).then(() => {
-      closeModal();
-    });
+    );
   };
 
   const content =
@@ -63,14 +58,7 @@ const ProfileSettings = ({ user }: Props) => {
 
         {content}
 
-        {uploadLoading && (
-          <>
-            <div className="spinner">
-              <PacmanLoader color="blue" size={45} />
-            </div>
-            <div className="shadow" />
-          </>
-        )}
+        <PacmanSpinner loading={loading} />
       </div>
     </section>
   );

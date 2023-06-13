@@ -6,17 +6,16 @@ import './menu.scss';
 import SearchBlock from '../searhBlock/searchBlock';
 import { ThemeContext, Themes } from '../providers/ThemeProvider';
 import Toggle from '../toggle/toggle';
-clearUserCenterState;
 import { IUserProfile } from '../../types/types';
 import { useModal } from '../providers/ModalProvider';
 import { UploadPhotoModal } from '../modals/uploadPhotoModal/UploadPhotoModal';
 import { useAppDispatch } from '../../hooks/redux.hook';
-import { signOut } from '../../redux/slices/auth';
-import { clearUserCenterState } from '../../redux/slices/userCenter';
-import { clearPhotosState } from '../../redux/slices/photos';
+import { signOut } from '../../redux/slices/userInfo';
+import { clearUserCenterState } from '../../redux/slices/profileSlice';
+import { clearPhotosState } from '../../redux/slices/dashboardSlice';
 
 interface MenuProps {
-  page: 'main' | 'profile';
+  page: 'main' | 'profile' | 'settings';
   loggedUser: IUserProfile;
 }
 
@@ -24,6 +23,8 @@ export default function Menu({ page, loggedUser }: MenuProps) {
   const [searchBlock, setSearchBlock] = useState(false);
   const { setModal } = useModal();
   const dispatch = useAppDispatch();
+
+  const { username, avatarData } = loggedUser;
 
   function openSearchBlock(): void {
     setSearchBlock(true);
@@ -92,13 +93,33 @@ export default function Menu({ page, loggedUser }: MenuProps) {
         <li className="main-nav__item">
           <Link
             className={
-              page === 'main'
-                ? 'main-nav__link main-nav__link--profile'
-                : 'main-nav__link main-nav__link--profile main-nav__link--active'
+              page === 'profile'
+                ? 'main-nav__link main-nav__link--profile main-nav__link--active'
+                : 'main-nav__link main-nav__link--profile'
             }
-            to={`/${loggedUser.username}`}
+            to={`/${username}`}
           >
+            <img
+              className="profile-icon"
+              src={
+                avatarData?.avatarSrc
+                  ? avatarData.avatarSrc
+                  : './images/icons/user-icon.svg'
+              }
+            />
             <span className="main-nav__text">Profile</span>
+          </Link>
+        </li>
+        <li className="main-nav__item">
+          <Link
+            to={ROUTES.SETTINGS}
+            className={
+              page === 'settings'
+                ? 'main-nav__link main-nav__link--settings main-nav__link--active'
+                : 'main-nav__link main-nav__link--settings'
+            }
+          >
+            <span className="main-nav__text">Settings</span>
           </Link>
         </li>
         <li className="main-nav__item main-nav__item--theme">

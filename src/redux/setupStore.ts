@@ -1,14 +1,14 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import type { PreloadedState } from '@reduxjs/toolkit';
 
-import photos from './slices/photos';
-import userCenter from './slices/userCenter';
-import auth from './slices/auth';
+import dashboard from './slices/dashboardSlice';
+import profile from './slices/profileSlice';
+import userInfo from './slices/userInfo';
 
 const rootReducer = combineReducers({
-  photos,
-  userCenter,
-  auth,
+  dashboard,
+  profile,
+  userInfo,
 });
 
 const setupStore = (preloadedState?: PreloadedState<RootState>) => {

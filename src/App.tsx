@@ -4,8 +4,6 @@ import { ROUTES } from './constants/routes';
 import authListener from './hooks/auth-listener';
 import ThemeProvider from './components/providers/ThemeProvider';
 import { ModalProvider } from './components/providers/ModalProvider';
-import { useAppDispatch } from './hooks/redux.hook';
-import { fetchUser } from './redux/slices/userCenter';
 
 const NotFound = lazy(() => import('./pages/page-not-found'));
 const Dashboard = lazy(() => import('./pages/dashboard'));
@@ -15,14 +13,7 @@ const SignUp = lazy(() => import('./pages/signUp'));
 const Settings = lazy(() => import('./pages/settings'));
 
 function App() {
-  const { userId } = authListener();
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (userId) {
-      dispatch(fetchUser({ key: 'userId', value: userId }));
-    }
-  }, [userId]);
+  authListener();
 
   return (
     <ThemeProvider>

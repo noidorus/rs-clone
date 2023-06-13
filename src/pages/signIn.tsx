@@ -1,27 +1,23 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PacmanLoader } from 'react-spinners';
 import AuthLayout from '../components/authLayout/authLayout';
 import SignInForm from '../components/forms/authForms/SignInForm';
+import PacmanSpinner from '../components/spinner/spinner';
 import { ROUTES } from '../constants/routes';
 import { useAppSelector } from '../hooks/redux.hook';
 
 const SignInPage = () => {
-  const { userId } = useAppSelector(({ auth }) => auth);
+  const { loggedUser } = useAppSelector(({ userInfo }) => userInfo);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (userId) {
+    if (loggedUser) {
       navigate(ROUTES.DASHBOARD);
     }
-  }, [userId]);
+  }, [loggedUser]);
 
-  if (userId) {
-    return (
-      <div className="spinner">
-        <PacmanLoader color="blue" size={45} />
-      </div>
-    );
+  if (loggedUser) {
+    return <PacmanSpinner loading={true} />;
   }
 
   const layoutProps = {

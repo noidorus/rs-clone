@@ -1,38 +1,30 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux.hook';
-import { updateUserInfo } from '../../../redux/slices/userCenter';
-import { useModal } from '../../providers/ModalProvider';
+import { updateUserInfo } from '../../../redux/slices/userInfo';
 import FormError from '../formError';
 import { updateInfoResolver, UpdateInfoSchemaType } from '../yupSchemas';
 
 import './index.scss';
 
 const UpdateInfoForm = () => {
-  const { loggedUser } = useAppSelector(({ userCenter }) => userCenter);
+  const { loggedUser } = useAppSelector(({ userInfo }) => userInfo);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<UpdateInfoSchemaType>({ resolver: updateInfoResolver });
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const { closeModal } = useModal();
 
   const onSubmit = handleSubmit(async (data) => {
     if (loggedUser) {
-      dispatch(updateUserInfo({ ...data, docId: loggedUser.docId })).then(
-        () => {
-          closeModal();
-          navigate(`/${data.username}`);
-        }
-      );
+      dispatch(updateUserInfo({ ...data, docId: loggedUser.docId }));
     }
   });
 
   return (
     <form className="update-info__form" onSubmit={onSubmit}>
+      <h3 className="form-title">Update info</h3>
       <label className="field-wrapper">
         Username
         <input

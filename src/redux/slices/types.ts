@@ -1,4 +1,3 @@
-import { User } from 'firebase/auth';
 import { IPhotoDoc, IUserProfile } from '../../types/types';
 
 export enum Status {
@@ -15,19 +14,13 @@ export interface MainState {
 }
 
 export interface ProfileState {
-  loggedUser: IUserProfile | null;
-  profile: IUserProfile | null | undefined;
-  isFollowingProfile: boolean;
-  uploadLoading: boolean;
-  err: null | string;
-}
-
-export interface ModalState {
-  ModalChildren: null | React.ElementType;
+  user: IUserProfile | null | undefined;
+  photos: IPhotoDoc[];
+  loading: boolean;
 }
 
 export interface AuthState {
-  userId: string | null;
+  loggedUser: IUserProfile | null;
   authError: string | null;
   loading: boolean;
 }
@@ -37,16 +30,14 @@ export interface Credentials {
   password: string;
 }
 
+export interface UploadPhotoWithUpdateProps extends UploadPhotoProps {
+  update?: boolean;
+}
+
 export interface UploadPhotoProps {
   img: File;
   caption: string;
   userId: string;
-  update?: boolean;
-}
-
-export interface FetchUserProps {
-  key: 'username' | 'userId';
-  value: string;
 }
 
 export interface UpdateUserInfoProps {

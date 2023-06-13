@@ -1,31 +1,31 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect } from 'react';
 import UserHeader from './user-header';
 import Timeline from '../../timeline/timeline';
-import { IUserProfile } from '../../../types/types';
 
 import './index.scss';
 
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux.hook';
-import { fetchProfilePhotos } from '../../../redux/slices/photos';
+import { fetchProfilePhotos } from '../../../redux/slices/profileSlice';
+import PacmanSpinner from '../../spinner/spinner';
 
-interface UserPageProps {
-  user: IUserProfile;
-}
-
-export default function UserProfile({ user }: UserPageProps) {
-  const { profilePhotos } = useAppSelector(({ photos }) => photos);
+export default function UserProfile() {
+  const { photos, user } = useAppSelector(({ profile }) => profile);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log('Fetched!');
-    dispatch(fetchProfilePhotos([user.userId]));
-  }, [user.userId, user.username]);
+    if (user) {
+      dispatch(fetchProfilePhotos(user.userId));
+    }
+  }, [user]);
+
+  if (!user) {
+    return <PacmanSpinner loading={true} />;
+  }
 
   return (
     <div className="profile">
       <UserHeader user={user} />
-
-      <Timeline photos={profilePhotos} />
+      <Timeline photos={photos} />
     </div>
   );
 }

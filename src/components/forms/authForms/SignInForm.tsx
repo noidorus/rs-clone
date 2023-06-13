@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../constants/routes';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux.hook';
-import { signInWithEmail } from '../../../redux/slices/auth';
+import { signInWithEmail } from '../../../redux/slices/userInfo';
 import FormError from '../formError';
 
 import './styles.scss';
@@ -16,7 +16,7 @@ const SignInForm = () => {
     formState: { errors },
   } = useForm<SignInSchemaType>({ resolver: signInResolver });
   const dispatch = useAppDispatch();
-  const { authError, loading } = useAppSelector(({ auth }) => auth);
+  const { authError, loading } = useAppSelector(({ userInfo }) => userInfo);
   const navigate = useNavigate();
 
   const onSubmit = handleSubmit(async ({ email, password }) => {

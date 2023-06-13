@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { PacmanLoader } from 'react-spinners';
 import { useNavigate } from 'react-router-dom';
 
 import Menu from '../components/menu/menu';
@@ -8,13 +7,13 @@ import MainPage from '../components/pagesView/dashboard';
 
 import { useAppSelector } from '../hooks/redux.hook';
 import { useModal } from '../components/providers/ModalProvider';
+import PacmanSpinner from '../components/spinner/spinner';
 
 import './main.scss';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { loggedUser } = useAppSelector(({ userCenter }) => userCenter);
-  const { userId } = useAppSelector(({ auth }) => auth);
+  const { loggedUser } = useAppSelector(({ userInfo }) => userInfo);
 
   const { Modal } = useModal();
 
@@ -23,17 +22,13 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    if (userId === null) {
+    if (loggedUser === null) {
       navigate(ROUTES.SIGN_IN);
     }
-  }, [userId]);
+  }, [loggedUser]);
 
-  if (!loggedUser || !userId) {
-    return (
-      <div className="spinner">
-        <PacmanLoader color="blue" size={45} />
-      </div>
-    );
+  if (!loggedUser) {
+    return <PacmanSpinner loading={true} />;
   }
 
   return (
