@@ -1,18 +1,22 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
   createNewPhoto,
+  deletePhotoFirebase,
   getPhotosByUserId,
   getUserByUsername,
 } from '../../firebase/services';
+import { DeletePhotoProps } from './dashboardSlice';
 import {
   ProfileState,
   UploadPhotoProps,
   UploadPhotoWithUpdateProps,
+  Status,
 } from './types';
 
 const initialState: ProfileState = {
   user: null,
-  loading: false,
+  userLoadingStatus: Status.IDLE,
+  loadingStatus: Status.IDLE,
   photos: [],
 };
 
@@ -50,6 +54,18 @@ export const uploadProfilePhoto = createAsyncThunk(
   }
 );
 
+export const deleteProfilePhoto = createAsyncThunk(
+  'profile/deletePhoto',
+  async ({ imagePath, docId }: DeletePhotoProps) => {
+    try {
+      await deletePhotoFirebase(imagePath, docId);
+      return docId;
+    } catch (err) {
+      throw err;
+    }
+  }
+);
+
 const profileSlice = createSlice({
   name: 'profile',
   initialState,
@@ -57,7 +73,8 @@ const profileSlice = createSlice({
     onToggleFollow: (state, payload) => {},
     clearUserCenterState: (state) => {
       state.user = null;
-      state.loading = false;
+      state.userLoadingStatus = Status.IDLE;
+      state.loadingStatus = Status.IDLE;
       state.photos = [];
     },
   },
@@ -72,16 +89,28 @@ const profileSlice = createSlice({
 
     builder
       .addCase(uploadProfilePhoto.pending, (state) => {
-        state.loading = true;
+        state.loadingStatus = Status.LOADING;
       })
       .addCase(uploadProfilePhoto.fulfilled, (state, { payload }) => {
-        state.loading = false;
+        state.loadingStatus = Status.IDLE;
         if (payload) {
           state.photos = [payload, ...state.photos];
         }
       })
       .addCase(uploadProfilePhoto.rejected, (state) => {
-        state.loading = false;
+        state.loadingStatus = Status.ERROR;
+      });
+
+    builder
+      .addCase(deleteProfilePhoto.pending, (state) => {
+        state.loadingStatus = Status.LOADING;
+      })
+      .addCase(deleteProfilePhoto.fulfilled, (state, { payload }) => {
+        state.photos = state.photos.filter((value) => value.docId !== payload);
+        state.loadingStatus = Status.IDLE;
+      })
+      .addCase(deleteProfilePhoto.rejected, (state) => {
+        state.loadingStatus = Status.ERROR;
       });
   },
 });

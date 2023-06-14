@@ -8,15 +8,15 @@ export enum Status {
 
 export interface MainState {
   photos: IPhotoDoc[];
-  profilePhotos: IPhotoDoc[];
   photosLoadingStatus: Status;
-  uploading: boolean;
+  loadingStatus: Status;
 }
 
 export interface ProfileState {
   user: IUserProfile | null | undefined;
+  userLoadingStatus: Status;
+  loadingStatus: Status;
   photos: IPhotoDoc[];
-  loading: boolean;
 }
 
 export interface AuthState {

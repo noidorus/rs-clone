@@ -1,8 +1,12 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ROUTES } from '../../../constants/routes';
-import { useAppSelector } from '../../../hooks/redux.hook';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux.hook';
+import { deletePhoto } from '../../../redux/slices/dashboardSlice';
+import { deleteProfilePhoto } from '../../../redux/slices/profileSlice';
 import { IPhotoDoc, IUserProfile } from '../../../types/types';
+import { useComments } from '../../providers/CommentsProvider';
+import { useModal } from '../../providers/ModalProvider';
 import './post-header.scss';
 
 interface PostHeaderProps {
@@ -15,31 +19,23 @@ function PostHeader({ user, photoData }: PostHeaderProps) {
   const avatar = avatarData?.avatarSrc || './images/icons/profile.jpg';
 
   const { loggedUser } = useAppSelector(({ userInfo }) => userInfo);
+  const dispatch = useAppDispatch();
+  const { pathname } = useLocation();
+  const { loadingOn, loadingOf } = useComments(); // Rename
+  const { closeModal } = useModal();
 
   const isMyPhoto = loggedUser?.username == username;
 
-  const { pathname } = useLocation();
-
   const handleDeletePhoto = async (): Promise<void> => {
+    const { imagePath, docId } = photoData;
+    loadingOn();
     if (pathname === '/') {
-      console.log('Is Main Page');
+      await dispatch(deletePhoto({ imagePath, docId }));
     } else {
-      console.log('Is Profile Page');
+      await dispatch(deleteProfilePhoto({ imagePath, docId }));
     }
-
-    // const storagePath = photoData.imagePath;
-    // const docId = photoData.docId;
-    // const newPhotos = photos.filter((elem) => elem.docId !== docId);
-
-    // try {
-    //   await deletePhotoFromStorage(storagePath);
-    //   await deletePhotoFromFirestore(docId);
-
-    //   setPhotos(newPhotos);
-    //   closeModal ? closeModal() : null;
-    // } catch (e) {
-    //   console.log(e);
-    // }
+    closeModal();
+    loadingOf();
   };
 
   return (

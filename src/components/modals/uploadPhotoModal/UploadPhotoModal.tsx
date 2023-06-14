@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 
 import { uploadPhoto } from '../../../redux/slices/dashboardSlice';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux.hook';
+import {
+  selectLoading,
+  useAppDispatch,
+  useAppSelector,
+} from '../../../hooks/redux.hook';
 import { IUserProfile } from '../../../types/types';
 import { useModal } from '../../providers/ModalProvider';
 
@@ -26,9 +30,7 @@ const UploadPhotoModal = ({ page }: Props) => {
     ({ profile }) => profile.user?.username
   );
 
-  const loading = useAppSelector(
-    ({ dashboard, profile }) => dashboard.uploading || profile.loading
-  );
+  const loading = selectLoading();
 
   const submitCallback = async (img: File) => {
     if (page === 'profile' && profileUsername === username) {

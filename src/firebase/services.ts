@@ -186,6 +186,20 @@ export const updateUserData = async (
   });
 };
 
+export async function deletePhotoFirebase(
+  deletePath: string,
+  docId: string
+): Promise<void> {
+  const docRef = doc(db, 'photos', docId);
+  try {
+    await deletePhotoFromStorage(deletePath);
+
+    return await deleteDoc(docRef);
+  } catch (err) {
+    throw err;
+  }
+}
+
 ////////////
 
 async function updateLoggedUserFollowing(
@@ -329,13 +343,6 @@ export async function updateComments(
   );
 
   return newCommentsArr;
-}
-
-export async function deletePhotoFromFirestore(docId: string): Promise<void> {
-  const docRef = doc(db, 'photos', docId);
-  await deleteDoc(docRef)
-    .then((data) => console.log(data))
-    .catch((e) => console.log(e));
 }
 
 export async function deleteComment(

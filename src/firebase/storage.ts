@@ -27,7 +27,9 @@ export const deletePhotoFromStorage = async (path: string): Promise<void> => {
   const storage = getStorage(firebase);
   const desertRef = ref(storage, path);
 
-  await deleteObject(desertRef).catch((err) => {
+  try {
+    return await deleteObject(desertRef);
+  } catch (err) {
     throw err;
-  });
+  }
 };

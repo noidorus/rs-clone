@@ -1,4 +1,4 @@
-import { createNewPhoto } from '../../firebase/services';
+import { createNewPhoto, deletePhotoFirebase } from '../../firebase/services';
 import { IPhotoDoc } from '../../types/types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getPhotosByUserId } from '../../firebase/services';
@@ -17,12 +17,29 @@ const fetchPhotosByUserId = async (usersIds: string[]) => {
 };
 
 export const fetchPhotos = createAsyncThunk(
-  'photos/fetchPhotos',
+  'dashboard/fetchPhotos',
   fetchPhotosByUserId
 );
 
+export interface DeletePhotoProps {
+  imagePath: string;
+  docId: string;
+}
+
+export const deletePhoto = createAsyncThunk(
+  'dashboard/deletePhoto',
+  async ({ imagePath, docId }: DeletePhotoProps) => {
+    try {
+      await deletePhotoFirebase(imagePath, docId);
+      return docId;
+    } catch (err) {
+      throw err;
+    }
+  }
+);
+
 export const uploadPhoto = createAsyncThunk(
-  'photos/uploadPhoto',
+  'dashboard/uploadPhoto',
   async ({ img, caption, userId }: UploadPhotoProps) => {
     try {
       return await createNewPhoto(img, caption, userId);
@@ -34,9 +51,8 @@ export const uploadPhoto = createAsyncThunk(
 
 const initialState: MainState = {
   photos: [],
-  profilePhotos: [],
   photosLoadingStatus: Status.IDLE,
-  uploading: false,
+  loadingStatus: Status.IDLE,
 };
 
 const mainPageSlice = createSlice({
@@ -45,9 +61,8 @@ const mainPageSlice = createSlice({
   reducers: {
     clearPhotosState: (state) => {
       state.photos = [];
-      state.profilePhotos = [];
       state.photosLoadingStatus = Status.IDLE;
-      state.uploading = false;
+      state.loadingStatus = Status.IDLE;
     },
   },
   extraReducers: (builder) => {
@@ -65,16 +80,28 @@ const mainPageSlice = createSlice({
 
     builder
       .addCase(uploadPhoto.pending, (state) => {
-        state.uploading = true;
+        state.loadingStatus = Status.LOADING;
       })
       .addCase(uploadPhoto.fulfilled, (state, { payload }) => {
-        state.uploading = false;
+        state.loadingStatus = Status.IDLE;
         if (payload) {
           state.photos = [payload, ...state.photos];
         }
       })
       .addCase(uploadPhoto.rejected, (state) => {
-        state.uploading = false;
+        state.loadingStatus = Status.ERROR;
+      });
+
+    builder
+      .addCase(deletePhoto.pending, (state) => {
+        state.loadingStatus = Status.LOADING;
+      })
+      .addCase(deletePhoto.fulfilled, (state, { payload }) => {
+        state.photos = state.photos.filter((value) => value.docId !== payload);
+        state.loadingStatus = Status.IDLE;
+      })
+      .addCase(deletePhoto.rejected, (state) => {
+        state.loadingStatus = Status.ERROR;
       });
   },
 });
@@ -82,5 +109,5 @@ const mainPageSlice = createSlice({
 const { actions, reducer } = mainPageSlice;
 
 export default reducer;
-
+export type { Status };
 export const { clearPhotosState } = actions;

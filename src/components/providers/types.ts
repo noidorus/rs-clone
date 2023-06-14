@@ -16,7 +16,10 @@ export interface IThemeContext {
 
 export interface ICommentsContext {
   comments: IComment[];
+  loading: boolean;
   setNewComment: (newComment: IComment) => void;
+  loadingOn: () => void;
+  loadingOf: () => void;
 }
 
 export interface IModalContext {

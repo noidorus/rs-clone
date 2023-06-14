@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { getUserDataHook } from '../../hooks/getLoggedUserData';
 import CommentForm from '../post/comment-form';
 import Comments from '../post/comments-list';
@@ -9,16 +10,24 @@ import { useModal } from '../providers/ModalProvider';
 import { CardProps } from './props';
 import { PrettyDate } from './date/Date';
 import { CardModal } from './CardModal';
+import PacmanSpinner from '../spinner/spinner';
 
 const CardSmall = ({ photo }: CardProps) => {
   const { likes, docId, dateCreated, userId } = photo;
   const user = getUserDataHook(userId);
-  const { comments } = useComments();
+  const { comments, loading } = useComments();
   const { setModal } = useModal();
 
   const handleOpenModal = () => {
     user &&
-      setModal(<CardModal photo={photo} user={user} comments={comments} />);
+      setModal(
+        <CardModal
+          photo={photo}
+          user={user}
+          loading={loading}
+          comments={comments}
+        />
+      );
   };
 
   return (
@@ -51,6 +60,8 @@ const CardSmall = ({ photo }: CardProps) => {
 
         <CommentForm docId={docId} />
       </div>
+
+      <PacmanSpinner loading={loading} />
     </div>
   );
 };

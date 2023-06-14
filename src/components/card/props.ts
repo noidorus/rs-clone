@@ -9,4 +9,5 @@ export interface CardModalProps {
   photo: IPhotoDoc;
   comments: IComment[];
   user: IUserProfile;
+  loading: boolean;
 }
