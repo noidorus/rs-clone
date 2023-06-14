@@ -26,7 +26,7 @@ export default function MainPage({ user }: MainPageProps) {
   return (
     <div className="dashboard">
       <div className="dashboard__inner">
-        <Timeline photos={photos} />
+        <Timeline page="main" photos={photos} />
         {user && <Recomendation userData={user} />}
       </div>
     </div>

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AuthLayout from '../components/authLayout/authLayout';
+import AuthLayout from '../components/pagesView/authLayout/authLayout';
 import SignInForm from '../components/forms/authForms/SignInForm';
 import PacmanSpinner from '../components/spinner/spinner';
 import { ROUTES } from '../constants/routes';

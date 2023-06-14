@@ -25,7 +25,7 @@ export default function UserProfile() {
   return (
     <div className="profile">
       <UserHeader user={user} />
-      <Timeline photos={photos} />
+      <Timeline page="profile" photos={photos} />
     </div>
   );
 }

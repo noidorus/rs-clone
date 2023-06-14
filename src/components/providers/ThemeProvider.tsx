@@ -1,25 +1,12 @@
-import React, { ReactNode, useState } from 'react';
+import React, { useState } from 'react';
+import { ProviderProps, IThemeContext, Themes } from './types';
 
-interface ThemeProviderProps {
-  children?: ReactNode;
-}
-
-export enum Themes {
-  dark = 'dark',
-  light = 'light',
-}
-
-export interface ThemeContextProps {
-  theme: Themes;
-  setTheme: (theme: Themes) => void;
-}
-
-export const ThemeContext = React.createContext<ThemeContextProps>({
+export const ThemeContext = React.createContext<IThemeContext>({
   theme: Themes.light,
   setTheme: () => {},
 });
 
-const ThemeProvider = ({ children }: ThemeProviderProps) => {
+const ThemeProvider = ({ children }: ProviderProps) => {
   const [theme, setTheme] = useState<Themes>(getTheme);
 
   React.useEffect(() => {
@@ -35,6 +22,7 @@ const ThemeProvider = ({ children }: ThemeProviderProps) => {
 };
 
 export default ThemeProvider;
+export { Themes };
 
 const getTheme = (): Themes => {
   const theme = `${window?.localStorage?.getItem('theme')}` as Themes;

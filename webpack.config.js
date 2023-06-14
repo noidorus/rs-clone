@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const { NetlifyPlugin } = require('netlify-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 const baseConfig = {
   entry: path.resolve(__dirname, './src/index.tsx'),
@@ -64,6 +65,7 @@ const baseConfig = {
         },
       ],
     }),
+    new Dotenv(),
   ],
 };
 

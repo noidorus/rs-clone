@@ -1,18 +1,16 @@
-import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
-import { deletePhotoFromFirestore } from '../../firebase/services';
-import { deletePhotoFromStorage } from '../../firebase/storage';
-import { useAppSelector } from '../../hooks/redux.hook';
-import { IPhotoDoc, IUserProfile } from '../../types/types';
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { ROUTES } from '../../../constants/routes';
+import { useAppSelector } from '../../../hooks/redux.hook';
+import { IPhotoDoc, IUserProfile } from '../../../types/types';
 import './post-header.scss';
 
 interface PostHeaderProps {
   user: IUserProfile;
-  photoData?: IPhotoDoc;
-  closeModal?: () => void;
+  photoData: IPhotoDoc;
 }
 
-function PostHeader({ user, photoData, closeModal }: PostHeaderProps) {
+function PostHeader({ user, photoData }: PostHeaderProps) {
   const { username, fullName, avatarData } = user;
   const avatar = avatarData?.avatarSrc || './images/icons/profile.jpg';
 
@@ -20,22 +18,28 @@ function PostHeader({ user, photoData, closeModal }: PostHeaderProps) {
 
   const isMyPhoto = loggedUser?.username == username;
 
+  const { pathname } = useLocation();
+
   const handleDeletePhoto = async (): Promise<void> => {
-    if (photoData) {
-      const storagePath = photoData.imagePath;
-      const docId = photoData.docId;
-      // const newPhotos = photos.filter((elem) => elem.docId !== docId);
-
-      // try {
-      //   await deletePhotoFromStorage(storagePath);
-      //   await deletePhotoFromFirestore(docId);
-
-      //   setPhotos(newPhotos);
-      //   closeModal ? closeModal() : null;
-      // } catch (e) {
-      //   console.log(e);
-      // }
+    if (pathname === '/') {
+      console.log('Is Main Page');
+    } else {
+      console.log('Is Profile Page');
     }
+
+    // const storagePath = photoData.imagePath;
+    // const docId = photoData.docId;
+    // const newPhotos = photos.filter((elem) => elem.docId !== docId);
+
+    // try {
+    //   await deletePhotoFromStorage(storagePath);
+    //   await deletePhotoFromFirestore(docId);
+
+    //   setPhotos(newPhotos);
+    //   closeModal ? closeModal() : null;
+    // } catch (e) {
+    //   console.log(e);
+    // }
   };
 
   return (
@@ -52,12 +56,12 @@ function PostHeader({ user, photoData, closeModal }: PostHeaderProps) {
         </Link>
       </div>
 
-      {isMyPhoto ? (
+      {isMyPhoto && (
         <button
           className="post-header__delete button button--delete"
           onClick={handleDeletePhoto}
         ></button>
-      ) : null}
+      )}
     </header>
   );
 }

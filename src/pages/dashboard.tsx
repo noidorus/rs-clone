@@ -15,10 +15,14 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { loggedUser } = useAppSelector(({ userInfo }) => userInfo);
 
-  const { Modal } = useModal();
+  const { Modal, closeModal } = useModal();
 
   useEffect(() => {
     document.title = 'Instagram';
+
+    return () => {
+      closeModal();
+    };
   }, []);
 
   useEffect(() => {

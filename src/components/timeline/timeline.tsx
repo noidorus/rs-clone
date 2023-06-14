@@ -1,14 +1,20 @@
-import React, { useState, useEffect, useContext } from 'react';
-import Post from '../post/post';
+import React from 'react';
+import { CardPreview, CardSmall } from '../card';
+import { CommentsProvider } from '../providers/CommentsProvider';
 
-import './timeline.scss';
 import { TimeLineProps } from './types';
+import './timeline.scss';
 
-export default function Timeline({ photos, title }: TimeLineProps) {
-  useEffect(() => {}, []);
-
+export default function Timeline({ photos, title, page }: TimeLineProps) {
   const elements = photos.map((photo, index) => {
-    return <Post key={index} photo={photo} />;
+    let content: JSX.Element;
+    if (page === 'profile') {
+      content = <CardPreview photo={photo} />;
+    } else {
+      content = <CardSmall photo={photo} />;
+    }
+
+    return <CommentsProvider key={index}>{content}</CommentsProvider>;
   });
 
   return (

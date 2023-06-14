@@ -7,6 +7,7 @@ import CommentsContext from '../../context/comments-context';
 
 import './comment-item.scss';
 import { useAppSelector } from '../../hooks/redux.hook';
+import { PrettyDate } from '../card/date/Date';
 
 interface CommentProps {
   commentData: IComment;
@@ -20,7 +21,6 @@ export default function CommentItem({
   photoUserId,
 }: CommentProps) {
   const { userId, comment, date } = commentData;
-  const prettyDate = getRelativeTimeString(date, 'en');
   const commentUser = getUserDataHook(userId);
 
   const { loggedUser } = useAppSelector(({ userInfo }) => userInfo);
@@ -55,7 +55,7 @@ export default function CommentItem({
           {user ? <span className="comment__user">{user.username}</span> : null}
           <span className="comment__text">{comment}</span>
         </div>
-        <p className="comment__date">{prettyDate}</p>
+        <PrettyDate date={date} type="comment" />
       </div>
       <div className="comment__action">
         {canDelete ? (

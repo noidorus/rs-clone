@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { toggleLike } from '../../firebase/services';
-import { useAppSelector } from '../../hooks/redux.hook';
+import { useAppSelector } from '../../../hooks/redux.hook';
 
 import './like.scss';
 
@@ -40,24 +39,22 @@ export default function Like({ likes, docId }: LikeProps) {
         onClick={() => handleToggleLike()}
       ></button>
 
-      <div className="like__counter-wrapper">
-        {likesCount !== 0 ? (
-          <span className="like__value">
-            {likesCount} {likesCount === 1 ? 'like' : 'likes'}
-          </span>
-        ) : (
-          <span className="like__counter">
-            Be the first to{' '}
-            <button
-              className="like__first"
-              type="button"
-              onClick={() => handleToggleLike()}
-            >
-              like this
-            </button>
-          </span>
-        )}
-      </div>
+      {likesCount !== 0 ? (
+        <span className="like__value">
+          {likesCount} {likesCount === 1 ? 'like' : 'likes'}
+        </span>
+      ) : (
+        <span className="like__counter">
+          {'Be the first to '}
+          <button
+            className="like__first"
+            type="button"
+            onClick={() => handleToggleLike()}
+          >
+            like this
+          </button>
+        </span>
+      )}
     </div>
   );
 }

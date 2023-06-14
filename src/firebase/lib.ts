@@ -5,12 +5,12 @@ import { getAuth } from 'firebase/auth';
 import type { Auth, User } from 'firebase/auth';
 
 const config = {
-  apiKey: 'AIzaSyCu8nbwEAd8Z3IMndd1cRPatVt4Mvy_y2E',
-  authDomain: 'second-clone-instagram.firebaseapp.com',
-  projectId: 'second-clone-instagram',
-  storageBucket: 'second-clone-instagram.appspot.com',
-  messagingSenderId: '284252354778',
-  appId: '1:284252354778:web:953642e4b78243779b0de3',
+  apiKey: process.env.API_KEY as string,
+  authDomain: process.env.AUTH_DOMAIN as string,
+  projectId: process.env.PROJECT_ID as string,
+  storageBucket: process.env.STORAGE_BUCKET as string,
+  messagingSenderId: process.env.MESSAGING_SENDER_ID as string,
+  appId: process.env.APP_ID as string,
 };
 
 const firebase = initializeApp(config);

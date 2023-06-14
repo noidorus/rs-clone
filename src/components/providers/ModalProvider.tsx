@@ -1,23 +1,14 @@
 import React, { createContext, useContext, useState } from 'react';
 import { ModalLayout } from '../modalLayout';
+import { IModalContext, ProviderProps } from './types';
 
-interface ModalContextProps {
-  Modal: JSX.Element | null;
-  setModal: (children: JSX.Element) => void;
-  closeModal: () => void;
-}
-
-interface ModalProviderProps {
-  children: JSX.Element;
-}
-
-const ModalContext = createContext<ModalContextProps>({
+const ModalContext = createContext<IModalContext>({
   Modal: null,
   setModal: () => {},
   closeModal: () => {},
 });
 
-const ModalProvider = ({ children }: ModalProviderProps) => {
+const ModalProvider = ({ children }: ProviderProps) => {
   const [Modal, setActiveModal] = useState<JSX.Element | null>(null);
 
   const setModal = (children: JSX.Element) => {

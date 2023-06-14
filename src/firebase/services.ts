@@ -240,9 +240,10 @@ export async function updateFollowedUserFollowers(
   }
 }
 
-export async function getUserByUserId(userId: string): Promise<IUserProfile> {
+export async function getUserByUserId(
+  userId: string
+): Promise<IUserProfile | null> {
   const querySnapshot = await getQuerySnapshot('users', 'userId', userId);
-
   const [res] = querySnapshot.docs.map((item) => {
     const itemData = item.data() as IUser;
     return {
@@ -250,7 +251,8 @@ export async function getUserByUserId(userId: string): Promise<IUserProfile> {
       docId: item.id,
     };
   });
-  return res;
+
+  return res ? res : null;
 }
 
 export async function setDataUsers(): Promise<IUserProfile[]> {

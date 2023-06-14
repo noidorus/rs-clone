@@ -1,5 +1,6 @@
 .like {
-  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
 }
 
 .like__action {
@@ -8,7 +9,7 @@
   height: 32px;
   margin-left: -4px;
   padding: 8px;
-  background-image: url('../../../public/images/icons/notifications.svg');
+  background-image: url('../../../../public/images/icons/notifications.svg');
   background-position: center;
   background-repeat: no-repeat;
   background-color: transparent;
@@ -21,7 +22,7 @@
 }
 
 .like__action--activ {
-  background-image: url('../../../public/images/icons/notifications-fill.svg');
+  background-image: url('../../../../public/images/icons/notifications-fill.svg');
   background-repeat: no-repeat;
 }
 

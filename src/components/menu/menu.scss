@@ -199,9 +199,9 @@
     position: absolute;
     left: 11px;
     top: 50%;
-    width: 24px;
-    height: 24px;
     transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
     background-position: center;
     background-repeat: no-repeat;
     transition: transform 0.2s cubic-bezier(0.17, 0.17, 0, 1);
@@ -303,6 +303,7 @@
 
 .main-nav__link--profile {
   position: relative;
+
   .profile-icon {
     position: absolute;
     border-radius: 50%;
@@ -310,10 +311,14 @@
     width: 32px;
     height: 32px;
 
-    left: 50%;
+    position: absolute;
+    left: 11px;
     top: 50%;
+    transform: translateY(-50%);
 
-    transform: translate(-50%, -50%);
+    @media screen and (max-width: 767px) {
+      left: 7px;
+    }
   }
 }
 .main-nav__link--settings {

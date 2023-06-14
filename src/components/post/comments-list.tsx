@@ -7,18 +7,25 @@ import './comments-list.scss';
 
 interface CommentsProps {
   comments: IComment[];
-  photoDocId: string
-  photoUserId: string
+  photoDocId: string;
+  photoUserId: string;
 }
 
-export default function Comments({ comments, photoDocId, photoUserId }: CommentsProps) {
+export default function Comments({
+  comments,
+  photoDocId,
+  photoUserId,
+}: CommentsProps) {
   const elements = comments.map((value, i) => {
-    return <CommentItem key={`p${i}`} commentData={value} photoDocId={photoDocId} photoUserId={photoUserId} />;
+    return (
+      <CommentItem
+        key={`p${i}`}
+        commentData={value}
+        photoDocId={photoDocId}
+        photoUserId={photoUserId}
+      />
+    );
   });
 
-  return (
-    <ul className='comments-list'>
-      {elements}
-    </ul>
-  );
+  return <ul className="comments-list">{elements}</ul>;
 }

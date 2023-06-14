@@ -18,11 +18,15 @@ export default function Profile() {
   const { user } = useAppSelector(({ profile }) => profile);
   const { loggedUser } = useAppSelector(({ userInfo }) => userInfo);
   const dispatch = useAppDispatch();
-  const { Modal } = useModal();
+  const { Modal, closeModal } = useModal();
 
   useEffect(() => {
     document.title = `Instagram - ${username}`;
     dispatch(fetchProfile(username?.toLowerCase() as string));
+
+    return () => {
+      closeModal();
+    };
   }, [username]);
 
   useEffect(() => {
