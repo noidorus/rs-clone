@@ -1,6 +1,6 @@
 import React from 'react';
 import { CardPreview, CardSmall } from '../card';
-import { CommentsProvider } from '../providers/CommentsProvider';
+import { PostProvider } from '../providers/PostProvider';
 
 import { TimeLineProps } from './types';
 import './timeline.scss';
@@ -14,7 +14,7 @@ export default function Timeline({ photos, title, page }: TimeLineProps) {
       content = <CardSmall photo={photo} />;
     }
 
-    return <CommentsProvider key={index}>{content}</CommentsProvider>;
+    return <PostProvider key={index}>{content}</PostProvider>;
   });
 
   return (

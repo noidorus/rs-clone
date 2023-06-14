@@ -11,13 +11,15 @@ const ModalContext = createContext<IModalContext>({
 const ModalProvider = ({ children }: ProviderProps) => {
   const [Modal, setActiveModal] = useState<JSX.Element | null>(null);
 
-  const setModal = (children: JSX.Element) => {
-    const content = <ModalLayout>{children}</ModalLayout>;
-    setActiveModal(content);
-  };
-
   const closeModal = () => {
     setActiveModal(null);
+  };
+
+  const setModal = (children: JSX.Element) => {
+    const content = (
+      <ModalLayout closeModal={closeModal}>{children}</ModalLayout>
+    );
+    setActiveModal(content);
   };
 
   return (

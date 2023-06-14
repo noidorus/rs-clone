@@ -7,7 +7,6 @@ export interface CardProps {
 
 export interface CardModalProps {
   photo: IPhotoDoc;
-  comments: IComment[];
+  comments?: IComment[];
   user: IUserProfile;
-  loading: boolean;
 }

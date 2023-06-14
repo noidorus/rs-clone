@@ -6,11 +6,10 @@ import './index.scss';
 
 interface IProps {
   children: JSX.Element;
+  closeModal: () => void;
 }
 
-const ModalLayout = ({ children }: IProps) => {
-  const { closeModal } = useModal();
-
+const ModalLayout = ({ children, closeModal }: IProps) => {
   const handleCloseModal = (e: MouseEvent) => {
     const target = e.target as HTMLElement;
     const currTarget = e.currentTarget as HTMLElement;

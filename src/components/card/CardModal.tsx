@@ -7,12 +7,13 @@ import { CardModalProps } from './props';
 import { PrettyDate } from './date/Date';
 import PacmanSpinner from '../spinner/spinner';
 import { selectLoading } from '../../hooks/redux.hook';
+import { usePost } from '../providers/PostProvider';
 
-const CardModal = ({ photo, user, comments }: CardModalProps) => {
+const CardModal = ({ photo, user }: CardModalProps) => {
   const { likes, imageSrc, caption, docId, dateCreated, userId } = photo;
-
+  const { comments } = usePost();
   const loading = selectLoading();
-
+  console.log(comments);
   return (
     <div className="post--modal">
       <img className="post__image" src={imageSrc} />

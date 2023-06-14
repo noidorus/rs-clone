@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ROUTES } from '../../../constants/routes';
+
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux.hook';
 import { deletePhoto } from '../../../redux/slices/dashboardSlice';
 import { deleteProfilePhoto } from '../../../redux/slices/profileSlice';
 import { IPhotoDoc, IUserProfile } from '../../../types/types';
-import { useComments } from '../../providers/CommentsProvider';
+import { usePost } from '../../providers/PostProvider';
 import { useModal } from '../../providers/ModalProvider';
 import './post-header.scss';
 
@@ -21,7 +21,7 @@ function PostHeader({ user, photoData }: PostHeaderProps) {
   const { loggedUser } = useAppSelector(({ userInfo }) => userInfo);
   const dispatch = useAppDispatch();
   const { pathname } = useLocation();
-  const { loadingOn, loadingOf } = useComments(); // Rename
+  const { loadingOn, loadingOf } = usePost(); // Rename
   const { closeModal } = useModal();
 
   const isMyPhoto = loggedUser?.username == username;

@@ -1,8 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { createRef, useState, FormEvent } from 'react';
 
-import { updateComments } from '../../firebase/services';
-import CommentsContext from '../../context/comments-context';
 import { useAppSelector } from '../../hooks/redux.hook';
+import { usePost } from '../providers/PostProvider';
 
 import './comment-form.scss';
 
@@ -11,25 +10,34 @@ interface CommentsProps {
 }
 
 export default function CommentForm({ docId }: CommentsProps) {
-  const { setCommentsArr } = useContext(CommentsContext);
-  const [newComment, setNewComment] = useState('');
+  const { setNewComment } = usePost();
+  const commentRef = createRef<HTMLInputElement>();
   const { loggedUser } = useAppSelector(({ userInfo }) => userInfo);
 
-  const submitComment = async (e: React.FormEvent): Promise<void> => {
+  const submitComment = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
-    if (loggedUser) {
-      const commentData = {
-        comment: newComment,
-        date: Date.now(),
-        userId: loggedUser.userId,
-      };
+    const comment = commentRef.current?.value.trim();
 
-      if (newComment.length > 0) {
-        const newCommentsArr = await updateComments(commentData, docId);
-        setCommentsArr(newCommentsArr);
-      }
+    if (loggedUser && comment) {
+    }
 
-      setNewComment('');
+    // if (loggedUser &&) {
+    //   const commentData = {
+    //     comment: newComment,
+    //     date: Date.now(),
+    //     userId: loggedUser.userId,
+    //   };
+
+    //   if (newComment.length > 0) {
+    //     const newCommentsArr = await updateComments(commentData, docId);
+    //     setCommentsArr(newCommentsArr);
+    //   }
+
+    //   setNewComment('');
+    // }
+
+    if (commentRef.current) {
+      commentRef.current.value = '';
     }
   };
 
@@ -39,8 +47,9 @@ export default function CommentForm({ docId }: CommentsProps) {
         className="comment-form__field field field--transparent"
         type="text"
         placeholder="Add a comment..."
-        onChange={({ target }) => setNewComment(target.value)}
-        value={newComment}
+        ref={commentRef}
+        // onChange={({ target }) => setNewComment(target.value)}
+        defaultValue={commentRef.current?.value}
       />
       <button
         className="comment-form__action button button--transparent"

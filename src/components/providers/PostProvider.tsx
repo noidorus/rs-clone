@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState } from 'react';
 import { IComment, IPhotoDoc } from '../../types/types';
-import { ICommentsContext, ProviderProps } from './types';
+import { IPostContext, ProviderProps } from './types';
 
-const CommentsContext = createContext<ICommentsContext>({
+const PostContext = createContext<IPostContext>({
   comments: [],
   loading: false,
   setNewComment: () => {},
@@ -10,7 +10,7 @@ const CommentsContext = createContext<ICommentsContext>({
   loadingOf: () => {},
 });
 
-const CommentsProvider = ({ children }: ProviderProps) => {
+const PostProvider = ({ children }: ProviderProps) => {
   const { photo }: { photo: IPhotoDoc } = children.props;
   const [comments, setComments] = useState(photo.comments);
   const [loading, setLoading] = useState(false);
@@ -24,14 +24,14 @@ const CommentsProvider = ({ children }: ProviderProps) => {
     setLoading(false);
   };
   return (
-    <CommentsContext.Provider
+    <PostContext.Provider
       value={{ comments, setNewComment, loadingOn, loadingOf, loading }}
     >
       {children}
-    </CommentsContext.Provider>
+    </PostContext.Provider>
   );
 };
 
-const useComments = () => useContext(CommentsContext);
+const usePost = () => useContext(PostContext);
 
-export { CommentsProvider, useComments };
+export { PostProvider, usePost };

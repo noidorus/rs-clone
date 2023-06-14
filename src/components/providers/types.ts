@@ -14,7 +14,7 @@ export interface IThemeContext {
   setTheme: (theme: Themes) => void;
 }
 
-export interface ICommentsContext {
+export interface IPostContext {
   comments: IComment[];
   loading: boolean;
   setNewComment: (newComment: IComment) => void;
