@@ -186,10 +186,10 @@ export const updateUserData = async (
   });
 };
 
-export async function deletePhotoFirebase(
+export const deletePhotoFromFirebase = async (
   deletePath: string,
   docId: string
-): Promise<void> {
+): Promise<void> => {
   const docRef = doc(db, 'photos', docId);
   try {
     await deletePhotoFromStorage(deletePath);
@@ -198,8 +198,25 @@ export async function deletePhotoFirebase(
   } catch (err) {
     throw err;
   }
-}
+};
 
+export const updateComments = async (
+  data: IComment,
+  docId: string
+): Promise<IComment[]> => {
+  const photoColl = collection(db, 'photos');
+  const docRef = doc(photoColl, docId);
+  const photoDoc = await getDoc(docRef);
+  const { comments } = photoDoc.data() as IPhoto;
+
+  const newCommentsArr = [...comments, data];
+
+  await updateDoc(docRef, { comments: newCommentsArr }).catch((e) =>
+    console.log(e)
+  );
+
+  return newCommentsArr;
+};
 ////////////
 
 async function updateLoggedUserFollowing(
@@ -325,24 +342,6 @@ export async function toggleLike(
     const newArr = likes.filter((val) => val != loggedUserId);
     updateDoc(docRef, { likes: newArr }).catch((e) => console.log(e));
   }
-}
-
-export async function updateComments(
-  data: IComment,
-  docId: string
-): Promise<IComment[]> {
-  const photoColl = collection(db, 'photos');
-  const docRef = doc(photoColl, docId);
-  const photoDoc = await getDoc(docRef);
-  const { comments } = photoDoc.data() as IPhoto;
-
-  const newCommentsArr = [...comments, data];
-
-  await updateDoc(docRef, { comments: newCommentsArr }).catch((e) =>
-    console.log(e)
-  );
-
-  return newCommentsArr;
 }
 
 export async function deleteComment(

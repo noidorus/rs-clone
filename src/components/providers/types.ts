@@ -1,4 +1,6 @@
+import { IPhotoDoc } from './../../types/types';
 import { IComment } from '../../types/types';
+import type { Dispatch, SetStateAction } from 'react';
 
 export interface ProviderProps {
   children: JSX.Element;
@@ -17,9 +19,11 @@ export interface IThemeContext {
 export interface IPostContext {
   comments: IComment[];
   loading: boolean;
-  setNewComment: (newComment: IComment) => void;
-  loadingOn: () => void;
-  loadingOf: () => void;
+  modal: JSX.Element | null;
+  // photo: IPhotoDoc;
+  setModal: Dispatch<SetStateAction<JSX.Element | null>>;
+  setLoading: Dispatch<SetStateAction<boolean>>;
+  setNewComment: (newComment: string) => void;
 }
 
 export interface IModalContext {

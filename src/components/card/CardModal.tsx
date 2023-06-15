@@ -12,8 +12,9 @@ import { usePost } from '../providers/PostProvider';
 const CardModal = ({ photo, user }: CardModalProps) => {
   const { likes, imageSrc, caption, docId, dateCreated, userId } = photo;
   const { comments } = usePost();
+
   const loading = selectLoading();
-  console.log(comments);
+
   return (
     <div className="post--modal">
       <img className="post__image" src={imageSrc} />
@@ -36,7 +37,7 @@ const CardModal = ({ photo, user }: CardModalProps) => {
           <PrettyDate date={dateCreated} />
         </div>
 
-        <CommentForm docId={docId} />
+        <CommentForm />
       </div>
 
       <PacmanSpinner loading={loading} />

@@ -1,4 +1,7 @@
-import { createNewPhoto, deletePhotoFirebase } from '../../firebase/services';
+import {
+  createNewPhoto,
+  deletePhotoFromFirebase,
+} from '../../firebase/services';
 import { IPhotoDoc } from '../../types/types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getPhotosByUserId } from '../../firebase/services';
@@ -30,7 +33,7 @@ export const deletePhoto = createAsyncThunk(
   'dashboard/deletePhoto',
   async ({ imagePath, docId }: DeletePhotoProps) => {
     try {
-      await deletePhotoFirebase(imagePath, docId);
+      await deletePhotoFromFirebase(imagePath, docId);
       return docId;
     } catch (err) {
       throw err;

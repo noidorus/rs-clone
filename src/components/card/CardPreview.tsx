@@ -1,24 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useAppSelector } from '../../hooks/redux.hook';
 import { usePost } from '../providers/PostProvider';
-import { useModal } from '../providers/ModalProvider';
 import { CardModal } from './CardModal';
 import { CardProps } from './props';
-import { ModalLayout } from '../modalLayout';
 
 const CardPreview = ({ photo }: CardProps) => {
   const { user } = useAppSelector(({ profile }) => profile);
-
   const { likes, imageSrc } = photo;
-  const [modal, setModal] = useState<JSX.Element | null>(null);
-  const { comments } = usePost();
+  const { comments, setModal } = usePost();
 
   const handleOpenModal = () => {
     user && setModal(<CardModal photo={photo} user={user} />);
-  };
-
-  const handleCloseModal = () => {
-    setModal(null);
   };
 
   return (
@@ -46,9 +38,6 @@ const CardPreview = ({ photo }: CardProps) => {
           </div>
         </div>
       </a>
-      {modal && (
-        <ModalLayout closeModal={handleCloseModal}>{modal}</ModalLayout>
-      )}
     </>
   );
 };

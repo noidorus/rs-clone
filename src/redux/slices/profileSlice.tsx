@@ -1,17 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
   createNewPhoto,
-  deletePhotoFirebase,
+  deletePhotoFromFirebase,
   getPhotosByUserId,
   getUserByUsername,
 } from '../../firebase/services';
 import { DeletePhotoProps } from './dashboardSlice';
-import {
-  ProfileState,
-  UploadPhotoProps,
-  UploadPhotoWithUpdateProps,
-  Status,
-} from './types';
+import { ProfileState, UploadPhotoWithUpdateProps, Status } from './types';
 
 const initialState: ProfileState = {
   user: null,
@@ -58,7 +53,7 @@ export const deleteProfilePhoto = createAsyncThunk(
   'profile/deletePhoto',
   async ({ imagePath, docId }: DeletePhotoProps) => {
     try {
-      await deletePhotoFirebase(imagePath, docId);
+      await deletePhotoFromFirebase(imagePath, docId);
       return docId;
     } catch (err) {
       throw err;

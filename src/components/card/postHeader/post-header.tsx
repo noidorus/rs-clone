@@ -6,7 +6,6 @@ import { deletePhoto } from '../../../redux/slices/dashboardSlice';
 import { deleteProfilePhoto } from '../../../redux/slices/profileSlice';
 import { IPhotoDoc, IUserProfile } from '../../../types/types';
 import { usePost } from '../../providers/PostProvider';
-import { useModal } from '../../providers/ModalProvider';
 import './post-header.scss';
 
 interface PostHeaderProps {
@@ -21,21 +20,20 @@ function PostHeader({ user, photoData }: PostHeaderProps) {
   const { loggedUser } = useAppSelector(({ userInfo }) => userInfo);
   const dispatch = useAppDispatch();
   const { pathname } = useLocation();
-  const { loadingOn, loadingOf } = usePost(); // Rename
-  const { closeModal } = useModal();
+  const { setLoading, setModal } = usePost();
 
   const isMyPhoto = loggedUser?.username == username;
 
   const handleDeletePhoto = async (): Promise<void> => {
     const { imagePath, docId } = photoData;
-    loadingOn();
+    setLoading(true);
     if (pathname === '/') {
       await dispatch(deletePhoto({ imagePath, docId }));
     } else {
       await dispatch(deleteProfilePhoto({ imagePath, docId }));
     }
-    closeModal();
-    loadingOf();
+    setModal(null);
+    setLoading(false);
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { getUserDataHook } from '../../hooks/getLoggedUserData';
 import CommentForm from '../post/comment-form';
@@ -6,26 +6,18 @@ import Comments from '../post/comments-list';
 import Like from './like/like';
 import PostHeader from './postHeader/post-header';
 import { usePost } from '../providers/PostProvider';
-import { useModal } from '../providers/ModalProvider';
 import { CardProps } from './props';
 import { PrettyDate } from './date/Date';
 import { CardModal } from './CardModal';
 import PacmanSpinner from '../spinner/spinner';
-import { ModalLayout } from '../modalLayout';
 
 const CardSmall = ({ photo }: CardProps) => {
   const { likes, docId, dateCreated, userId } = photo;
   const user = getUserDataHook(userId);
-  const { comments, loading } = usePost();
-  // const { setModal } = useModal();
+  const { comments, loading, setModal } = usePost();
 
-  const [modal, setModal] = useState<JSX.Element | null>(null);
   const handleOpenModal = () => {
     user && setModal(<CardModal photo={photo} user={user} />);
-  };
-
-  const handleCloseModal = () => {
-    setModal(null);
   };
 
   return (
@@ -61,15 +53,11 @@ const CardSmall = ({ photo }: CardProps) => {
             </a>
           )}
 
-          <CommentForm docId={docId} />
+          <CommentForm />
         </div>
 
         <PacmanSpinner loading={loading} />
       </div>
-
-      {modal && (
-        <ModalLayout closeModal={handleCloseModal}>{modal}</ModalLayout>
-      )}
     </>
   );
 };

@@ -5,20 +5,17 @@ import { usePost } from '../providers/PostProvider';
 
 import './comment-form.scss';
 
-interface CommentsProps {
-  docId: string;
-}
-
-export default function CommentForm({ docId }: CommentsProps) {
+export default function CommentForm() {
   const { setNewComment } = usePost();
   const commentRef = createRef<HTMLInputElement>();
-  const { loggedUser } = useAppSelector(({ userInfo }) => userInfo);
 
   const submitComment = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
-    const comment = commentRef.current?.value.trim();
 
-    if (loggedUser && comment) {
+    if (commentRef.current) {
+      const comment = commentRef.current.value.trim();
+      setNewComment(comment);
+      commentRef.current.value = '';
     }
 
     // if (loggedUser &&) {
@@ -35,10 +32,6 @@ export default function CommentForm({ docId }: CommentsProps) {
 
     //   setNewComment('');
     // }
-
-    if (commentRef.current) {
-      commentRef.current.value = '';
-    }
   };
 
   return (
@@ -48,7 +41,6 @@ export default function CommentForm({ docId }: CommentsProps) {
         type="text"
         placeholder="Add a comment..."
         ref={commentRef}
-        // onChange={({ target }) => setNewComment(target.value)}
         defaultValue={commentRef.current?.value}
       />
       <button
