@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CardPreview, CardSmall } from '../card';
+import { PostPreview, PostSmall } from '../card';
 import { PostProvider } from '../providers/PostProvider';
 
 import { TimeLineProps } from './types';
@@ -9,9 +9,9 @@ export default function Timeline({ photos, title, page }: TimeLineProps) {
   const elements = photos.map((photo, index) => {
     let content: JSX.Element;
     if (page === 'profile') {
-      content = <CardPreview photo={photo} />;
+      content = <PostPreview photo={photo} />;
     } else {
-      content = <CardSmall photo={photo} />;
+      content = <PostSmall photo={photo} />;
     }
 
     return <PostProvider key={index}>{content}</PostProvider>;

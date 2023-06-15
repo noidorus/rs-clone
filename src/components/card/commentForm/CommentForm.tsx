@@ -1,9 +1,8 @@
-import React, { createRef, useState, FormEvent } from 'react';
+import React, { createRef, FormEvent } from 'react';
 
-import { useAppSelector } from '../../hooks/redux.hook';
-import { usePost } from '../providers/PostProvider';
+import { usePost } from '../../providers/PostProvider';
 
-import './comment-form.scss';
+import './styles.scss';
 
 export default function CommentForm() {
   const { setNewComment } = usePost();
@@ -11,27 +10,11 @@ export default function CommentForm() {
 
   const submitComment = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
-
     if (commentRef.current) {
       const comment = commentRef.current.value.trim();
       setNewComment(comment);
       commentRef.current.value = '';
     }
-
-    // if (loggedUser &&) {
-    //   const commentData = {
-    //     comment: newComment,
-    //     date: Date.now(),
-    //     userId: loggedUser.userId,
-    //   };
-
-    //   if (newComment.length > 0) {
-    //     const newCommentsArr = await updateComments(commentData, docId);
-    //     setCommentsArr(newCommentsArr);
-    //   }
-
-    //   setNewComment('');
-    // }
   };
 
   return (

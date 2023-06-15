@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import CommentForm from '../post/comment-form';
-import Comments from '../post/comments-list';
+import React from 'react';
+
+import CommentForm from './commentForm/CommentForm';
+import Comments from './commentsList';
 import Like from './like/like';
 import PostHeader from './postHeader/post-header';
 import { CardModalProps } from './props';
@@ -9,8 +10,8 @@ import PacmanSpinner from '../spinner/spinner';
 import { selectLoading } from '../../hooks/redux.hook';
 import { usePost } from '../providers/PostProvider';
 
-const CardModal = ({ photo, user }: CardModalProps) => {
-  const { likes, imageSrc, caption, docId, dateCreated, userId } = photo;
+const PostModal = ({ photo, user }: CardModalProps) => {
+  const { imageSrc, caption, docId, dateCreated, userId } = photo;
   const { comments } = usePost();
 
   const loading = selectLoading();
@@ -33,7 +34,7 @@ const CardModal = ({ photo, user }: CardModalProps) => {
         </div>
 
         <div className="post__date-like">
-          <Like likes={likes} docId={docId} />
+          <Like />
           <PrettyDate date={dateCreated} />
         </div>
 
@@ -45,4 +46,4 @@ const CardModal = ({ photo, user }: CardModalProps) => {
   );
 };
 
-export { CardModal };
+export { PostModal };

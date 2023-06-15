@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from 'react';
+// import { toggleLike } from '../../../firebase/services';
 
 import { useAppSelector } from '../../../hooks/redux.hook';
+import { usePost } from '../../providers/PostProvider';
 
 import './like.scss';
 
-interface LikeProps {
-  likes: string[];
-  docId: string;
-}
-
-export default function Like({ likes, docId }: LikeProps) {
-  const [likesCount, setLikesCount] = useState(likes.length);
+export default function Like() {
+  const { likes, toggleLike } = usePost();
+  const likesCount = likes.length;
   const [isLikedPhoto, setIsLikedPhoto] = useState(false);
   const { loggedUser } = useAppSelector(({ userInfo }) => userInfo);
 
   const handleToggleLike = (): void => {
-    setIsLikedPhoto(!isLikedPhoto);
-    setLikesCount(isLikedPhoto ? likesCount - 1 : likesCount + 1);
-    // toggleLike(isLikedPhoto, docId, loggedUser?.userId);
+    if (loggedUser) {
+      toggleLike(isLikedPhoto);
+    }
   };
 
   useEffect(() => {
@@ -28,7 +26,7 @@ export default function Like({ likes, docId }: LikeProps) {
       }
     }
     checkIsLikedPhoto();
-  }, []);
+  }, [likes]);
 
   return (
     <div className="like">

@@ -1,4 +1,4 @@
 import './index.scss';
 
-export { CardSmall } from './CardSmall';
-export { CardPreview } from './CardPreview';
+export { PostSmall } from './PostSmall';
+export { PostPreview } from './PostPreview';

@@ -1,23 +1,23 @@
 import React from 'react';
 
 import { getUserDataHook } from '../../hooks/getLoggedUserData';
-import CommentForm from '../post/comment-form';
-import Comments from '../post/comments-list';
+import CommentForm from './commentForm/CommentForm';
+import Comments from './commentsList';
 import Like from './like/like';
 import PostHeader from './postHeader/post-header';
 import { usePost } from '../providers/PostProvider';
 import { CardProps } from './props';
 import { PrettyDate } from './date/Date';
-import { CardModal } from './CardModal';
+import { PostModal } from './PostModal';
 import PacmanSpinner from '../spinner/spinner';
 
-const CardSmall = ({ photo }: CardProps) => {
+const PostSmall = ({ photo }: CardProps) => {
   const { likes, docId, dateCreated, userId } = photo;
   const user = getUserDataHook(userId);
   const { comments, loading, setModal } = usePost();
 
   const handleOpenModal = () => {
-    user && setModal(<CardModal photo={photo} user={user} />);
+    user && setModal(<PostModal photo={photo} user={user} />);
   };
 
   return (
@@ -35,7 +35,7 @@ const CardSmall = ({ photo }: CardProps) => {
           />
 
           <div className="post__date-like">
-            <Like likes={likes} docId={docId} />
+            <Like />
             <PrettyDate date={dateCreated} />
           </div>
 
@@ -62,4 +62,4 @@ const CardSmall = ({ photo }: CardProps) => {
   );
 };
 
-export { CardSmall };
+export { PostSmall };

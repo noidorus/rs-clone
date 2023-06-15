@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { IComment, IUserProfile } from '../../types/types';
-import CommentItem from './comment-item';
+import { IComment } from '../../../types/types';
+import CommentItem from './Comment';
 
-import './comments-list.scss';
+import './styles.scss';
 
 interface CommentsProps {
   comments: IComment[];
@@ -19,7 +19,7 @@ export default function Comments({
   const elements = comments.map((value, i) => {
     return (
       <CommentItem
-        key={`p${i}`}
+        key={`c${i}`}
         commentData={value}
         photoDocId={photoDocId}
         photoUserId={photoUserId}

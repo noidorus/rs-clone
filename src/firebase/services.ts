@@ -217,6 +217,41 @@ export const updateComments = async (
 
   return newCommentsArr;
 };
+
+export const deleteComment = async (
+  date: number,
+  docId: string
+): Promise<IComment[]> => {
+  const photoColl = collection(db, 'photos');
+  const docRef = doc(photoColl, docId);
+  const photoDoc = await getDoc(docRef);
+  const { comments } = photoDoc.data() as IPhoto;
+
+  const newCommentsArr = comments.filter((elem) => elem.date != date);
+
+  await updateDoc(docRef, { comments: newCommentsArr }).catch((e) =>
+    console.log(e)
+  );
+  return newCommentsArr;
+};
+
+export const updateLikes = async (
+  isLikedPhoto: boolean,
+  docId: string,
+  loggedUserId: string
+): Promise<string[]> => {
+  const photoColl = collection(db, 'photos');
+  const docRef = doc(photoColl, docId);
+  const photoDoc = await getDoc(docRef);
+  const { likes } = photoDoc.data() as IPhoto;
+  const newLikes = !isLikedPhoto
+    ? [...likes, loggedUserId]
+    : likes.filter((val) => val != loggedUserId);
+
+  await updateDoc(docRef, { likes: newLikes }).catch((e) => console.log(e));
+  return newLikes;
+};
+
 ////////////
 
 async function updateLoggedUserFollowing(
@@ -322,41 +357,4 @@ export async function getPhotosByUserId(userId: string): Promise<IPhotoDoc[]> {
       docId: photo.id,
     };
   });
-}
-
-export async function toggleLike(
-  isLikedPhoto: boolean,
-  docId: string,
-  loggedUserId: string
-): Promise<void> {
-  const photoColl = collection(db, 'photos');
-  const docRef = doc(photoColl, docId);
-  const photoDoc = await getDoc(docRef);
-  const { likes } = photoDoc.data() as IPhoto;
-
-  if (!isLikedPhoto) {
-    updateDoc(docRef, { likes: [...likes, loggedUserId] }).catch((e) =>
-      console.log(e)
-    );
-  } else {
-    const newArr = likes.filter((val) => val != loggedUserId);
-    updateDoc(docRef, { likes: newArr }).catch((e) => console.log(e));
-  }
-}
-
-export async function deleteComment(
-  docId: string,
-  date: number
-): Promise<IComment[]> {
-  const photoColl = collection(db, 'photos');
-  const docRef = doc(photoColl, docId);
-  const photoDoc = await getDoc(docRef);
-  const { comments } = photoDoc.data() as IPhoto;
-
-  const newCommentsArr = comments.filter((elem) => elem.date != date);
-
-  await updateDoc(docRef, { comments: newCommentsArr }).catch((e) =>
-    console.log(e)
-  );
-  return newCommentsArr;
 }

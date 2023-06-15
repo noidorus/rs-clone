@@ -20,10 +20,12 @@ export interface IPostContext {
   comments: IComment[];
   loading: boolean;
   modal: JSX.Element | null;
-  // photo: IPhotoDoc;
+  likes: string[];
+  onDeleteComment: (date: number) => Promise<boolean>;
   setModal: Dispatch<SetStateAction<JSX.Element | null>>;
   setLoading: Dispatch<SetStateAction<boolean>>;
   setNewComment: (newComment: string) => void;
+  toggleLike: (isLikedPhoto: boolean) => void;
 }
 
 export interface IModalContext {

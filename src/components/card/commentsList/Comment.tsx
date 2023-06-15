@@ -1,13 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { getUserDataHook } from '../../hooks/getLoggedUserData';
-import { getRelativeTimeString } from '../../helpers/helpers';
-import { IComment, IUserProfile } from '../../types/types';
-import { deleteComment } from '../../firebase/services';
-import CommentsContext from '../../context/comments-context';
+import React, { useState } from 'react';
 
-import './comment-item.scss';
-import { useAppSelector } from '../../hooks/redux.hook';
-import { PrettyDate } from '../card/date/Date';
+import { getUserDataHook } from '../../../hooks/getLoggedUserData';
+import { IComment } from '../../../types/types';
+import { deleteComment } from '../../../firebase/services';
+import { useAppSelector } from '../../../hooks/redux.hook';
+import { PrettyDate } from '../date/Date';
+import { usePost } from '../../providers/PostProvider';
 
 interface CommentProps {
   commentData: IComment;
@@ -15,17 +13,17 @@ interface CommentProps {
   photoUserId: string;
 }
 
-export default function CommentItem({
+const CommentItem = ({
   commentData,
   photoDocId,
   photoUserId,
-}: CommentProps) {
+}: CommentProps) => {
   const { userId, comment, date } = commentData;
   const commentUser = getUserDataHook(userId);
-
   const { loggedUser } = useAppSelector(({ userInfo }) => userInfo);
-  const [user, setUser] = useState<IUserProfile | null>(commentUser);
-  const { setCommentsArr } = useContext(CommentsContext);
+
+  const [loading, setLoading] = useState(false);
+  const { onDeleteComment } = usePost();
 
   const checkCanDelete = () => {
     if (photoUserId == loggedUser?.userId) {
@@ -40,31 +38,35 @@ export default function CommentItem({
   const canDelete = checkCanDelete();
 
   const handleDeleteComment = async (): Promise<void> => {
-    const newCommentsArr = await deleteComment(photoDocId, date);
-    setCommentsArr(newCommentsArr);
-  };
+    setLoading(true);
+    const loadingEnd = await onDeleteComment(date);
 
-  useEffect(() => {
-    setUser(commentUser);
-  }, [commentUser]);
+    if (loadingEnd) {
+      setLoading(false);
+    }
+  };
 
   return (
     <li className="comments-list__item comment">
       <div className="comment__inner">
         <div className="comment__message">
-          {user ? <span className="comment__user">{user.username}</span> : null}
+          {commentUser && (
+            <span className="comment__user">{commentUser.username}</span>
+          )}
           <span className="comment__text">{comment}</span>
         </div>
         <PrettyDate date={date} type="comment" />
       </div>
       <div className="comment__action">
-        {canDelete ? (
+        {canDelete && (
           <button
             className="comment__delete button button--delete"
             onClick={handleDeleteComment}
           ></button>
-        ) : null}
+        )}
       </div>
     </li>
   );
-}
+};
+
+export default CommentItem;

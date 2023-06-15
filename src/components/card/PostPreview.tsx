@@ -1,16 +1,16 @@
 import React from 'react';
 import { useAppSelector } from '../../hooks/redux.hook';
 import { usePost } from '../providers/PostProvider';
-import { CardModal } from './CardModal';
+import { PostModal } from './PostModal';
 import { CardProps } from './props';
 
-const CardPreview = ({ photo }: CardProps) => {
+const PostPreview = ({ photo }: CardProps) => {
   const { user } = useAppSelector(({ profile }) => profile);
   const { likes, imageSrc } = photo;
   const { comments, setModal } = usePost();
 
   const handleOpenModal = () => {
-    user && setModal(<CardModal photo={photo} user={user} />);
+    user && setModal(<PostModal photo={photo} user={user} />);
   };
 
   return (
@@ -42,4 +42,4 @@ const CardPreview = ({ photo }: CardProps) => {
   );
 };
 
-export { CardPreview };
+export { PostPreview };
