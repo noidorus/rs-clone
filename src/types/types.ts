@@ -13,7 +13,7 @@ export interface IUser {
 }
 
 export interface IUserProfile extends IUser {
-  [x: string]: any;
+  // [x: string]: any;
   docId: string;
 }
 
@@ -27,7 +27,6 @@ export interface IComment {
   userId: string;
   date: number;
 }
-
 
 export interface IPhoto {
   caption: string;

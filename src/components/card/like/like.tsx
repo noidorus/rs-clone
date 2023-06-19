@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-// import { toggleLike } from '../../../firebase/services';
 
 import { useAppSelector } from '../../../hooks/redux.hook';
 import { usePost } from '../../providers/PostProvider';

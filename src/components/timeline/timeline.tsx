@@ -20,7 +20,6 @@ export default function Timeline({ photos, title, page }: TimeLineProps) {
   return (
     <div className="post-list">
       {title && <h3 className="post-list__title">{title}</h3>}
-
       <ul className="post-list__inner">{elements}</ul>
     </div>
   );

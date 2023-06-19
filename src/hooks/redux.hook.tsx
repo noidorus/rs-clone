@@ -15,3 +15,19 @@ export const selectLoading = () =>
     }
     return false;
   });
+
+export const selectIsFolowingProfile = () =>
+  useAppSelector(({ userInfo, profile }) => {
+    const { loggedUser } = userInfo;
+    const { user } = profile;
+    if (loggedUser && user) {
+      const { following } = loggedUser;
+      console.log('following: ', following);
+      console.log('user.userId: ', user.userId);
+      const isFollowingProfile = following.indexOf(user.userId);
+      console.log('isFollowingProfile: ', isFollowingProfile);
+      return isFollowingProfile === -1 ? false : true;
+    }
+
+    return false;
+  });

@@ -6,7 +6,10 @@ import {
 } from '../../../firebase/services';
 
 import { FollowersList } from './folowers-list';
-import { useAppSelector } from '../../../hooks/redux.hook';
+import {
+  selectIsFolowingProfile,
+  useAppSelector,
+} from '../../../hooks/redux.hook';
 import './user-header.scss';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../constants/routes';
@@ -16,9 +19,9 @@ interface Props {
 }
 
 export default function UserHeader({ user }: Props) {
+  const { username, avatarData, userId, docId, following, followers } = user;
   const [followersCount, setFollowersCount] = useState(user.followers.length);
-  const { username, avatarData, userId, docId, following } = user;
-  const [isFollowingProfile, setIsFollowingProfile] = useState(false);
+  const isFollowingProfile = selectIsFolowingProfile();
   const navigate = useNavigate();
 
   const photosCount = useAppSelector(({ profile }) => profile.photos.length);
@@ -29,32 +32,18 @@ export default function UserHeader({ user }: Props) {
     : false;
 
   const handleToggleFollow = () => {
-    setIsFollowingProfile(!isFollowingProfile);
-
-    setFollowersCount(
-      isFollowingProfile ? followersCount - 1 : followersCount + 1
-    );
-    toggleFollow(
-      isFollowingProfile,
-      userId,
-      docId,
-      loggedUser?.userId,
-      loggedUser?.docId
-    );
+    // setIsFollowingProfile(!isFollowingProfile);
+    // setFollowersCount(
+    //   isFollowingProfile ? followersCount - 1 : followersCount + 1
+    // );
+    // toggleFollow(
+    //   isFollowingProfile,
+    //   userId,
+    //   docId,
+    //   loggedUser?.userId,
+    //   loggedUser?.docId
+    // );
   };
-
-  useEffect(() => {
-    async function checkIsFollowingProfile() {
-      if (!isLoggedUserProfile && loggedUser?.displayName && userId) {
-        const isFollowing = await isFollowingUserProfile(
-          loggedUser.displayName,
-          userId
-        );
-        setIsFollowingProfile(isFollowing);
-      }
-    }
-    checkIsFollowingProfile();
-  }, [loggedUser?.displayName, userId]);
 
   return (
     <header className="profile__header">
