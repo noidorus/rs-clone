@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { IUserProfile } from '../../../types/types';
-import {
-  isFollowingUserProfile,
-  toggleFollow,
-} from '../../../firebase/services';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { FollowersList } from './folowers-list';
+import { FollowersList } from '../../modals/followersModal/FollowersModal';
 import {
   selectIsFolowingProfile,
+  useAppDispatch,
   useAppSelector,
 } from '../../../hooks/redux.hook';
-import './user-header.scss';
-import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../constants/routes';
+import { toggleFollow } from '../../../redux/slices/userCenter';
+import { useModal } from '../../providers/ModalProvider';
+import { IUserProfile } from '../../../types/types';
 
 interface Props {
   user: IUserProfile;
@@ -20,29 +18,41 @@ interface Props {
 
 export default function UserHeader({ user }: Props) {
   const { username, avatarData, userId, docId, following, followers } = user;
-  const [followersCount, setFollowersCount] = useState(user.followers.length);
-  const isFollowingProfile = selectIsFolowingProfile();
-  const navigate = useNavigate();
 
-  const photosCount = useAppSelector(({ profile }) => profile.photos.length);
-  const { loggedUser } = useAppSelector(({ userInfo }) => userInfo);
+  const isFollowingProfile = selectIsFolowingProfile();
+  const { loggedUser } = useAppSelector(({ userCenter }) => userCenter);
+  const photosCount = useAppSelector(
+    ({ photos }) => photos.profilePhotos.length
+  );
+  const { setModal } = useModal();
+  const navigate = useNavigate();
 
   const isLoggedUserProfile = loggedUser
     ? loggedUser.username == username
     : false;
 
+  const dispatch = useAppDispatch();
   const handleToggleFollow = () => {
-    // setIsFollowingProfile(!isFollowingProfile);
-    // setFollowersCount(
-    //   isFollowingProfile ? followersCount - 1 : followersCount + 1
-    // );
-    // toggleFollow(
-    //   isFollowingProfile,
-    //   userId,
-    //   docId,
-    //   loggedUser?.userId,
-    //   loggedUser?.docId
-    // );
+    if (loggedUser) {
+      dispatch(
+        toggleFollow({
+          isFollowingProfile,
+          userId,
+          docId,
+          loggedUserId: loggedUser.userId,
+          loggedDocId: loggedUser.docId,
+        })
+      );
+    }
+  };
+
+  const handleOpenModal = (listType: 'Followers' | 'Followings') => {
+    const props = {
+      userIds: listType === 'Followers' ? followers : following,
+      title: listType,
+    };
+
+    setModal(<FollowersList {...props} />);
   };
 
   return (
@@ -79,10 +89,10 @@ export default function UserHeader({ user }: Props) {
             <span className="shared__name">Publication</span>
           </li>
           <li className="shared__item">
-            <span className="shared__value">{followersCount}</span>
+            <span className="shared__value">{followers.length}</span>
             <span
               className="shared__name shared__name--actions"
-              // onClick={openModal}
+              onClick={() => handleOpenModal('Followers')}
             >
               Followers
             </span>
@@ -91,20 +101,13 @@ export default function UserHeader({ user }: Props) {
             <span className="shared__value">{following.length}</span>
             <span
               className="shared__name shared__name--actions"
-              // onClick={openModal}
+              onClick={() => handleOpenModal('Followings')}
             >
               Following
             </span>
           </li>
         </ul>
       </div>
-      {/* {isModalOpen && (
-        <FollowersList
-          user={user}
-          modalName={modalName}
-          closeModal={closeModal}
-        />
-      )} */}
     </header>
   );
 }

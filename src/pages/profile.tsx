@@ -7,7 +7,7 @@ import UserProfile from '../components/pagesView/userProfile';
 import './main.scss';
 
 import { useAppDispatch, useAppSelector } from '../hooks/redux.hook';
-import { fetchProfile } from '../redux/slices/profileSlice';
+import { fetchProfile } from '../redux/slices/userCenter';
 import { useModal } from '../components/providers/ModalProvider';
 import PacmanSpinner from '../components/spinner/spinner';
 
@@ -15,14 +15,16 @@ export default function Profile() {
   const navigate = useNavigate();
   const { username } = useParams(); // Get username from link /:username
 
-  const { user } = useAppSelector(({ profile }) => profile);
-  const { loggedUser } = useAppSelector(({ userInfo }) => userInfo);
+  const { userProfile, loggedUser } = useAppSelector(
+    ({ userCenter }) => userCenter
+  );
   const dispatch = useAppDispatch();
   const { Modal, closeModal } = useModal();
 
   useEffect(() => {
     document.title = `Instagram - ${username}`;
     dispatch(fetchProfile(username?.toLowerCase() as string));
+    console.log('render!');
 
     return () => {
       closeModal();
@@ -36,8 +38,8 @@ export default function Profile() {
   }, [loggedUser]);
 
   useEffect(() => {
-    if (user === undefined) navigate(ROUTES.NOT_FOUND);
-  }, [user]);
+    if (userProfile === undefined) navigate(ROUTES.NOT_FOUND);
+  }, [userProfile]);
 
   if (!loggedUser) {
     return <PacmanSpinner loading={true} />;

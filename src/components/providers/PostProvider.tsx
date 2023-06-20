@@ -23,15 +23,11 @@ const PostContext = createContext<IPostContext>({
 
 const PostProvider = ({ children }: ProviderProps) => {
   const { photo }: { photo: IPhotoDoc } = children.props;
-  const { loggedUser } = useAppSelector(({ userInfo }) => userInfo);
+  const { loggedUser } = useAppSelector(({ userCenter }) => userCenter);
   const [comments, setComments] = useState(photo.comments);
   const [likes, setLikes] = useState(photo.likes);
   const [loading, setLoading] = useState(false);
   const [modal, setModal] = useState<JSX.Element | null>(null);
-  const isLikedPhoto = (() => {
-    const likeIndex = likes.findIndex((val) => val == loggedUser?.userId);
-    return likeIndex > -1 ? true : false;
-  })();
 
   const toggleLike = async (isLikedPhoto: boolean) => {
     if (loggedUser) {
@@ -40,10 +36,9 @@ const PostProvider = ({ children }: ProviderProps) => {
         photo.docId,
         loggedUser?.userId
       );
-      console.log(newLikes);
+
       setLikes(newLikes);
     }
-    // updateLikes()
   };
 
   const setNewComment = async (newComment: string) => {
@@ -63,9 +58,8 @@ const PostProvider = ({ children }: ProviderProps) => {
     if (loggedUser) {
       const updatedComments = await deleteComment(date, photo.docId);
       setComments(updatedComments);
-      return true;
+      return;
     }
-    return true;
   };
 
   return (

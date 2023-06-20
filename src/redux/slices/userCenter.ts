@@ -1,88 +1,27 @@
-import { UpdateAvatarProps } from '../../firebase/types';
+import { createSlice } from '@reduxjs/toolkit';
+import { AuthState } from './types';
 import {
-  createUser,
-  getUserByUserId,
-  logInWithEmailAndPassword,
-  logOut,
-  updateUserAvatar,
-  updateUserData,
-} from '../../firebase/services';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getAuthError } from '../../helpers/helpers';
-import { AuthState, Credentials, UpdateUserInfoProps } from './types';
-import { CreateUserProps } from '../../firebase/types';
+  fetchUserByUserId,
+  signInWithEmail,
+  registerWithEmail,
+  signOut,
+  updateAvatar,
+  updateUserInfo,
+  fetchProfile,
+  toggleFollow,
+  toggleLoggedUserFollow,
+} from './thunks/userCenterThunks';
+export * from './thunks/userCenterThunks';
 
 const initialState: AuthState = {
+  userProfile: null,
   loggedUser: null,
   authError: null,
   loading: false,
 };
 
-export const signInWithEmail = createAsyncThunk(
-  'auth/signIn',
-  async (credentials: Credentials, { rejectWithValue }) => {
-    try {
-      await logInWithEmailAndPassword(credentials.email, credentials.password);
-      return;
-    } catch (err) {
-      const error = getAuthError(err);
-      throw rejectWithValue(error);
-    }
-  }
-);
-
-export const fetchUserByUserId = createAsyncThunk(
-  'profile/fetchUser',
-  async (userId: string) => {
-    const user = await getUserByUserId(userId);
-    localStorage.setItem('auth-user', JSON.stringify(user));
-    return user;
-  }
-);
-
-export const signOut = createAsyncThunk('auth/signOut', async () => {
-  await logOut();
-});
-
-export const registerWithEmail = createAsyncThunk(
-  'auth/signUp',
-  async (data: CreateUserProps, { rejectWithValue }) => {
-    try {
-      await createUser(data);
-      return;
-    } catch (err) {
-      const error = getAuthError(err);
-      throw rejectWithValue(error);
-    }
-  }
-);
-
-export const updateAvatar = createAsyncThunk(
-  'userCenter/updateAvatar',
-  async ({ img, docId, oldAvatarPath }: UpdateAvatarProps) => {
-    try {
-      const data = await updateUserAvatar(img, docId, oldAvatarPath);
-      return data;
-    } catch (err) {
-      throw err;
-    }
-  }
-);
-
-export const updateUserInfo = createAsyncThunk(
-  'userCenter/updateInfo',
-  async ({ username, fullName, docId }: UpdateUserInfoProps) => {
-    try {
-      await updateUserData(username, fullName, docId);
-      return { username, fullName };
-    } catch (err) {
-      throw err;
-    }
-  }
-);
-
 const authSlice = createSlice({
-  name: 'auth',
+  name: 'userCenter',
   initialState,
   reducers: {
     setUser: (state, action) => {
@@ -122,6 +61,9 @@ const authSlice = createSlice({
 
     builder.addCase(signOut.fulfilled, (state) => {
       state.loggedUser = null;
+      state.userProfile = null;
+      state.authError = null;
+      state.loading = false;
     });
 
     builder
@@ -139,7 +81,7 @@ const authSlice = createSlice({
       });
 
     builder
-      .addCase(updateUserInfo.pending, (state, action) => {
+      .addCase(updateUserInfo.pending, (state) => {
         state.loading = true;
       })
       .addCase(updateUserInfo.fulfilled, (state, { payload }) => {
@@ -151,6 +93,33 @@ const authSlice = createSlice({
       .addCase(updateUserInfo.rejected, (state) => {
         state.loading = false;
       });
+
+    builder.addCase(fetchProfile.fulfilled, (state, { payload }) => {
+      state.userProfile = payload;
+    });
+
+    builder.addCase(toggleFollow.fulfilled, (state, { payload }) => {
+      if (state.loggedUser && state.userProfile) {
+        state.userProfile = {
+          ...state.userProfile,
+          followers: payload.newFollowers,
+        };
+
+        state.loggedUser = {
+          ...state.loggedUser,
+          following: payload.newFollowing,
+        };
+      }
+    });
+
+    builder.addCase(toggleLoggedUserFollow.fulfilled, (state, { payload }) => {
+      if (state.loggedUser) {
+        state.loggedUser = {
+          ...state.loggedUser,
+          following: payload.newFollowing,
+        };
+      }
+    });
   },
 });
 

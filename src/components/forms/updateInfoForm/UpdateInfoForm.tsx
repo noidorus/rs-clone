@@ -1,14 +1,14 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux.hook';
-import { updateUserInfo } from '../../../redux/slices/userInfo';
+import { updateUserInfo } from '../../../redux/slices/userCenter';
 import FormError from '../formError';
 import { updateInfoResolver, UpdateInfoSchemaType } from '../yupSchemas';
 
 import './index.scss';
 
 const UpdateInfoForm = () => {
-  const { loggedUser } = useAppSelector(({ userInfo }) => userInfo);
+  const { loggedUser } = useAppSelector(({ userCenter }) => userCenter);
   const {
     register,
     handleSubmit,

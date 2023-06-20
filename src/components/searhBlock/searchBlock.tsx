@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { setDataUsers } from '../../firebase/services';
+import { getAllUsers } from '../../firebase/services';
 import { useOnClickOutside } from '../../hooks/useOnClickOutside';
 import { IUserProfile } from '../../types/types';
 import { Search } from '../search/search';
-import { PreviewUser } from '../pagesView/userProfile/preview-user';
+import { PreviewUser } from '../userPreview/UserPreview';
 import './searchBlock.scss';
 
 function filteredUsers(users: IUserProfile[], value: string) {
@@ -32,8 +32,7 @@ function SearchBlock(props: propsCloseSearchBlock) {
   useOnClickOutside(searchRef, props.closeSearchBlock);
 
   useEffect(() => {
-    setStatus('loading');
-    setDataUsers()
+    getAllUsers()
       .then((data) => {
         setStatus('success');
         setUsers(data as IUserProfile[]);
@@ -90,8 +89,6 @@ function SearchBlock(props: propsCloseSearchBlock) {
         {!usersVisble.length && (
           <div className="search__empty">No recent searches.</div>
         )}
-        {status === 'loading' && <div>loading</div>}
-        {status === 'error' && <div>WTF?</div>}
       </div>
     </div>
   );

@@ -13,7 +13,7 @@ import './main.scss';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { loggedUser } = useAppSelector(({ userInfo }) => userInfo);
+  const { loggedUser } = useAppSelector(({ userCenter }) => userCenter);
 
   const { Modal, closeModal } = useModal();
 

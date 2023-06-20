@@ -12,7 +12,7 @@ import { useModal } from '../components/providers/ModalProvider';
 import './main.scss';
 
 export default function Profile() {
-  const { loggedUser } = useAppSelector(({ userInfo }) => userInfo);
+  const { loggedUser } = useAppSelector(({ userCenter }) => userCenter);
   const navigate = useNavigate();
   const { Modal, closeModal } = useModal();
 

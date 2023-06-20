@@ -7,14 +7,17 @@ import PostHeader from './postHeader/post-header';
 import { CardModalProps } from './props';
 import { PrettyDate } from './date/Date';
 import PacmanSpinner from '../spinner/spinner';
-import { selectLoading } from '../../hooks/redux.hook';
 import { usePost } from '../providers/PostProvider';
+import { useAppSelector } from '../../hooks/redux.hook';
+import { Status } from '../../redux/slices/types';
 
 const PostModal = ({ photo, user }: CardModalProps) => {
   const { imageSrc, caption, docId, dateCreated, userId } = photo;
   const { comments } = usePost();
 
-  const loading = selectLoading();
+  const loading = useAppSelector(({ photos }) => {
+    return photos.loadingStatus === Status.LOADING ? true : false;
+  });
 
   return (
     <div className="post--modal">
@@ -26,11 +29,7 @@ const PostModal = ({ photo, user }: CardModalProps) => {
         <div className="comments">
           <p className="comments__desc">{caption}</p>
 
-          <Comments
-            comments={comments}
-            photoDocId={docId}
-            photoUserId={userId}
-          />
+          <Comments comments={comments} photoUserId={userId} />
         </div>
 
         <div className="post__date-like">

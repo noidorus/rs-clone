@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
 
-import { uploadPhoto } from '../../../redux/slices/dashboardSlice';
 import {
-  selectLoading,
-  useAppDispatch,
-  useAppSelector,
-} from '../../../hooks/redux.hook';
+  Status,
+  uploadPhoto,
+  uploadProfilePhoto,
+} from '../../../redux/slices/photosSlice';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux.hook';
 import { IUserProfile } from '../../../types/types';
 import { useModal } from '../../providers/ModalProvider';
-
 import { ImageFormView } from '../../forms/imgForm/ImgFormView';
+import PacmanSpinner from '../../spinner/spinner';
 
 import './styles.scss';
-import PacmanSpinner from '../../spinner/spinner';
-import { uploadProfilePhoto } from '../../../redux/slices/profileSlice';
 
 interface Props {
   page: 'main' | 'profile' | 'settings';
@@ -24,15 +22,18 @@ const UploadPhotoModal = ({ page }: Props) => {
   const { closeModal } = useModal();
   const dispatch = useAppDispatch();
   const { username, userId } = useAppSelector(
-    ({ userInfo }) => userInfo.loggedUser
+    ({ userCenter }) => userCenter.loggedUser
   ) as IUserProfile;
   const profileUsername = useAppSelector(
-    ({ profile }) => profile.user?.username
+    ({ userCenter }) => userCenter.userProfile?.username
   );
 
-  const loading = selectLoading();
+  const loading = useAppSelector(({ photos }) => {
+    return photos.loadingStatus === Status.LOADING ? true : false;
+  });
 
   const submitCallback = async (img: File) => {
+    console.log(page);
     if (page === 'profile' && profileUsername === username) {
       await dispatch(uploadProfilePhoto({ img, caption, userId }));
     } else if (page === 'main') {

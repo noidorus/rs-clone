@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { PostPreview, PostSmall } from '../card';
 import { PostProvider } from '../providers/PostProvider';
 

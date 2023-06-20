@@ -8,6 +8,7 @@ export enum Status {
 
 export interface MainState {
   photos: IPhotoDoc[];
+  profilePhotos: IPhotoDoc[];
   photosLoadingStatus: Status;
   loadingStatus: Status;
 }
@@ -20,6 +21,7 @@ export interface ProfileState {
 }
 
 export interface AuthState {
+  userProfile: IUserProfile | null | undefined;
   loggedUser: IUserProfile | null;
   authError: string | null;
   loading: boolean;
@@ -38,6 +40,11 @@ export interface UploadPhotoProps {
   img: File;
   caption: string;
   userId: string;
+}
+
+export interface DeletePhotoProps {
+  imagePath: string;
+  docId: string;
 }
 
 export interface UpdateUserInfoProps {

@@ -1,28 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { getUserDataHook } from '../../../hooks/getLoggedUserData';
 import { IComment } from '../../../types/types';
-import { deleteComment } from '../../../firebase/services';
 import { useAppSelector } from '../../../hooks/redux.hook';
 import { PrettyDate } from '../date/Date';
 import { usePost } from '../../providers/PostProvider';
 
 interface CommentProps {
   commentData: IComment;
-  photoDocId: string;
   photoUserId: string;
 }
 
-const CommentItem = ({
-  commentData,
-  photoDocId,
-  photoUserId,
-}: CommentProps) => {
+const CommentItem = ({ commentData, photoUserId }: CommentProps) => {
   const { userId, comment, date } = commentData;
   const commentUser = getUserDataHook(userId);
-  const { loggedUser } = useAppSelector(({ userInfo }) => userInfo);
+  const { loggedUser } = useAppSelector(({ userCenter }) => userCenter);
 
-  const [loading, setLoading] = useState(false);
   const { onDeleteComment } = usePost();
 
   const checkCanDelete = () => {
@@ -38,12 +31,7 @@ const CommentItem = ({
   const canDelete = checkCanDelete();
 
   const handleDeleteComment = async (): Promise<void> => {
-    setLoading(true);
-    const loadingEnd = await onDeleteComment(date);
-
-    if (loadingEnd) {
-      setLoading(false);
-    }
+    onDeleteComment(date);
   };
 
   return (

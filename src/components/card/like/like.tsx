@@ -9,7 +9,7 @@ export default function Like() {
   const { likes, toggleLike } = usePost();
   const likesCount = likes.length;
   const [isLikedPhoto, setIsLikedPhoto] = useState(false);
-  const { loggedUser } = useAppSelector(({ userInfo }) => userInfo);
+  const { loggedUser } = useAppSelector(({ userCenter }) => userCenter);
 
   const handleToggleLike = (): void => {
     if (loggedUser) {

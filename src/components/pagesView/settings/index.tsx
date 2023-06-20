@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import UpdateInfoForm from '../../forms/updateInfoForm/UpdateInfoForm';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux.hook';
 import { ImageFormView } from '../../forms/imgForm/ImgFormView';
-import { updateAvatar } from '../../../redux/slices/userInfo';
+import { updateAvatar } from '../../../redux/slices/userCenter';
 import type { Props } from './props';
 
 import './styles.scss';
@@ -11,7 +11,7 @@ import PacmanSpinner from '../../spinner/spinner';
 
 const ProfileSettings = ({ user }: Props) => {
   const [form, setForm] = useState<'avatar' | 'info'>('avatar');
-  const { loading } = useAppSelector(({ userInfo }) => userInfo);
+  const { loading } = useAppSelector(({ userCenter }) => userCenter);
   const dispatch = useAppDispatch();
 
   const submitCallback = async (img: File) => {

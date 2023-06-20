@@ -15,10 +15,11 @@ const root = ReactDOM.createRoot(
 
 const storageData = localStorage.getItem('auth-user') || 'null';
 const preloadedState = {
-  userInfo: {
+  userCenter: {
     loggedUser: JSON.parse(storageData),
     authError: null,
     loading: false,
+    userProfile: null,
   },
 };
 

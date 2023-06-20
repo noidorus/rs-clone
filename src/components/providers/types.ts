@@ -21,7 +21,7 @@ export interface IPostContext {
   loading: boolean;
   modal: JSX.Element | null;
   likes: string[];
-  onDeleteComment: (date: number) => Promise<boolean>;
+  onDeleteComment: (date: number) => void;
   setModal: Dispatch<SetStateAction<JSX.Element | null>>;
   setLoading: Dispatch<SetStateAction<boolean>>;
   setNewComment: (newComment: string) => void;

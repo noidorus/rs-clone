@@ -8,7 +8,7 @@ import { ROUTES } from '../constants/routes';
 import { useAppSelector } from '../hooks/redux.hook';
 
 const SignUpPage = () => {
-  const { loggedUser } = useAppSelector(({ userInfo }) => userInfo);
+  const { loggedUser } = useAppSelector(({ userCenter }) => userCenter);
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux.hook';
 
 import { signUpResolver, SignUpSchemaType } from '../yupSchemas';
-import { registerWithEmail } from '../../../redux/slices/userInfo';
+import { registerWithEmail } from '../../../redux/slices/userCenter';
 import FormError from '../formError';
 import './styles.scss';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +16,7 @@ const SignUpForm = () => {
     formState: { errors },
   } = useForm<SignUpSchemaType>({ resolver: signUpResolver });
   const dispatch = useAppDispatch();
-  const { authError, loading } = useAppSelector(({ userInfo }) => userInfo);
+  const { authError, loading } = useAppSelector(({ userCenter }) => userCenter);
   const navigate = useNavigate();
 
   const onSubmit = handleSubmit(async (data) => {

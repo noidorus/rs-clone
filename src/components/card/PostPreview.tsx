@@ -5,12 +5,12 @@ import { PostModal } from './PostModal';
 import { CardProps } from './props';
 
 const PostPreview = ({ photo }: CardProps) => {
-  const { user } = useAppSelector(({ profile }) => profile);
+  const { userProfile } = useAppSelector(({ userCenter }) => userCenter);
   const { likes, imageSrc } = photo;
   const { comments, setModal } = usePost();
 
   const handleOpenModal = () => {
-    user && setModal(<PostModal photo={photo} user={user} />);
+    userProfile && setModal(<PostModal photo={photo} user={userProfile} />);
   };
 
   return (

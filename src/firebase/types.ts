@@ -10,3 +10,11 @@ export interface UpdateAvatarProps {
   docId: string;
   oldAvatarPath?: string;
 }
+
+export interface ToggleFollowProps {
+  isFollowingProfile: boolean;
+  userId: string;
+  docId: string;
+  loggedUserId: string;
+  loggedDocId: string;
+}

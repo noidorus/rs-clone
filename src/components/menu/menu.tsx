@@ -10,9 +10,8 @@ import { IUserProfile } from '../../types/types';
 import { useModal } from '../providers/ModalProvider';
 import { UploadPhotoModal } from '../modals/uploadPhotoModal/UploadPhotoModal';
 import { useAppDispatch } from '../../hooks/redux.hook';
-import { signOut } from '../../redux/slices/userInfo';
-import { clearUserCenterState } from '../../redux/slices/profileSlice';
-import { clearPhotosState } from '../../redux/slices/dashboardSlice';
+import { signOut } from '../../redux/slices/userCenter';
+import { clearPhotosState } from '../../redux/slices/photosSlice';
 
 interface MenuProps {
   page: 'main' | 'profile' | 'settings';
@@ -36,7 +35,6 @@ export default function Menu({ page, loggedUser }: MenuProps) {
 
   const handleSignOut = async () => {
     await dispatch(signOut());
-    dispatch(clearUserCenterState());
     dispatch(clearPhotosState());
   };
 

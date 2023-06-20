@@ -7,21 +7,15 @@ import './styles.scss';
 
 interface CommentsProps {
   comments: IComment[];
-  photoDocId: string;
   photoUserId: string;
 }
 
-export default function Comments({
-  comments,
-  photoDocId,
-  photoUserId,
-}: CommentsProps) {
+export default function Comments({ comments, photoUserId }: CommentsProps) {
   const elements = comments.map((value, i) => {
     return (
       <CommentItem
         key={`c${i}`}
         commentData={value}
-        photoDocId={photoDocId}
         photoUserId={photoUserId}
       />
     );

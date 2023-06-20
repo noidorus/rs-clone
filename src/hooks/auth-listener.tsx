@@ -5,7 +5,7 @@ import FirebaseContext, {
   FirebaseContextProps,
 } from '../context/firebase-context';
 import { useAppDispatch } from '../hooks/redux.hook';
-import { fetchUserByUserId, signOut } from '../redux/slices/userInfo';
+import { fetchUserByUserId, signOut } from '../redux/slices/userCenter';
 
 const authListener = () => {
   const { auth } = useContext(FirebaseContext) as FirebaseContextProps;

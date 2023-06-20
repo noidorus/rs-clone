@@ -12,7 +12,7 @@ import { PostModal } from './PostModal';
 import PacmanSpinner from '../spinner/spinner';
 
 const PostSmall = ({ photo }: CardProps) => {
-  const { likes, docId, dateCreated, userId } = photo;
+  const { dateCreated, userId } = photo;
   const user = getUserDataHook(userId);
   const { comments, loading, setModal } = usePost();
 
@@ -41,11 +41,7 @@ const PostSmall = ({ photo }: CardProps) => {
 
           <p className="post__desc">{photo.caption}</p>
 
-          <Comments
-            comments={comments}
-            photoDocId={docId}
-            photoUserId={userId}
-          />
+          <Comments comments={comments} photoUserId={userId} />
 
           {comments.length > 2 && (
             <a className="post__more" onClick={handleOpenModal}>
