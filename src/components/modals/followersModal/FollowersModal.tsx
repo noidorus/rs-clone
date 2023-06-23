@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { IUserProfile } from '../../../types/types';
-import { PreviewUser } from '../../userPreview/UserPreview';
+import { UserPreview } from '../../userPreview/UserPreview';
 
 import { getUsersByUserId } from '../../../firebase/services';
 import './styles.scss';
@@ -26,7 +26,7 @@ export const FollowersList = ({ userIds, title }: PropsFollowersList) => {
 
   const elements = users.map((user, i) => {
     return (
-      <PreviewUser
+      <UserPreview
         key={i}
         name={user.username}
         avatar={user.avatarData?.avatarSrc}

@@ -8,7 +8,7 @@ type PropsPreviewUser = {
   avatar: string | undefined;
 };
 
-export const PreviewUser = ({ name, avatar }: PropsPreviewUser) => {
+export const UserPreview = ({ name, avatar }: PropsPreviewUser) => {
   return (
     <Link className="recomendations__user recomendations-user" to={`/${name}`}>
       <div className="recomendations-user__image-wrapper">

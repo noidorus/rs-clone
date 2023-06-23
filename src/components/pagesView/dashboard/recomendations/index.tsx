@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { getAllUsers } from '../../../../firebase/services';
 import { shuffle } from '../../../../helpers/helpers';
 import { IUserProfile } from '../../../../types/types';
-import { PreviewUser } from '../../../userPreview/UserPreview';
+import { UserPreview } from '../../../userPreview/UserPreview';
 import { RecommendedUser } from './RecomendedUser';
 
 import './styles.scss';
@@ -35,7 +35,7 @@ export function Recomendations({ userData }: PropsRecomendations) {
 
   return (
     <div className="recomendations">
-      <PreviewUser name={username} avatar={avatarData?.avatarSrc} />
+      <UserPreview name={username} avatar={avatarData?.avatarSrc} />
       <h3 className="recomendations__title">Suggestions for you</h3>
       <ul className="recomendations__list">{elements}</ul>
     </div>

@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ROUTES } from '../../constants/routes';
+import { CSSTransition } from 'react-transition-group';
 
-import './menu.scss';
-import SearchBlock from '../searhBlock/searchBlock';
+import SearchBlock from '../searchBlock';
 import { ThemeContext, Themes } from '../providers/ThemeProvider';
 import Toggle from '../toggle/toggle';
 import { IUserProfile } from '../../types/types';
@@ -12,6 +11,8 @@ import { UploadPhotoModal } from '../modals/uploadPhotoModal/UploadPhotoModal';
 import { useAppDispatch } from '../../hooks/redux.hook';
 import { signOut } from '../../redux/slices/userCenter';
 import { clearPhotosState } from '../../redux/slices/photosSlice';
+import { ROUTES } from '../../constants/routes';
+import './menu.scss';
 
 interface MenuProps {
   page: 'main' | 'profile' | 'settings';
@@ -19,18 +20,22 @@ interface MenuProps {
 }
 
 export default function Menu({ page, loggedUser }: MenuProps) {
-  const [searchBlock, setSearchBlock] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
   const { setModal } = useModal();
   const dispatch = useAppDispatch();
 
   const { username, avatarData } = loggedUser;
 
   function openSearchBlock(): void {
-    setSearchBlock(true);
+    setShowSearch(true);
   }
 
-  function closeSearchBlock(): void {
-    setSearchBlock(false);
+  function closeSearchBlock(event: Event): void {
+    const target = event.target as HTMLElement;
+
+    if (!target.classList.contains('main-nav__link--search')) {
+      setShowSearch(false);
+    }
   }
 
   const handleSignOut = async () => {
@@ -45,7 +50,14 @@ export default function Menu({ page, loggedUser }: MenuProps) {
   };
 
   return (
-    <nav className={searchBlock ? 'main-nav main-nav--compact' : 'main-nav'}>
+    // <CSSTransition
+    //   addEndListener={(node, done) =>
+    //     node.addEventListener('transitionend', done, false)
+    //   }
+    //   in={showSearch}
+    //   classNames="my-node"
+    // >
+    <nav className={showSearch ? 'main-nav main-nav--compact' : 'main-nav'}>
       <Link className="main-nav__logo" to={ROUTES.DASHBOARD}>
         <img
           className="main-nav__image"
@@ -59,7 +71,7 @@ export default function Menu({ page, loggedUser }: MenuProps) {
         <li className="main-nav__item">
           <Link
             className={
-              page === 'main' && !searchBlock
+              page === 'main' && !showSearch
                 ? 'main-nav__link main-nav__link--home main-nav__link--active'
                 : 'main-nav__link main-nav__link--home'
             }
@@ -71,7 +83,7 @@ export default function Menu({ page, loggedUser }: MenuProps) {
         <li className="main-nav__item main-nav__item--search">
           <a
             className={
-              searchBlock
+              showSearch
                 ? 'main-nav__link main-nav__link--search main-nav__link--active'
                 : 'main-nav__link main-nav__link--search'
             }
@@ -143,7 +155,11 @@ export default function Menu({ page, loggedUser }: MenuProps) {
           </a>
         </li>
       </ul>
-      {searchBlock && <SearchBlock closeSearchBlock={closeSearchBlock} />}
+      <SearchBlock
+        showSearch={showSearch}
+        closeSearchBlock={closeSearchBlock}
+      />
     </nav>
+    // </CSSTransition>
   );
 }

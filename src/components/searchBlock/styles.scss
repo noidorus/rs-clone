@@ -1,0 +1,136 @@
+.search {
+  opacity: 0;
+  visibility: hidden;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  top: 0;
+  left: 73px;
+  width: 397px;
+  box-shadow: 4px 0 24px rgba(var(--secondary-bg_900), 0.15);
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 16px;
+  border-right: 1px solid rgb(var(--secondary-bg_700));
+  background-color: var(--bg-color_100);
+
+  @media screen and (max-width: 767px) {
+    height: 50vh;
+    top: 68px;
+    left: auto;
+    right: 16px;
+    border-radius: 8px;
+  }
+
+  @media screen and (max-width: 476px) {
+    width: 240px;
+  }
+
+  &__header {
+    padding-top: 16px;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 12px;
+  }
+
+  &__title {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 27px;
+    margin-top: 8px;
+    margin-bottom: 46px;
+    padding-left: 8px;
+    padding-right: 14px;
+  }
+
+  &__inner {
+    height: 100%;
+    border-top: 1px solid rgb(var(--secondary-bg_700));
+    overflow-y: auto;
+  }
+}
+
+.results__item {
+  padding: 8px 24px;
+}
+
+.search-block {
+  position: relative;
+  width: 100%;
+  margin-bottom: 12px;
+
+  &__field {
+    width: 100%;
+  }
+
+  &__empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(var(--text-color_300));
+    width: 100%;
+    height: 100%;
+  }
+
+  &__clean {
+    position: absolute;
+    line-height: 16px;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    border: solid 1px rgb(var(--secondary-bg_700));
+    color: #fff;
+    background-color: rgb(var(--secondary-bg_700));
+    cursor: pointer;
+  }
+}
+
+.results {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-left: 0;
+  list-style: none;
+
+  .post-header {
+    padding: 0;
+    border-bottom: none;
+  }
+
+  .user__image-wrapper,
+  .user__image {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+.search__node {
+  &-enter {
+    visibility: visible;
+    opacity: 0;
+
+    &-active {
+      visibility: visible;
+      opacity: 1;
+      transition: 300ms;
+    }
+
+    &-done {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+
+  &-exit {
+    opacity: 1;
+    &-active {
+      opacity: 0;
+      transition: opacity 300ms;
+    }
+
+    &-done {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+}

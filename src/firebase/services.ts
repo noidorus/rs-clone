@@ -365,21 +365,19 @@ export const getUserByUserId = async (
   return res ? res : null;
 };
 
-////////////
-
-export async function getAllUsers(): Promise<IUserProfile[]> {
+export const getAllUsers = async (): Promise<IUserProfile[]> => {
   const usersColection = collection(db, 'users');
   const usersData = await getDocs(usersColection);
-  const users = usersData.docs.map((user) => {
+
+  return usersData.docs.map((user) => {
     const data = user.data() as IUser;
     return { ...data, docId: user.id };
   });
-  return users;
-}
+};
 
-export async function getUserByUsername(
+export const getUserByUsername = async (
   username: string
-): Promise<IUserProfile | undefined> {
+): Promise<IUserProfile | undefined> => {
   const querySnapshot = await getQuerySnapshot('users', 'username', username);
 
   const res = querySnapshot.docs.map((item) => {
@@ -391,4 +389,4 @@ export async function getUserByUsername(
   });
 
   return !!res.length ? res[0] : undefined;
-}
+};

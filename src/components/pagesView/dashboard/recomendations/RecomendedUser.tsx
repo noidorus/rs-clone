@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAppDispatch } from '../../../../hooks/redux.hook';
 import { toggleLoggedUserFollow } from '../../../../redux/slices/userCenter';
 import { IUserProfile } from '../../../../types/types';
-import { PreviewUser } from '../../../userPreview/UserPreview';
+import { UserPreview } from '../../../userPreview/UserPreview';
 
 type PropsRecommendedUser = {
   user: IUserProfile;
@@ -34,10 +34,7 @@ export function RecommendedUser({ user, loggedUser }: PropsRecommendedUser) {
 
   return (
     <li className="recomendations__item">
-      <PreviewUser
-        name={user.username}
-        avatar={user.avatarData?.avatarSrc || './images/icons/profile.jpg'}
-      />
+      <UserPreview name={user.username} avatar={user.avatarData?.avatarSrc} />
       <button
         className="button button--transparent"
         onClick={() => addFollow()}
