@@ -1,12 +1,8 @@
-import { Firestore } from 'firebase/firestore';
 import { createContext } from 'react';
-import Firebase from 'firebase/app';
 
-export interface IFirebase {
-  firebase: Firebase.FirebaseApp;
-  db: Firestore;
-}
+import type { FirebaseContextProps } from './types';
 
-const FirebaseContext = createContext<IFirebase | null>(null);
+const FirebaseContext = createContext<FirebaseContextProps | null>(null);
+
 export default FirebaseContext;
-
+export type { FirebaseContextProps };

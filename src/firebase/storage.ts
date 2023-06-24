@@ -8,27 +8,28 @@ import {
 } from 'firebase/storage';
 import { firebase } from './lib';
 
-type CallBackType = (url: string, imagePath: string) => void;
+export const loadImageToStorage = async (image: File) => {
+  try {
+    const storage = getStorage(firebase);
+    const imageId = uuidv4();
+    const imagePath = `/images/${imageId}`; // geting the image path
+    const storageRef = ref(storage, imagePath); // getting the storageRef
 
-export function loadImageToStorage(image: File, callback: CallBackType) {
-  const storage = getStorage(firebase);
+    await uploadBytes(storageRef, image);
+    const downloadUrl = await getDownloadURL(storageRef);
+    return { downloadUrl, imagePath };
+  } catch (err) {
+    throw err;
+  }
+};
 
-  const imageId = uuidv4();
-  const imagePath = `/images/${imageId}`; // geting the image path
-  const storageRef = ref(storage, imagePath); // getting the storageRef
-
-  uploadBytes(storageRef, image).then(() => {
-    getDownloadURL(storageRef).then((url) => {
-      callback(url, imagePath);
-    });
-  });
-}
-
-export async function deletePhotoFromStorage(path: string): Promise<void> {
+export const deletePhotoFromStorage = async (path: string): Promise<void> => {
   const storage = getStorage(firebase);
   const desertRef = ref(storage, path);
 
-  await deleteObject(desertRef)
-    .then()
-    .catch((err) => console.log(err));
-}
+  try {
+    return await deleteObject(desertRef);
+  } catch (err) {
+    throw err;
+  }
+};

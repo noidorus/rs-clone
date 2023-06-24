@@ -1,8 +1,8 @@
+import { loadImageToStorage, deletePhotoFromStorage } from './storage';
 import {
   IComment,
   IPhoto,
   IUser,
-  MyError,
   IUserProfile,
   IPhotoDoc,
 } from './../types/types';
@@ -19,247 +19,185 @@ import {
   DocumentData,
   deleteDoc,
 } from 'firebase/firestore';
-import { db } from './lib';
+import { db, auth } from './lib';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+  UserCredential,
+} from 'firebase/auth';
+import { CreateUserProps, ToggleFollowProps } from './types';
 
-export async function doesUsernameExist(username: string): Promise<boolean> {
+export const logInWithEmailAndPassword = async (
+  email: string,
+  password: string
+): Promise<UserCredential> => {
+  return await signInWithEmailAndPassword(auth, email, password);
+};
+
+export const logOut = async () => {
+  try {
+    return await auth.signOut();
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const createUser = async ({
+  username,
+  fullName,
+  email,
+  password,
+}: CreateUserProps): Promise<IUserProfile> => {
+  const usernameExists = await doesUsernameExist(username);
+  if (!usernameExists) {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      await updateProfile(userCredential.user, { displayName: username });
+
+      const newUser = {
+        userId: userCredential.user.uid,
+        username,
+        fullName,
+        emailAddress: email,
+        following: [],
+        followers: [],
+        dateCreated: Date.now(),
+        avatarData: {
+          avatarSrc: '',
+          imagePath: '',
+        },
+      };
+
+      const docId = await createUserDocument(newUser);
+      return {
+        ...newUser,
+        docId,
+      };
+    } catch (err) {
+      throw err;
+    }
+  } else {
+    throw new Error('That username is already taken, please try another!');
+  }
+};
+
+export const doesUsernameExist = async (username: string): Promise<boolean> => {
   const querySnapshot = await getQuerySnapshot('users', 'username', username);
   return querySnapshot.docs.length > 0;
-}
+};
 
-export async function isFollowingUserProfile(
+export const isFollowingUserProfile = async (
   loggedUserName: string | null | undefined,
   profileUserId: string
-): Promise<boolean> {
+): Promise<boolean> => {
   const usersColl = collection(db, 'users');
   const userQuery = query(usersColl, where('username', '==', loggedUserName));
-
   const newQuery = query(
     userQuery,
     where('following', 'array-contains', profileUserId)
   );
-
   const res = await getDocs(newQuery);
 
   return res.docs.length > 0;
-}
+};
 
-async function updateLoggedUserFollowing(
-  isFollowingProfile: boolean,
-  loggedDocId: string,
-  userId: string
-): Promise<void> {
-  const userColl = collection(db, 'users');
-  const docRef = doc(userColl, loggedDocId);
-  const querySnapshot = await getDoc(docRef);
-  const { following } = querySnapshot.data() as IUser;
-
-  if (!isFollowingProfile) {
-    updateDoc(docRef, { following: [...following, userId] }).catch((err) =>
-      console.log(err)
-    );
-  } else {
-    const newArr = following.filter((val) => val != userId);
-    updateDoc(docRef, { following: newArr }).catch((err) => console.log(err));
-  }
-}
-
-export async function toggleFollow(
-  isFollowingProfile: boolean,
-  userId: string,
-  docId: string,
-  loggedUserId: string | undefined,
-  loggedDocId: string | undefined
-): Promise<void> {
-  if (loggedUserId && loggedDocId) {
-    await updateLoggedUserFollowing(isFollowingProfile, loggedDocId, userId);
-    await updateFollowedUserFollowers(isFollowingProfile, docId, loggedUserId);
-  }
-}
-
-export async function updateFollowedUserFollowers(
-  isFollowingProfile: boolean,
-  docId: string,
-  loggedUserId: string
-): Promise<void> {
-  const userColl = collection(db, 'users');
-  const docRef = doc(userColl, docId);
-  const querySnapshot = await getDoc(docRef);
-  const { followers } = querySnapshot.data() as IUser;
-
-  if (!isFollowingProfile) {
-    updateDoc(docRef, {
-      followers: [...followers, loggedUserId],
-    }).catch((err) => console.log(err));
-  } else {
-    const newArr = followers.filter((val) => val != loggedUserId);
-    updateDoc(docRef, { followers: newArr }).catch((err) => console.log(err));
-  }
-}
-
-export async function getUserByUserId(userId: string): Promise<IUserProfile> {
-  const querySnapshot = await getQuerySnapshot('users', 'userId', userId);
-
-  const [res] = querySnapshot.docs.map((item) => {
-    const itemData = item.data() as IUser;
-    return {
-      ...itemData,
-      docId: item.id,
-    };
-  });
-
-  return res;
-}
-
-export async function setDataUsers(): Promise<IUserProfile[]> {
-  const usersColection = collection(db, 'users');
-  const usersData = await getDocs(usersColection);
-  const users = usersData.docs.map((user) => {
-    const data = user.data() as IUser;
-    return { ...data, docId: user.id };
-  });
-  return users;
-}
-
-export async function getQuerySnapshot(
-  collName: string,
-  fieldPath: string,
-  value: string
-): Promise<QuerySnapshot<DocumentData>> {
-  const coll = collection(db, collName);
-  const userQuery = query(coll, where(fieldPath, '==', value));
-
-  return await getDocs(userQuery);
-}
-
-export async function getUserByUsername(
-  username: string
-): Promise<IUserProfile> {
-  const querySnapshot = await getQuerySnapshot('users', 'username', username);
-
-  const res = querySnapshot.docs.map((item) => {
-    const itemData = item.data() as IUser;
-    return {
-      ...itemData,
-      docId: item.id,
-    };
-  });
-
-  return res[0];
-}
-
-export async function setUserData(user: IUser): Promise<void> {
+const createUserDocument = async (userData: IUser): Promise<string> => {
   const userColl = collection(db, 'users');
   const userRef = doc(userColl);
 
-  setDoc(userRef, user);
-}
+  await setDoc(userRef, userData);
+  return userRef.id;
+};
 
-export function getError(error: MyError): string {
-  switch (error.code) {
-    case 'auth/email-already-in-use':
-      return 'The email address is already in use';
-    case 'auth/invalid-email':
-      return 'The email address is not valid.';
-    case 'auth/operation-not-allowed':
-      return 'Operation not allowed.';
-    case 'auth/weak-password':
-      return 'The password is too weak.';
-    case 'auth/user-not-found':
-      return 'User not found!'
-    default:
-      return error.message;
-  }
-}
-
-export async function sendPhotoDataToFirestore(
-  imageData: IPhoto,
-  callback?: (data: string) => void
-): Promise<void> {
-  const photoColl = collection(db, 'photos');
-  const photoRef = doc(photoColl);
-
-  await setDoc(photoRef, imageData);
-
-  if (callback) {
-    callback(photoRef.id);
-  }
-}
-
-export async function getPhotosByUserId(userId: string): Promise<IPhotoDoc[]> {
-  const photosQuery = await getQuerySnapshot('photos', 'userId', userId);
-
-  return photosQuery.docs.map((photo) => {
-    const photoData = photo.data() as IPhoto;
-    return {
-      ...photoData,
-      docId: photo.id,
-    };
-  });
-}
-
-export async function updateUserAvatar(
-  url: string,
-  imagePath: string,
-  userName: string | null | undefined
-): Promise<void> {
-  if (userName) {
-    const userColl = collection(db, 'users');
-    const user = await getUserByUsername(userName);
-    const docRef = doc(userColl, user.docId);
-
-    const avatarData = {
-      avatarSrc: url,
+export const createNewPhoto = async (
+  img: File,
+  caption: string,
+  userId: string
+): Promise<IPhotoDoc> => {
+  try {
+    const { downloadUrl, imagePath } = await loadImageToStorage(img);
+    const imageData = {
+      caption: caption,
+      comments: [],
+      dateCreated: Date.now(),
+      imageSrc: downloadUrl,
+      likes: [],
       imagePath: imagePath,
+      userId: userId,
     };
 
-    await updateDoc(docRef, { avatarData })
-      .then()
-      .catch((error) => {
-        console.log(error);
-      });
+    const photoColl = collection(db, 'photos');
+    const photoRef = doc(photoColl);
+    await setDoc(photoRef, imageData);
+    return { ...imageData, docId: photoRef.id };
+  } catch (err) {
+    throw err;
   }
-}
+};
 
-export async function updateUserData(
+export const updateUserAvatar = async (
+  img: File,
+  docId: string,
+  oldAvatarPath?: string
+) => {
+  try {
+    const { downloadUrl, imagePath } = await loadImageToStorage(img);
+
+    if (oldAvatarPath) {
+      await deletePhotoFromStorage(oldAvatarPath);
+    }
+
+    const docRef = doc(db, 'users', docId);
+
+    await updateDoc(docRef, {
+      avatarData: { avatarSrc: downloadUrl, imagePath },
+    });
+
+    return { avatarSrc: downloadUrl, imagePath };
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const updateUserData = async (
   newUsername: string,
   newFullname: string,
-  docId: string | undefined
-): Promise<void> {
-  if (docId) {
-    const userColl = collection(db, 'users');
-    const docRef = doc(userColl, docId);
+  docId: string
+): Promise<void> => {
+  const userColl = collection(db, 'users');
+  const docRef = doc(userColl, docId);
 
-    updateDoc(docRef, {
-      username: newUsername,
-      fullName: newFullname,
-    }).catch((err) => console.log(err));
+  await updateDoc(docRef, {
+    username: newUsername,
+    fullName: newFullname,
+  }).catch((err) => {
+    throw err;
+  });
+};
+
+export const deletePhotoFromFirebase = async (
+  deletePath: string,
+  docId: string
+): Promise<void> => {
+  const docRef = doc(db, 'photos', docId);
+  try {
+    await deletePhotoFromStorage(deletePath);
+
+    return await deleteDoc(docRef);
+  } catch (err) {
+    throw err;
   }
-}
+};
 
-export async function toggleLike(
-  isLikedPhoto: boolean,
-  docId: string,
-  loggedUserId: string
-): Promise<void> {
-  const photoColl = collection(db, 'photos');
-  const docRef = doc(photoColl, docId);
-  const photoDoc = await getDoc(docRef);
-  const { likes } = photoDoc.data() as IPhoto;
-
-  if (!isLikedPhoto) {
-    updateDoc(docRef, { likes: [...likes, loggedUserId] }).catch((e) =>
-      console.log(e)
-    );
-  } else {
-    const newArr = likes.filter((val) => val != loggedUserId);
-    updateDoc(docRef, { likes: newArr }).catch((e) => console.log(e));
-  }
-}
-
-export async function updateComments(
+export const updateComments = async (
   data: IComment,
   docId: string
-): Promise<IComment[]> {
+): Promise<IComment[]> => {
   const photoColl = collection(db, 'photos');
   const docRef = doc(photoColl, docId);
   const photoDoc = await getDoc(docRef);
@@ -272,19 +210,12 @@ export async function updateComments(
   );
 
   return newCommentsArr;
-}
+};
 
-export async function deletePhotoFromFirestore(docId: string): Promise<void> {
-  const docRef = doc(db, 'photos', docId);
-  await deleteDoc(docRef)
-    .then((data) => console.log(data))
-    .catch((e) => console.log(e));
-}
-
-export async function deleteComment(
-  docId: string,
-  date: number
-): Promise<IComment[]> {
+export const deleteComment = async (
+  date: number,
+  docId: string
+): Promise<IComment[]> => {
   const photoColl = collection(db, 'photos');
   const docRef = doc(photoColl, docId);
   const photoDoc = await getDoc(docRef);
@@ -296,4 +227,171 @@ export async function deleteComment(
     console.log(e)
   );
   return newCommentsArr;
-}
+};
+
+export const updateLikes = async (
+  isLikedPhoto: boolean,
+  docId: string,
+  loggedUserId: string
+): Promise<string[]> => {
+  const photoColl = collection(db, 'photos');
+  const docRef = doc(photoColl, docId);
+  const photoDoc = await getDoc(docRef);
+  const { likes } = photoDoc.data() as IPhoto;
+  const newLikes = !isLikedPhoto
+    ? [...likes, loggedUserId]
+    : likes.filter((val) => val != loggedUserId);
+
+  await updateDoc(docRef, { likes: newLikes }).catch((e) => console.log(e));
+  return newLikes;
+};
+
+export const updateFollow = async ({
+  isFollowingProfile,
+  userId,
+  docId,
+  loggedUserId,
+  loggedDocId,
+}: ToggleFollowProps) => {
+  try {
+    const newFollowing = await updateLoggedUserFollowing(
+      isFollowingProfile,
+      loggedDocId,
+      userId
+    );
+    const newFollowers = await updateUserFollowers(
+      isFollowingProfile,
+      docId,
+      loggedUserId
+    );
+
+    return { newFollowing, newFollowers };
+  } catch (err) {
+    throw err;
+  }
+};
+
+const updateLoggedUserFollowing = async (
+  isFollowingProfile: boolean,
+  loggedDocId: string,
+  userId: string
+): Promise<string[]> => {
+  try {
+    const docRef = doc(db, 'users', loggedDocId);
+    const querySnapshot = await getDoc(docRef);
+    const { following } = querySnapshot.data() as IUser;
+
+    const newFolowing = isFollowingProfile
+      ? following.filter((val) => val != userId)
+      : [...following, userId];
+
+    await updateDoc(docRef, { following: newFolowing });
+
+    return newFolowing;
+  } catch (err) {
+    throw err;
+  }
+};
+
+const updateUserFollowers = async (
+  isFollowingProfile: boolean,
+  docId: string,
+  loggedUserId: string
+): Promise<string[]> => {
+  try {
+    const docRef = doc(db, 'users', docId);
+    const querySnapshot = await getDoc(docRef);
+    const { followers } = querySnapshot.data() as IUser;
+
+    const newFollowers = isFollowingProfile
+      ? followers.filter((val) => val != loggedUserId)
+      : [...followers, loggedUserId];
+
+    await updateDoc(docRef, { followers: newFollowers });
+
+    return newFollowers;
+  } catch (err) {
+    throw err;
+  }
+};
+
+const getQuerySnapshot = async (
+  collName: string,
+  fieldPath: string,
+  value: string
+): Promise<QuerySnapshot<DocumentData>> => {
+  const coll = collection(db, collName);
+  const userQuery = query(coll, where(fieldPath, '==', value));
+
+  return await getDocs(userQuery);
+};
+
+export const getPhotosByUserIds = async (userIds: string[]) => {
+  const photosRef = collection(db, 'photos');
+  const photosQuery = query(photosRef, where('userId', 'in', userIds));
+  const { docs } = await getDocs(photosQuery);
+
+  return docs
+    .map((item) => {
+      return {
+        docId: item.id,
+        ...(item.data() as IPhoto),
+      };
+    })
+    .sort((a, b) => b.dateCreated - a.dateCreated);
+};
+
+export const getUsersByUserId = async (
+  userIds: string[]
+): Promise<IUserProfile[]> => {
+  const usersRef = collection(db, 'users');
+  const usersQuery = query(usersRef, where('userId', 'in', userIds));
+  const { docs } = await getDocs(usersQuery);
+
+  return docs.map((item) => {
+    return {
+      docId: item.id,
+      ...(item.data() as IUser),
+    };
+  });
+};
+
+export const getUserByUserId = async (
+  userId: string
+): Promise<IUserProfile | null> => {
+  const querySnapshot = await getQuerySnapshot('users', 'userId', userId);
+  const [res] = querySnapshot.docs.map((item) => {
+    return {
+      docId: item.id,
+      ...(item.data() as IUser),
+    };
+  });
+
+  return res ? res : null;
+};
+
+export const getAllUsers = async (): Promise<IUserProfile[]> => {
+  const usersColection = collection(db, 'users');
+  const usersData = await getDocs(usersColection);
+
+  return usersData.docs.map((user) => {
+    const data = user.data() as IUser;
+    return { ...data, docId: user.id };
+  });
+};
+
+export const getUserByUsername = async (
+  username: string
+): Promise<IUserProfile | undefined> => {
+  const querySnapshot = await getQuerySnapshot('users', 'username', username);
+
+  const res = querySnapshot.docs.map((item) => {
+    const itemData = item.data() as IUser;
+    return {
+      ...itemData,
+      docId: item.id,
+    };
+  });
+
+  return !!res.length ? res[0] : undefined;
+};

@@ -1,38 +1,45 @@
-import React, { useContext, useEffect, useState } from 'react';
-import UserContext from '../context/user-context';
-import Menu from '../components/menu/menu';
-import * as ROUTES from '../constants/routes';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IPhotoDoc } from '../types/types';
-import MainPage from '../components/dashboard';
-import PhotosContext from '../context/photos-context';
 
-import './dashboard.scss';
+import Menu from '../components/menu/menu';
+import { ROUTES } from '../constants/routes';
+import MainPage from '../components/pagesView/dashboard';
 
-export default function Dashboard() {
+import { useAppSelector } from '../hooks/redux.hook';
+import { useModal } from '../components/providers/ModalProvider';
+import { PacmanSpinner } from '../components/spinner/spinner';
+
+import './main.scss';
+
+const Dashboard = () => {
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
+  const { loggedUser } = useAppSelector(({ userCenter }) => userCenter);
 
-  const [photos, setPhotos] = useState<IPhotoDoc[]>([]);
+  const { Modal, closeModal } = useModal();
 
   useEffect(() => {
     document.title = 'Instagram';
-  }, []);
 
-  useEffect(() => {
-    if (user === null) {
-      navigate(ROUTES.LOGIN);
+    if (loggedUser === null) {
+      navigate(ROUTES.SIGN_IN);
     }
-  }, [user]);
+
+    return () => {
+      closeModal();
+    };
+  }, [loggedUser]);
+
+  if (!loggedUser) {
+    return <PacmanSpinner loading={true} />;
+  }
 
   return (
-    <PhotosContext.Provider value={{photos, setPhotos}}>
-      <main className="main-page">
-        <Menu isMainPage={true} />
-        {user ? (
-          <MainPage user={user} />
-        ) : null}
-      </main>
-    </PhotosContext.Provider>
+    <main className="main">
+      <Menu loggedUser={loggedUser} page="main" />
+      <MainPage user={loggedUser} />
+      {Modal}
+    </main>
   );
-}
+};
+
+export default Dashboard;

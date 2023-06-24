@@ -14,7 +14,7 @@
 
   @media screen and (min-width: 1920px) {
     width: 335px;
-  } 
+  }
 
   @media screen and (max-width: 1263px) {
     width: 72px;
@@ -47,7 +47,8 @@
   }
 
   @media screen and (max-width: 767px) {
-    &, &.main-nav--compact {
+    &,
+    &.main-nav--compact {
       bottom: 0;
       width: 100vw;
       height: 49px;
@@ -196,18 +197,18 @@
   &::before {
     content: '';
     position: absolute;
-    left: 11px;
+    left: 8px;
     top: 50%;
-    width: 24px;
-    height: 24px;
     transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
     background-position: center;
     background-repeat: no-repeat;
     transition: transform 0.2s cubic-bezier(0.17, 0.17, 0, 1);
     filter: var(--icon-filter);
 
     @media screen and (max-width: 767px) {
-      left: 7px;
+      left: 4px;
     }
   }
 }
@@ -240,54 +241,6 @@
   }
 }
 
-.main-nav__link--explore {
-  &::before {
-    background-image: url('../../../public/images/icons/explore.svg');
-  }
-
-  &.main-nav__link--active {
-    &::before {
-      background-image: url('../../../public/images/icons/explore-fill.svg');
-    }
-  }
-}
-
-.main-nav__link--reels {
-  &::before {
-    background-image: url('../../../public/images/icons/reels.svg');
-  }
-
-  &.main-nav__link--active {
-    &::before {
-      background-image: url('../../../public/images/icons/reels-fill.svg');
-    }
-  }
-}
-
-.main-nav__link--messages {
-  &::before {
-    background-image: url('../../../public/images/icons/messages.svg');
-  }
-
-  &.main-nav__link--active {
-    &::before {
-      background-image: url('../../../public/images/icons/messages-fill.svg');
-    }
-  }
-}
-
-.main-nav__link--notifications {
-  &::before {
-    background-image: url('../../../public/images/icons/notifications.svg');
-  }
-
-  &.main-nav__link--active {
-    &::before {
-      background-image: url('../../../public/images/icons/notifications-fill.svg');
-    }
-  }
-}
-
 .main-nav__link--create {
   &::before {
     background-image: url('../../../public/images/icons/create.svg');
@@ -301,10 +254,33 @@
 }
 
 .main-nav__link--profile {
-  &::before {
+  position: relative;
+
+  .profile-icon {
     border-radius: 50%;
-    background-image: url('../../../public/images/icons/profile.jpg');
-    background-size: contain;
+    object-fit: cover;
+    width: 32px;
+    height: 32px;
+
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    @media screen and (max-width: 767px) {
+      left: 4px;
+    }
+  }
+}
+.main-nav__link--settings {
+  &::before {
+    background-image: url('../../../public/images/icons/settings.svg');
+  }
+
+  &.main-nav__link--active {
+    &::before {
+      background-image: url('../../../public/images/icons/settings-fill.svg');
+    }
   }
 }
 

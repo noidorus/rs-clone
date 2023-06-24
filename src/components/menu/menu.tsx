@@ -1,41 +1,63 @@
-import React, { useContext, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getAuth, signOut } from 'firebase/auth';
-import FirebaseContext from '../../context/firebase-context';
-import UserContext from '../../context/user-context';
-import LoadPhotoButton from '../loadPhotoButton/loadPhotoButton';
-import * as ROUTES from '../../constants/routes';
+import { CSSTransition } from 'react-transition-group';
 
-import './menu.scss';
-import { FirebaseApp } from '@firebase/app-types';
-import SearchBlock from '../searhBlock/searchBlock';
-import { IPhotoDoc } from '../../types/types';
-import { ThemeContext, themes } from '../../context/theme-context';
+import SearchBlock from '../searchBlock';
+import { ThemeContext, Themes } from '../providers/ThemeProvider';
 import Toggle from '../toggle/toggle';
+import { IUserProfile } from '../../types/types';
+import { useModal } from '../providers/ModalProvider';
+import { UploadPhotoModal } from '../modals/uploadPhotoModal/UploadPhotoModal';
+import { useAppDispatch } from '../../hooks/redux.hook';
+import { signOut } from '../../redux/slices/userCenter';
+import { clearPhotosState } from '../../redux/slices/photosSlice';
+import { ROUTES } from '../../constants/routes';
+import './menu.scss';
 
 interface MenuProps {
-  isMainPage: boolean;
-  profileUsername?: string;
+  page: 'main' | 'profile' | 'settings';
+  loggedUser: IUserProfile;
 }
 
-export default function Menu({
-  isMainPage,
-  profileUsername,
-}: MenuProps) {
-  const firebase = useContext(FirebaseContext)?.firebase as FirebaseApp;
-  const [searchBlock, setSearchBlock] = useState(false);
-  const { user } = useContext(UserContext);
+export default function Menu({ page, loggedUser }: MenuProps) {
+  const [showSearch, setShowSearch] = useState(false);
+  const { setModal } = useModal();
+  const dispatch = useAppDispatch();
+
+  const { username, avatarData } = loggedUser;
 
   function openSearchBlock(): void {
-    setSearchBlock(true);
-  }
-  
-  function closeSearchBlock(): void {
-    setSearchBlock(false);
+    setShowSearch(true);
   }
 
+  function closeSearchBlock(event: Event): void {
+    const target = event.target as HTMLElement;
+
+    if (!target.classList.contains('main-nav__link--search')) {
+      setShowSearch(false);
+    }
+  }
+
+  const handleSignOut = async () => {
+    await dispatch(signOut());
+    dispatch(clearPhotosState());
+  };
+
+  const openModal = (type: 'photo') => {
+    if (type === 'photo') {
+      setModal(<UploadPhotoModal page={page} />);
+    }
+  };
+
   return (
-    <nav className={searchBlock ? 'main-nav main-nav--compact' : 'main-nav'}>
+    // <CSSTransition
+    //   addEndListener={(node, done) =>
+    //     node.addEventListener('transitionend', done, false)
+    //   }
+    //   in={showSearch}
+    //   classNames="my-node"
+    // >
+    <nav className={showSearch ? 'main-nav main-nav--compact' : 'main-nav'}>
       <Link className="main-nav__logo" to={ROUTES.DASHBOARD}>
         <img
           className="main-nav__image"
@@ -49,7 +71,7 @@ export default function Menu({
         <li className="main-nav__item">
           <Link
             className={
-              isMainPage && !searchBlock
+              page === 'main' && !showSearch
                 ? 'main-nav__link main-nav__link--home main-nav__link--active'
                 : 'main-nav__link main-nav__link--home'
             }
@@ -61,7 +83,7 @@ export default function Menu({
         <li className="main-nav__item main-nav__item--search">
           <a
             className={
-              searchBlock
+              showSearch
                 ? 'main-nav__link main-nav__link--search main-nav__link--active'
                 : 'main-nav__link main-nav__link--search'
             }
@@ -71,51 +93,73 @@ export default function Menu({
           </a>
         </li>
         <li className="main-nav__item">
-          <LoadPhotoButton
-            isMainPage={isMainPage}
-            profileUsername={profileUsername}
-          />
+          <a
+            className={'main-nav__link main-nav__link--create'}
+            onClick={() => openModal('photo')}
+          >
+            <span className="main-nav__text">Create</span>
+          </a>
         </li>
         <li className="main-nav__item">
-          {user ? (
-            <Link
-              className={
-                isMainPage
-                  ? 'main-nav__link main-nav__link--profile'
-                  : 'main-nav__link main-nav__link--profile main-nav__link--active'
+          <Link
+            className={
+              page === 'profile'
+                ? 'main-nav__link main-nav__link--profile main-nav__link--active'
+                : 'main-nav__link main-nav__link--profile'
+            }
+            to={`/${username}`}
+          >
+            <img
+              className="profile-icon"
+              src={
+                avatarData?.avatarSrc
+                  ? avatarData.avatarSrc
+                  : './images/icons/user-icon.svg'
               }
-              to={`/${user.displayName}`}
-            >
-              <span className="main-nav__text">Profile</span>
-            </Link>
-          ) : null}
+            />
+            <span className="main-nav__text">Profile</span>
+          </Link>
+        </li>
+        <li className="main-nav__item">
+          <Link
+            to={ROUTES.SETTINGS}
+            className={
+              page === 'settings'
+                ? 'main-nav__link main-nav__link--settings main-nav__link--active'
+                : 'main-nav__link main-nav__link--settings'
+            }
+          >
+            <span className="main-nav__text">Settings</span>
+          </Link>
         </li>
         <li className="main-nav__item main-nav__item--theme">
-        <ThemeContext.Consumer>
-          {({ theme, setTheme }) => (
-            <Toggle
-              onChange={() => {
-                if (theme === themes.light) setTheme(themes.dark)
-                if (theme === themes.dark) setTheme(themes.light)
-              }}
-              value={theme === themes.dark}
-            />
-          )}
-        </ThemeContext.Consumer>
+          <ThemeContext.Consumer>
+            {({ theme, setTheme }) => (
+              <Toggle
+                onChange={() => {
+                  if (theme === Themes.light) setTheme(Themes.dark);
+                  if (theme === Themes.dark) setTheme(Themes.light);
+                }}
+                value={theme === Themes.dark}
+              />
+            )}
+          </ThemeContext.Consumer>
         </li>
         <li className="main-nav__item">
           <a
             className="main-nav__link main-nav__link--signout"
             type="button"
-            onClick={() => signOut(getAuth(firebase))}
+            onClick={handleSignOut}
           >
             <span className="main-nav__text">Sign Out</span>
           </a>
         </li>
       </ul>
-      {searchBlock && <SearchBlock 
+      <SearchBlock
+        showSearch={showSearch}
         closeSearchBlock={closeSearchBlock}
-      />}
+      />
     </nav>
+    // </CSSTransition>
   );
 }

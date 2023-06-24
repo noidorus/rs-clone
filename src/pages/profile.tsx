@@ -1,60 +1,55 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import UserContext from '../context/user-context';
-import { getUserByUsername } from '../firebase/services';
-import * as ROUTES from '../constants/routes';
-import { IPhotoDoc, IUserProfile } from '../types/types';
+
+import { ROUTES } from '../constants/routes';
 import Menu from '../components/menu/menu';
-import UserProfile from '../components/userProfile';
-import './profile.scss';
-import PhotosContext from '../context/photos-context';
+import UserProfile from '../components/pagesView/userProfile';
+import './main.scss';
+
+import { useAppDispatch, useAppSelector } from '../hooks/redux.hook';
+import { fetchProfile } from '../redux/slices/userCenter';
+import { useModal } from '../components/providers/ModalProvider';
+import { PacmanSpinner } from '../components/spinner/spinner';
 
 export default function Profile() {
   const navigate = useNavigate();
-  const { username } = useParams(); // Get username from link /p/:username
-  const loggedUser = useContext(UserContext).user;
+  const { username } = useParams(); // Get username from link /:username
 
-  const [user, setUser] = useState<IUserProfile | null>(null);
-  const [photos, setPhotos] = useState<IPhotoDoc[]>([]);
+  const { userProfile, loggedUser } = useAppSelector(
+    ({ userCenter }) => userCenter
+  );
+  const dispatch = useAppDispatch();
+  const { Modal, closeModal } = useModal();
 
   useEffect(() => {
     document.title = `Instagram - ${username}`;
+    dispatch(fetchProfile(username?.toLowerCase() as string));
+
+    return () => {
+      closeModal();
+    };
   }, [username]);
 
   useEffect(() => {
     if (loggedUser === null) {
-      navigate(ROUTES.LOGIN);
+      navigate(ROUTES.SIGN_IN);
     }
   }, [loggedUser]);
 
   useEffect(() => {
-    async function checkUserExists() {
-      const currUser = await getUserByUsername(
-        username?.toLowerCase() as string
-      );
+    if (userProfile === undefined) navigate(ROUTES.NOT_FOUND);
+  }, [userProfile]);
 
-      if (currUser?.userId) {
-        setUser(currUser);
-      } else {
-        navigate(ROUTES.NOT_FOUND);
-      }
-    }
-    checkUserExists();
-  }, [username, navigate]);
+  if (!loggedUser) {
+    return <PacmanSpinner loading={true} />;
+  }
 
   return (
-    <PhotosContext.Provider value={{photos, setPhotos}}>
-      <main className="main-page">
-        <Menu
-          isMainPage={false}
-          profileUsername={username}
-        />
-        {user ? (
-          <UserProfile
-            user={user}
-          />
-        ) : null}
-      </main>
-    </PhotosContext.Provider>
+    <main className="main">
+      {<Menu page="profile" loggedUser={loggedUser} />}
+
+      <UserProfile />
+      {Modal}
+    </main>
   );
 }
