@@ -5,12 +5,17 @@ import Timeline from '../../timeline/timeline';
 import './styles.scss';
 
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux.hook';
-import { fetchProfilePhotos } from '../../../redux/slices/photosSlice';
-import PacmanSpinner from '../../spinner/spinner';
+import { fetchProfilePhotos, Status } from '../../../redux/slices/photosSlice';
+import { SkeletonPostPreview } from '../../skeleton/PostSkeleton';
+import { ProfileHeaderSkeleton } from '../../skeleton/ProfileHeaderSkeleton';
 
 const UserProfile = () => {
-  const { userProfile } = useAppSelector(({ userCenter }) => userCenter);
-  const { profilePhotos } = useAppSelector(({ photos }) => photos);
+  const { userProfile, loading } = useAppSelector(
+    ({ userCenter }) => userCenter
+  );
+  const { profilePhotos, photosLoadingStatus } = useAppSelector(
+    ({ photos }) => photos
+  );
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -19,14 +24,29 @@ const UserProfile = () => {
     }
   }, [userProfile?.userId]);
 
-  if (!userProfile) {
-    return <PacmanSpinner loading={true} />;
-  }
+  const props = {
+    page: 'profile' as 'profile',
+    photos: profilePhotos,
+    zeroLengthMessage: 'This user has not uploaded any photos yet!',
+  };
+
+  const profileLoding = loading && <ProfileHeaderSkeleton />;
+  const profileHeader = userProfile && !loading && (
+    <UserHeader user={userProfile} />
+  );
+
+  const photos = photosLoadingStatus == Status.IDLE && userProfile && (
+    <Timeline {...props} />
+  );
+  const photosLoading = (photosLoadingStatus == Status.LOADING ||
+    !userProfile) && <SkeletonPostPreview />;
 
   return (
     <div className="profile">
-      <UserHeader user={userProfile} />
-      <Timeline page="profile" photos={profilePhotos} />
+      {profileLoding}
+      {profileHeader}
+      {photos}
+      {photosLoading}
     </div>
   );
 };

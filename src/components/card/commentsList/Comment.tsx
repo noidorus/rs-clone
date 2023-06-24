@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { getUserDataHook } from '../../../hooks/getLoggedUserData';
+import { getUserDataHook } from '../../../hooks/getUserHook';
 import { IComment } from '../../../types/types';
 import { useAppSelector } from '../../../hooks/redux.hook';
 import { PrettyDate } from '../date/Date';
@@ -13,7 +13,7 @@ interface CommentProps {
 
 const CommentItem = ({ commentData, photoUserId }: CommentProps) => {
   const { userId, comment, date } = commentData;
-  const commentUser = getUserDataHook(userId);
+  const { user } = getUserDataHook(userId);
   const { loggedUser } = useAppSelector(({ userCenter }) => userCenter);
 
   const { onDeleteComment } = usePost();
@@ -38,9 +38,7 @@ const CommentItem = ({ commentData, photoUserId }: CommentProps) => {
     <li className="comments-list__item comment">
       <div className="comment__inner">
         <div className="comment__message">
-          {commentUser && (
-            <span className="comment__user">{commentUser.username}</span>
-          )}
+          {user && <span className="comment__user">{user.username}</span>}
           <span className="comment__text">{comment}</span>
         </div>
         <PrettyDate date={date} type="comment" />

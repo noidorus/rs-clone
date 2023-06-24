@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { PacmanLoader } from 'react-spinners';
+import { PacmanLoader, RingLoader } from 'react-spinners';
 
 interface SpinnerProps {
   loading: boolean;
@@ -14,7 +14,7 @@ const PacmanSpinner = ({ loading, shadow = true }: SpinnerProps) => {
     <>
       {loading && (
         <>
-          <div className="spinner">
+          <div className="spinner-absolute">
             <PacmanLoader color="blue" size={45} />
           </div>
           {shadow && <div className="shadow" />}
@@ -24,4 +24,18 @@ const PacmanSpinner = ({ loading, shadow = true }: SpinnerProps) => {
   );
 };
 
-export default PacmanSpinner;
+const RingSpinner = ({ loading }: SpinnerProps) => {
+  return (
+    <>
+      {loading && (
+        <>
+          <div className="spinner">
+            <RingLoader color="blue" size={100} />
+          </div>
+        </>
+      )}
+    </>
+  );
+};
+
+export { PacmanSpinner, RingSpinner };

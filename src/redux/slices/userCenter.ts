@@ -50,7 +50,8 @@ const authSlice = createSlice({
       .addCase(registerWithEmail.pending, (state) => {
         state.loading = true;
       })
-      .addCase(registerWithEmail.fulfilled, (state) => {
+      .addCase(registerWithEmail.fulfilled, (state, { payload }) => {
+        state.loggedUser = payload;
         state.loading = false;
         state.authError = null;
       })
@@ -94,9 +95,14 @@ const authSlice = createSlice({
         state.loading = false;
       });
 
-    builder.addCase(fetchProfile.fulfilled, (state, { payload }) => {
-      state.userProfile = payload;
-    });
+    builder
+      .addCase(fetchProfile.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchProfile.fulfilled, (state, { payload }) => {
+        state.userProfile = payload;
+        state.loading = false;
+      });
 
     builder.addCase(toggleFollow.fulfilled, (state, { payload }) => {
       if (state.loggedUser && state.userProfile) {

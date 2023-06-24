@@ -4,7 +4,7 @@ import React, { useEffect, useContext } from 'react';
 import FirebaseContext, {
   FirebaseContextProps,
 } from '../context/firebase-context';
-import { useAppDispatch } from '../hooks/redux.hook';
+import { useAppDispatch } from './redux.hook';
 import { fetchUserByUserId, signOut } from '../redux/slices/userCenter';
 
 const authListener = () => {

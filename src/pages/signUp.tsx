@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import AuthLayout from '../components/pagesView/authLayout/authLayout';
 import SignUpForm from '../components/forms/authForms/SignUpForm';
-import PacmanSpinner from '../components/spinner/spinner';
+import { PacmanSpinner } from '../components/spinner/spinner';
 import { ROUTES } from '../constants/routes';
 import { useAppSelector } from '../hooks/redux.hook';
 

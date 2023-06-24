@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/redux.hook';
 import { IUserProfile } from '../../../types/types';
 import { useModal } from '../../providers/ModalProvider';
 import { ImageFormView } from '../../forms/imgForm/ImgFormView';
-import PacmanSpinner from '../../spinner/spinner';
+import { PacmanSpinner } from '../../spinner/spinner';
 
 import './styles.scss';
 

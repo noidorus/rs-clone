@@ -1,7 +1,7 @@
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ROUTES } from './constants/routes';
-import authListener from './hooks/auth-listener';
+import authListener from './hooks/authListener';
 import ThemeProvider from './components/providers/ThemeProvider';
 import { ModalProvider } from './components/providers/ModalProvider';
 

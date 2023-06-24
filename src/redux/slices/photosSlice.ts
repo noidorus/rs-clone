@@ -67,9 +67,14 @@ const mainPageSlice = createSlice({
         state.loadingStatus = Status.ERROR;
       });
 
-    builder.addCase(fetchProfilePhotos.fulfilled, (state, { payload }) => {
-      state.profilePhotos = payload;
-    });
+    builder
+      .addCase(fetchProfilePhotos.pending, (state) => {
+        state.photosLoadingStatus = Status.LOADING;
+      })
+      .addCase(fetchProfilePhotos.fulfilled, (state, { payload }) => {
+        state.profilePhotos = payload;
+        state.photosLoadingStatus = Status.IDLE;
+      });
 
     builder
       .addCase(uploadProfilePhoto.pending, (state) => {

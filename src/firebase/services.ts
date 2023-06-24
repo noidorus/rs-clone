@@ -48,7 +48,7 @@ export const createUser = async ({
   fullName,
   email,
   password,
-}: CreateUserProps): Promise<void> => {
+}: CreateUserProps): Promise<IUserProfile> => {
   const usernameExists = await doesUsernameExist(username);
   if (!usernameExists) {
     try {
@@ -73,7 +73,11 @@ export const createUser = async ({
         },
       };
 
-      await createUserDocument(newUser);
+      const docId = await createUserDocument(newUser);
+      return {
+        ...newUser,
+        docId,
+      };
     } catch (err) {
       throw err;
     }
@@ -102,11 +106,12 @@ export const isFollowingUserProfile = async (
   return res.docs.length > 0;
 };
 
-const createUserDocument = async (userData: IUser): Promise<void> => {
+const createUserDocument = async (userData: IUser): Promise<string> => {
   const userColl = collection(db, 'users');
   const userRef = doc(userColl);
 
-  setDoc(userRef, userData);
+  await setDoc(userRef, userData);
+  return userRef.id;
 };
 
 export const createNewPhoto = async (

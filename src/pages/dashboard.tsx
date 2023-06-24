@@ -7,7 +7,7 @@ import MainPage from '../components/pagesView/dashboard';
 
 import { useAppSelector } from '../hooks/redux.hook';
 import { useModal } from '../components/providers/ModalProvider';
-import PacmanSpinner from '../components/spinner/spinner';
+import { PacmanSpinner } from '../components/spinner/spinner';
 
 import './main.scss';
 
@@ -20,15 +20,13 @@ const Dashboard = () => {
   useEffect(() => {
     document.title = 'Instagram';
 
-    return () => {
-      closeModal();
-    };
-  }, []);
-
-  useEffect(() => {
     if (loggedUser === null) {
       navigate(ROUTES.SIGN_IN);
     }
+
+    return () => {
+      closeModal();
+    };
   }, [loggedUser]);
 
   if (!loggedUser) {

@@ -5,7 +5,11 @@ import { PostProvider } from '../providers/PostProvider';
 import { TimeLineProps } from './types';
 import './timeline.scss';
 
-export default function Timeline({ photos, title, page }: TimeLineProps) {
+export default function Timeline({
+  photos,
+  page,
+  zeroLengthMessage,
+}: TimeLineProps) {
   const elements = photos.map((photo, index) => {
     let content: JSX.Element;
     if (page === 'profile') {
@@ -17,9 +21,12 @@ export default function Timeline({ photos, title, page }: TimeLineProps) {
     return <PostProvider key={index}>{content}</PostProvider>;
   });
 
+  if (!photos.length) {
+    return <div className="photos__empty">{zeroLengthMessage}</div>;
+  }
+
   return (
     <div className="post-list">
-      {title && <h3 className="post-list__title">{title}</h3>}
       <ul className="post-list__inner">{elements}</ul>
     </div>
   );

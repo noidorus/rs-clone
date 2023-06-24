@@ -9,7 +9,7 @@ import './main.scss';
 import { useAppDispatch, useAppSelector } from '../hooks/redux.hook';
 import { fetchProfile } from '../redux/slices/userCenter';
 import { useModal } from '../components/providers/ModalProvider';
-import PacmanSpinner from '../components/spinner/spinner';
+import { PacmanSpinner } from '../components/spinner/spinner';
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -24,7 +24,6 @@ export default function Profile() {
   useEffect(() => {
     document.title = `Instagram - ${username}`;
     dispatch(fetchProfile(username?.toLowerCase() as string));
-    console.log('render!');
 
     return () => {
       closeModal();

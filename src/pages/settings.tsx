@@ -6,7 +6,7 @@ import { ROUTES } from '../constants/routes';
 import { useAppSelector } from '../hooks/redux.hook';
 import Menu from '../components/menu/menu';
 import { ProfileSettings } from '../components/pagesView/settings';
-import PacmanSpinner from '../components/spinner/spinner';
+import { PacmanSpinner } from '../components/spinner/spinner';
 import { useModal } from '../components/providers/ModalProvider';
 
 import './main.scss';

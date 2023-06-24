@@ -7,7 +7,7 @@ import { updateAvatar } from '../../../redux/slices/userCenter';
 import type { Props } from './props';
 
 import './styles.scss';
-import PacmanSpinner from '../../spinner/spinner';
+import { PacmanSpinner } from '../../spinner/spinner';
 
 const ProfileSettings = ({ user }: Props) => {
   const [form, setForm] = useState<'avatar' | 'info'>('avatar');

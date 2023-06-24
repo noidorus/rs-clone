@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import App from './App';
 import FirebaseContext from './context/firebase-context';
 import { firebase, db, auth } from './firebase/lib';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 import './main.scss';
 import { setupStore } from './redux/setupStore';

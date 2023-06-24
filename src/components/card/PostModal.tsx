@@ -6,7 +6,7 @@ import Like from './like/like';
 import PostHeader from './postHeader/post-header';
 import { CardModalProps } from './props';
 import { PrettyDate } from './date/Date';
-import PacmanSpinner from '../spinner/spinner';
+import { PacmanSpinner } from '../spinner/spinner';
 import { usePost } from '../providers/PostProvider';
 import { useAppSelector } from '../../hooks/redux.hook';
 import { Status } from '../../redux/slices/types';

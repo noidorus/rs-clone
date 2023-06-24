@@ -8,6 +8,7 @@ import FormError from '../formError';
 import './styles.scss';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../constants/routes';
+import { PacmanSpinner } from '../../spinner/spinner';
 
 const SignUpForm = () => {
   const {
@@ -90,6 +91,8 @@ const SignUpForm = () => {
       <button className="button button--primary" type="submit">
         Sign Up
       </button>
+
+      <PacmanSpinner loading={loading} />
     </form>
   );
 };

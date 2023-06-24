@@ -14,7 +14,7 @@
     width: 100%;
     text-decoration: none;
   }
-  
+
   .user__image-wrapper {
     display: flex;
     align-items: center;
@@ -24,28 +24,27 @@
     margin-right: 8px;
     border-radius: 50%;
   }
-  
+
   .user__image {
     width: 32px;
     height: 32px;
     border-radius: 50%;
     object-fit: cover;
   }
-  
+
   .user__info {
     display: flex;
     flex-direction: column;
     gap: 4px;
   }
-  
+
   .user__name {
     font-weight: 600;
     color: rgb(var(--text-color_500));
   }
-  
+
   .user__full-name {
     display: none;
     color: rgb(var(--text-color_300));
   }
 }
-

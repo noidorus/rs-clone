@@ -68,7 +68,7 @@ export default function UserHeader({ user }: Props) {
         width="150"
       />
       <div className="profile__info info">
-        <header className="info__header">
+        <div className="info__header">
           <h4 className="info__title">{username}</h4>
           {isLoggedUserProfile ? (
             <button
@@ -82,7 +82,7 @@ export default function UserHeader({ user }: Props) {
               {isFollowingProfile ? 'Unfollow' : 'Follow'}
             </button>
           )}
-        </header>
+        </div>
         <ul className="info__inner shared">
           <li className="shared__item">
             <span className="shared__value">{photosCount}</span>

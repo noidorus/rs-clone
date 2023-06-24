@@ -85,8 +85,8 @@ export const registerWithEmail = createAsyncThunk(
   'userCenter/signUp',
   async (data: CreateUserProps, { rejectWithValue }) => {
     try {
-      await createUser(data);
-      return;
+      const user = await createUser(data);
+      return user;
     } catch (err) {
       const error = getAuthError(err);
       throw rejectWithValue(error);

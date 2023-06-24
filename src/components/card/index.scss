@@ -1,6 +1,7 @@
 .post {
   position: relative;
   cursor: pointer;
+  z-index: 0;
 
   &:hover {
     .post__overlay {
