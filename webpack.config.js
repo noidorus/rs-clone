@@ -65,7 +65,9 @@ const baseConfig = {
         },
       ],
     }),
-    new Dotenv(),
+    new Dotenv({
+      systemvars: true,
+    }),
   ],
 };
 
