@@ -326,19 +326,27 @@ const getQuerySnapshot = async (
   return await getDocs(userQuery);
 };
 
-export const getPhotosByUserIds = async (userIds: string[]) => {
+export const getPhotosByUserIds = async (
+  userIds: string[]
+): Promise<IPhotoDoc[]> => {
   const photosRef = collection(db, 'photos');
-  const photosQuery = query(photosRef, where('userId', 'in', userIds));
-  const { docs } = await getDocs(photosQuery);
 
-  return docs
-    .map((item) => {
+  let photos: IPhotoDoc[] = [];
+  for (let i = 0; i < userIds.length; i += 1) {
+    const photosQuery = query(photosRef, where('userId', '==', userIds[i]));
+    const { docs } = await getDocs(photosQuery);
+
+    const userPhotos = docs.map((item) => {
       return {
         docId: item.id,
         ...(item.data() as IPhoto),
       };
-    })
-    .sort((a, b) => b.dateCreated - a.dateCreated);
+    });
+
+    photos.push(...userPhotos);
+  }
+
+  return photos.sort((a, b) => b.dateCreated - a.dateCreated);
 };
 
 export const getUsersByUserId = async (

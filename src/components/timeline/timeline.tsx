@@ -21,7 +21,7 @@ export default function Timeline({
     return <PostProvider key={index}>{content}</PostProvider>;
   });
 
-  if (!photos.length) {
+  if (photos.length === 0) {
     return <div className="photos__empty">{zeroLengthMessage}</div>;
   }
 

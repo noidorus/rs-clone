@@ -33,7 +33,6 @@ const UploadPhotoModal = ({ page }: Props) => {
   });
 
   const submitCallback = async (img: File) => {
-    console.log(page);
     if (page === 'profile' && profileUsername === username) {
       await dispatch(uploadProfilePhoto({ img, caption, userId }));
     } else if (page === 'main') {

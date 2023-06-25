@@ -22,6 +22,7 @@ export default function MainPage({ user }: MainPageProps) {
 
   useEffect(() => {
     const userIds = [...user.following, user.userId];
+
     dispatch(fetchPhotos(userIds));
   }, [user.following]);
 
@@ -35,6 +36,7 @@ export default function MainPage({ user }: MainPageProps) {
   const loading = photosLoadingStatus == Status.LOADING && (
     <SkeletonPostSmall />
   );
+
   return (
     <div className="dashboard">
       <div className="dashboard__inner">

@@ -1,9 +1,10 @@
-import React, { lazy, Suspense, useEffect, useState } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ROUTES } from './constants/routes';
 import authListener from './hooks/authListener';
 import ThemeProvider from './components/providers/ThemeProvider';
 import { ModalProvider } from './components/providers/ModalProvider';
+import { PacmanSpinner } from './components/spinner/spinner';
 
 const NotFound = lazy(() => import('./pages/page-not-found'));
 const Dashboard = lazy(() => import('./pages/dashboard'));
@@ -19,7 +20,7 @@ function App() {
     <ThemeProvider>
       <ModalProvider>
         <BrowserRouter>
-          <Suspense fallback={<p>Loading...</p>}>
+          <Suspense fallback={<PacmanSpinner loading={true} />}>
             <Routes>
               <Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
               <Route path={ROUTES.PROFILE} element={<Profile />} />
