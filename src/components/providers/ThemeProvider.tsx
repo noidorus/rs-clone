@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, createContext } from 'react';
 import { ProviderProps, IThemeContext, Themes } from './types';
 
-export const ThemeContext = React.createContext<IThemeContext>({
+export const ThemeContext = createContext<IThemeContext>({
   theme: Themes.light,
   setTheme: () => {},
 });
@@ -9,7 +9,7 @@ export const ThemeContext = React.createContext<IThemeContext>({
 const ThemeProvider = ({ children }: ProviderProps) => {
   const [theme, setTheme] = useState<Themes>(getTheme);
 
-  React.useEffect(() => {
+  useEffect(() => {
     document.documentElement.dataset.theme = theme;
     localStorage.setItem('theme', theme);
   }, [theme]);
@@ -21,9 +21,6 @@ const ThemeProvider = ({ children }: ProviderProps) => {
   );
 };
 
-export default ThemeProvider;
-export { Themes };
-
 const getTheme = (): Themes => {
   const theme = `${window?.localStorage?.getItem('theme')}` as Themes;
   if (Object.values(Themes).includes(theme as Themes)) return theme;
@@ -33,3 +30,6 @@ const getTheme = (): Themes => {
 
   return Themes.dark;
 };
+
+export default ThemeProvider;
+export { Themes };

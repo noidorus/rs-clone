@@ -18,7 +18,7 @@ const Dashboard = () => {
   const { Modal, closeModal } = useModal();
 
   useEffect(() => {
-    document.title = 'Instagram';
+    document.title = 'Fakestagram';
 
     if (loggedUser === null) {
       navigate(ROUTES.SIGN_IN);

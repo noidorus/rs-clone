@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { CSSTransition } from 'react-transition-group';
 
 import SearchBlock from '../searchBlock';
 import { ThemeContext, Themes } from '../providers/ThemeProvider';
@@ -50,13 +49,6 @@ export default function Menu({ page, loggedUser }: MenuProps) {
   };
 
   return (
-    // <CSSTransition
-    //   addEndListener={(node, done) =>
-    //     node.addEventListener('transitionend', done, false)
-    //   }
-    //   in={showSearch}
-    //   classNames="my-node"
-    // >
     <nav className={showSearch ? 'main-nav main-nav--compact' : 'main-nav'}>
       <Link className="main-nav__logo" to={ROUTES.DASHBOARD}>
         <img
@@ -80,6 +72,7 @@ export default function Menu({ page, loggedUser }: MenuProps) {
             <span className="main-nav__text">Home</span>
           </Link>
         </li>
+
         <li className="main-nav__item main-nav__item--search">
           <a
             className={
@@ -92,6 +85,7 @@ export default function Menu({ page, loggedUser }: MenuProps) {
             <span className="main-nav__text">Search</span>
           </a>
         </li>
+
         <li className="main-nav__item">
           <a
             className={'main-nav__link main-nav__link--create'}
@@ -100,6 +94,7 @@ export default function Menu({ page, loggedUser }: MenuProps) {
             <span className="main-nav__text">Create</span>
           </a>
         </li>
+
         <li className="main-nav__item">
           <Link
             className={
@@ -120,6 +115,7 @@ export default function Menu({ page, loggedUser }: MenuProps) {
             <span className="main-nav__text">Profile</span>
           </Link>
         </li>
+
         <li className="main-nav__item">
           <Link
             to={ROUTES.SETTINGS}
@@ -132,6 +128,7 @@ export default function Menu({ page, loggedUser }: MenuProps) {
             <span className="main-nav__text">Settings</span>
           </Link>
         </li>
+
         <li className="main-nav__item main-nav__item--theme">
           <ThemeContext.Consumer>
             {({ theme, setTheme }) => (
@@ -145,6 +142,7 @@ export default function Menu({ page, loggedUser }: MenuProps) {
             )}
           </ThemeContext.Consumer>
         </li>
+
         <li className="main-nav__item">
           <a
             className="main-nav__link main-nav__link--signout"
@@ -160,6 +158,5 @@ export default function Menu({ page, loggedUser }: MenuProps) {
         closeSearchBlock={closeSearchBlock}
       />
     </nav>
-    // </CSSTransition>
   );
 }

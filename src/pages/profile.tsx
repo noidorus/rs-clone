@@ -22,7 +22,7 @@ export default function Profile() {
   const { Modal, closeModal } = useModal();
 
   useEffect(() => {
-    document.title = `Instagram - ${username}`;
+    document.title = `Fakestagram - ${username}`;
     dispatch(fetchProfile(username?.toLowerCase() as string));
 
     return () => {
@@ -36,17 +36,13 @@ export default function Profile() {
     }
   }, [loggedUser]);
 
-  useEffect(() => {
-    if (userProfile === undefined) navigate(ROUTES.NOT_FOUND);
-  }, [userProfile]);
-
   if (!loggedUser) {
     return <PacmanSpinner loading={true} />;
   }
 
   return (
     <main className="main">
-      {<Menu page="profile" loggedUser={loggedUser} />}
+      <Menu page="profile" loggedUser={loggedUser} />
 
       <UserProfile />
       {Modal}

@@ -6,7 +6,6 @@ import ThemeProvider from './components/providers/ThemeProvider';
 import { ModalProvider } from './components/providers/ModalProvider';
 import { PacmanSpinner } from './components/spinner/spinner';
 
-const NotFound = lazy(() => import('./pages/page-not-found'));
 const Dashboard = lazy(() => import('./pages/dashboard'));
 const Profile = lazy(() => import('./pages/profile'));
 const SignIn = lazy(() => import('./pages/signIn'));
@@ -24,7 +23,6 @@ function App() {
             <Routes>
               <Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
               <Route path={ROUTES.PROFILE} element={<Profile />} />
-              <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />
               <Route path={ROUTES.SIGN_IN} element={<SignIn />} />
               <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
               <Route path={ROUTES.SETTINGS} element={<Settings />} />

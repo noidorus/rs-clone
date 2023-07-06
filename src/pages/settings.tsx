@@ -17,7 +17,7 @@ export default function Profile() {
   const { Modal, closeModal } = useModal();
 
   useEffect(() => {
-    document.title = `Instagram - settings`;
+    document.title = `Fakestagram - settings`;
 
     return () => {
       closeModal();
