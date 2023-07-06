@@ -4,5 +4,4 @@ export const ROUTES = {
   SIGN_UP: '/sign-up',
   SETTINGS: '/settings',
   PROFILE: '/:username',
-  NOT_FOUND: '/not-found',
 };
