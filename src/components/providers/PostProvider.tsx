@@ -49,8 +49,10 @@ const PostProvider = ({ children }: ProviderProps) => {
         userId: loggedUser.userId,
       };
 
+      setLoading(true);
       const updatedComments = await updateComments(commentData, photo.docId);
       setComments(updatedComments);
+      setLoading(false);
     }
   };
 
