@@ -97,8 +97,8 @@
   }
 
   @media screen and (max-width: 620px) {
-    width: 400px;
-    grid-template-columns: 400px;
+    width: 370px;
+    grid-template-columns: 370px;
     grid-template-rows: 500px 100px;
   }
 
@@ -135,6 +135,8 @@
     flex-direction: column;
     height: 100%;
     padding: 0 16px;
+    overflow-x: hidden;
+    overflow-y: scroll;
 
     @media screen and (max-width: 745px) {
       display: none;
