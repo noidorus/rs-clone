@@ -35,7 +35,7 @@ export default function Profile() {
   }
 
   return (
-    <main className="main main-settings">
+    <main className="main">
       <Menu page="settings" loggedUser={loggedUser} />
       <ProfileSettings user={loggedUser} />
       {Modal}

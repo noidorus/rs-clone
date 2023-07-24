@@ -12,7 +12,7 @@ import { useAppSelector } from '../../hooks/redux.hook';
 import { Status } from '../../redux/slices/types';
 
 const PostModal = ({ photo, user }: CardModalProps) => {
-  const { imageSrc, caption, docId, dateCreated, userId } = photo;
+  const { imageSrc, caption, dateCreated, userId } = photo;
   const { comments } = usePost();
 
   const loading = useAppSelector(({ photos }) => {
@@ -23,7 +23,7 @@ const PostModal = ({ photo, user }: CardModalProps) => {
     <div className="post--modal">
       <img className="post__image" src={imageSrc} />
 
-      <div className="modal-post__right">
+      <div className="modal-post__info">
         <PostHeader photoData={photo} user={user} />
 
         <div className="comments">

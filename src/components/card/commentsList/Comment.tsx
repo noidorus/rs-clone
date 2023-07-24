@@ -37,10 +37,10 @@ const CommentItem = ({ commentData, photoUserId }: CommentProps) => {
   return (
     <li className="comments-list__item comment">
       <div className="comment__inner">
-        <div className="comment__message">
-          {user && <span className="comment__user">{user.username}</span>}
-          <span className="comment__text">{comment}</span>
-        </div>
+        <p className="comment__message">
+          {user && <span>{user.username}</span>}
+          {comment}
+        </p>
         <PrettyDate date={date} type="comment" />
       </div>
       <div className="comment__action">

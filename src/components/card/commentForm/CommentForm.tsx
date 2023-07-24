@@ -1,11 +1,13 @@
 import React, { createRef, FormEvent } from 'react';
+import { RingLoader } from 'react-spinners';
 
 import { usePost } from '../../providers/PostProvider';
+import { RingSpinner } from '../../spinner/spinner';
 
 import './styles.scss';
 
 export default function CommentForm() {
-  const { setNewComment } = usePost();
+  const { setNewComment, loading } = usePost();
   const commentRef = createRef<HTMLInputElement>();
 
   const submitComment = async (e: FormEvent): Promise<void> => {
@@ -26,12 +28,18 @@ export default function CommentForm() {
         ref={commentRef}
         defaultValue={commentRef.current?.value}
       />
-      <button
-        className="comment-form__action button button--transparent"
-        type="submit"
-      >
-        Post
-      </button>
+
+      {loading ? (
+        <RingLoader color="blue" size={30} />
+      ) : (
+        // <RingSpinner loading={true} size={30} />
+        <button
+          className="comment-form__action button button--transparent"
+          type="submit"
+        >
+          Post
+        </button>
+      )}
     </form>
   );
 }
