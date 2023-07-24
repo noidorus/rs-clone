@@ -1,0 +1,28 @@
+.follow-modal {
+  padding: 16px 40px 36px 40px;
+  border-radius: 4px;
+  min-width: 400px;
+  max-width: 600px;
+  height: 450px;
+  width: 100%;
+  background-color: var(--bg-color_200);
+
+  &__title {
+    color: rgb(var(--text-color_500));
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    gap: 8px;
+    list-style: none;
+    padding-left: 0;
+    overflow: auto;
+    height: -webkit-fill-available;
+
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+  }
+}
